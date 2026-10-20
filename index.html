@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VitaGuard SUPERVISOR | Live Safety Command Center</title>
-  <link rel="icon" type="image/svg+xml" href="dashboard/assets/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="dashboard/css/dashboard.css">
+  <!-- Leaflet CSS for Full Interactive Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
   <div class="command-layout">
@@ -17,7 +19,7 @@
       <div class="sidebar-top-section">
         <div class="sidebar-header">
           <div class="brand-shield">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
           </div>
           <div class="brand-text-col">
             <span class="brand-title-main">VitaGuard</span>
@@ -70,7 +72,7 @@
         <!-- Worker Stats Box -->
         <div class="worker-stat-widget">
           <div class="worker-widget-top">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
             <span class="worker-label-small">Total Workers</span>
             <span class="worker-count-bold" style="margin-left:auto;">12</span>
           </div>
@@ -84,26 +86,7 @@
 
         <!-- Physical Wearable Device Render Card -->
         <div class="wearable-render-card">
-          <svg class="wearable-art-img" viewBox="0 0 90 120" fill="none">
-            <rect x="18" y="10" width="54" height="100" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"></rect>
-            <!-- Strap loops -->
-            <rect x="6" y="24" width="12" height="18" rx="2" fill="#0f172a"></rect>
-            <rect x="72" y="24" width="12" height="18" rx="2" fill="#0f172a"></rect>
-            <rect x="6" y="78" width="12" height="18" rx="2" fill="#0f172a"></rect>
-            <rect x="72" y="78" width="12" height="18" rx="2" fill="#0f172a"></rect>
-            <!-- Emergency Red Button -->
-            <circle cx="45" cy="30" r="7" fill="#ef4444" stroke="#991b1b" stroke-width="1.5"></circle>
-            <!-- Green Status LED -->
-            <circle cx="45" cy="50" r="4.5" fill="#10b981" filter="drop-shadow(0 0 4px #10b981)"></circle>
-            <!-- Gas Sensor Port -->
-            <circle cx="45" cy="74" r="9" fill="#94a3b8" stroke="#475569" stroke-width="2"></circle>
-            <circle cx="45" cy="74" r="5" fill="#64748b"></circle>
-            <!-- Acoustic Speaker Grill -->
-            <circle cx="37" cy="96" r="1.5" fill="#0f172a"></circle>
-            <circle cx="42" cy="96" r="1.5" fill="#0f172a"></circle>
-            <circle cx="47" cy="96" r="1.5" fill="#0f172a"></circle>
-            <circle cx="53" cy="96" r="1.5" fill="#0f172a"></circle>
-          </svg>
+          <img src="assets/device-render.png" alt="VitaGuard Wearable Hardware" class="wearable-art-img">
           <div class="sidebar-brand-version">VitaGuard v2.0</div>
           <div class="sidebar-tagline-motto">Safer Workers<br>Stronger Tomorrow</div>
         </div>
@@ -116,7 +99,7 @@
       <header class="command-header">
         <div class="header-left-col">
           <div class="header-icon-box">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
           </div>
           <div>
             <h1 class="header-title-text">Live Safety Monitoring</h1>
@@ -124,9 +107,8 @@
           </div>
         </div>
 
-        <!-- Global Search Bar -->
         <div class="header-search-wrap">
-          <svg class="search-lens-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <svg class="search-lens-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           <input type="text" class="search-input-field" id="globalSearchInput" placeholder="Search worker, device or location...">
         </div>
 
@@ -138,20 +120,20 @@
 
           <div class="lora-signal-meta">
             <strong>
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.93 19.07a10 10 0 0 1 0-14.14"></path><circle cx="12" cy="12" r="2"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.93 19.07a10 10 0 0 1 0-14.14"></path><circle cx="12" cy="12" r="2"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
               LoRa Connected
             </strong>
             <span id="headerRssi">-63 dBm</span>
           </div>
 
           <div class="bell-button-wrap" id="bellNotifTrigger">
-            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
             <span class="bell-red-badge">2</span>
           </div>
 
           <div class="user-profile-widget">
             <div class="user-avatar-circle">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </div>
             <div class="user-role-wrap">
               <span class="user-name-title">Supervisor</span>
@@ -161,571 +143,729 @@
         </div>
       </header>
 
-      <!-- Workspace Body -->
-      <main class="workspace-body">
-        <!-- Row 1: Worker Hero + Location Map + System Status -->
-        <section class="row-top-trio">
-          <!-- 1. Worker Hero Card (Dark Gradient) -->
-          <div class="worker-hero-card">
-            <span class="hero-top-badge">● LIVE</span>
-
-            <div class="hero-mid-row">
-              <div class="worker-avatar-title-group">
-                <div class="worker-helm-avatar">
-                  <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 18h20"></path><path d="M4 18v-4a8 8 0 0 1 16 0v4"></path><path d="M12 4v4"></path></svg>
-                </div>
-                <div class="worker-text-meta-col">
-                  <h2 class="worker-hero-fullname" id="heroWorkerName">R. Kumar</h2>
-                  <span class="worker-hero-subtag" id="heroWorkerMeta">VG-014 • Sector B • Day Shift</span>
-                  <span class="worker-hero-plant">
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                    Plant Area 1
-                  </span>
-                </div>
-              </div>
-
-              <!-- DRS Gauge Dial -->
-              <div class="hero-gauge-box">
-                <svg viewBox="0 0 100 100" class="hero-gauge-svg">
-                  <circle cx="50" cy="50" r="45" class="hero-gauge-track"></circle>
-                  <circle cx="50" cy="50" r="45" class="hero-gauge-arc" id="heroGaugeRing"></circle>
-                </svg>
-                <div class="hero-gauge-labels">
-                  <div>
-                    <span class="drs-val-text" id="heroDrsVal">30</span>
-                    <span class="drs-max-text">/100</span>
+      <!-- ============================================================= -->
+      <!-- PAGE: Dashboard (Main) -->
+      <!-- ============================================================= -->
+      <div class="page-view active" id="page-dashboard">
+        <main class="workspace-body">
+          <!-- Row 1: Worker Hero + Location Map + System Status -->
+          <section class="row-top-trio">
+            <!-- 1. Worker Hero Card -->
+            <div class="worker-hero-card">
+              <span class="hero-top-badge">● LIVE</span>
+              <div class="hero-mid-row">
+                <div class="worker-avatar-title-group">
+                  <div class="worker-helm-avatar">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 18h20"></path><path d="M4 18v-4a8 8 0 0 1 16 0v4"></path><path d="M12 4v4"></path></svg>
                   </div>
-                  <span class="drs-badge-text" id="heroDrsBadge">LOW RISK</span>
+                  <div class="worker-text-meta-col">
+                    <h2 class="worker-hero-fullname" id="heroWorkerName">R. Kumar</h2>
+                    <span class="worker-hero-subtag" id="heroWorkerMeta">VG-014 • Sector B • Day Shift</span>
+                    <span class="worker-hero-plant">
+                      <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                      Plant Area 1
+                    </span>
+                  </div>
+                </div>
+                <div class="hero-gauge-box">
+                  <svg viewBox="0 0 100 100" class="hero-gauge-svg">
+                    <circle cx="50" cy="50" r="45" class="hero-gauge-track"></circle>
+                    <circle cx="50" cy="50" r="45" class="hero-gauge-arc" id="heroGaugeRing"></circle>
+                  </svg>
+                  <div class="hero-gauge-labels">
+                    <div>
+                      <span class="drs-val-text" id="heroDrsVal">30</span>
+                      <span class="drs-max-text">/100</span>
+                    </div>
+                    <span class="drs-badge-text" id="heroDrsBadge">LOW RISK</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hero-vitals-strip">
+                <div class="hero-vital-item">
+                  <span>❤️ HR <strong id="vHR">100</strong> BPM</span>
+                  <span class="v-tag tag-elevated-pill">Elevated</span>
+                </div>
+                <div class="hero-vital-item">
+                  <span>💧 SpO₂ <strong id="vSpO2">96</strong> %</span>
+                  <span class="v-tag tag-normal-pill">Normal</span>
+                </div>
+                <div class="hero-vital-item">
+                  <span>🌡️ <strong id="vTemp">37.1</strong> °C</span>
+                  <span class="v-tag tag-normal-pill">Normal</span>
+                </div>
+                <div class="hero-vital-item">
+                  <span>☁️ CO <strong id="vCO">169</strong> PPM</span>
+                  <span class="v-tag tag-normal-pill">Normal</span>
+                </div>
+                <div class="hero-vital-item">
+                  <span>🏃 <strong id="vMotion">Low activity</strong></span>
+                  <span class="v-tag tag-live-pill">Live</span>
+                </div>
+                <div class="hero-vital-item">
+                  <span>🔋 <strong id="vBattery">84</strong> %</span>
+                  <span class="v-tag tag-normal-pill">Good</span>
                 </div>
               </div>
             </div>
 
-            <!-- Bottom Vitals Strip inside Worker Hero Card -->
-            <div class="hero-vitals-strip">
-              <div class="hero-vital-item">
-                <span>❤️ HR <strong id="vHR">100</strong> BPM</span>
-                <span class="v-tag tag-elevated-pill">Elevated</span>
+            <!-- 2. Worker Location Card (Real Satellite Image + Interactive Zoom) -->
+            <div class="card-white">
+              <div class="card-title-line">
+                <span class="title-tag-group">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  Worker Location
+                </span>
+                <span class="badge-live-green">● Live</span>
               </div>
-              <div class="hero-vital-item">
-                <span>💧 SpO₂ <strong id="vSpO2">96</strong> %</span>
-                <span class="v-tag tag-normal-pill">Normal</span>
+              <div class="satellite-map-box" id="satelliteMapBox">
+                <img src="assets/satellite-map.png" alt="Industrial Plant Satellite Map" class="satellite-img-real" id="satelliteImgElem">
+                <div class="map-radar-pulse"></div>
               </div>
-              <div class="hero-vital-item">
-                <span>🌡️ <strong id="vTemp">37.1</strong> °C</span>
-                <span class="v-tag tag-normal-pill">Normal</span>
-              </div>
-              <div class="hero-vital-item">
-                <span>☁️ CO <strong id="vCO">169</strong> PPM</span>
-                <span class="v-tag tag-normal-pill">Normal</span>
-              </div>
-              <div class="hero-vital-item">
-                <span>🏃 <strong id="vMotion">Low activity</strong></span>
-                <span class="v-tag tag-live-pill">Live</span>
-              </div>
-              <div class="hero-vital-item">
-                <span>🔋 <strong id="vBattery">84</strong> %</span>
-                <span class="v-tag tag-normal-pill">Good</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2. Worker Location Card -->
-          <div class="card-white">
-            <div class="card-title-line">
-              <span class="title-tag-group">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                Worker Location
-              </span>
-              <span class="badge-live-green">● Live</span>
-            </div>
-
-            <div class="satellite-map-container" id="satelliteMapBox">
-              <svg class="satellite-img-bg" viewBox="0 0 400 200" preserveAspectRatio="none">
-                <rect width="400" height="200" fill="#2d3748"></rect>
-                <rect x="20" y="20" width="80" height="150" fill="#4a5568" stroke="#1a202c" stroke-width="1.5"></rect>
-                <rect x="120" y="30" width="140" height="90" fill="#3b495e" stroke="#1a202c" stroke-width="1.5"></rect>
-                <rect x="130" y="130" width="120" height="50" fill="#4a5568" stroke="#1a202c" stroke-width="1.5"></rect>
-                <rect x="280" y="20" width="90" height="160" fill="#3b495e" stroke="#1a202c" stroke-width="1.5"></rect>
-                <line x1="0" y1="125" x2="400" y2="125" stroke="#1a202c" stroke-width="8"></line>
-                <line x1="110" y1="0" x2="110" y2="200" stroke="#1a202c" stroke-width="8"></line>
-                <line x1="270" y1="0" x2="270" y2="200" stroke="#1a202c" stroke-width="8"></line>
-                <circle cx="50" cy="50" r="14" fill="#64748b"></circle>
-                <circle cx="80" cy="50" r="14" fill="#64748b"></circle>
-              </svg>
-
-              <!-- Radar Target Marker -->
-              <div class="radar-target-overlay">
-                <div class="radar-center-dot"></div>
-              </div>
-
-              <!-- Map Zoom Buttons -->
-              <div class="map-controls-group">
-                <button class="map-btn-sm" id="btnMapZoomIn">+</button>
-                <button class="map-btn-sm" id="btnMapZoomOut">−</button>
-                <button class="map-btn-sm" id="btnMapCenter">⊙</button>
+              <div class="map-footer-row">
+                <span class="map-location-tag">
+                  <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path></svg>
+                  Plant Area 1 <span style="font-weight:normal; color:#94a3b8;">• Last updated: Just now</span>
+                </span>
+                <a class="map-link-btn" id="btnViewFullMap">View Full Map →</a>
               </div>
             </div>
 
-            <div class="map-footer-row">
-              <span class="map-location-tag">
-                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path></svg>
-                Plant Area 1 <span style="font-weight:normal; color:#94a3b8;">• Last updated: Just now</span>
-              </span>
-              <a class="map-link-btn" id="btnViewFullMap">View Full Map →</a>
-            </div>
-          </div>
-
-          <!-- 3. System Status Card -->
-          <div class="card-white">
-            <div class="card-title-line">
-              <span class="title-tag-group">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-                System Status
-              </span>
-              <span style="font-size:10px; color:#94a3b8; font-weight:600;">All systems operational</span>
-            </div>
-
-            <div class="system-status-grid">
-              <div class="sys-widget-item">
-                <div class="sys-icon-circle icon-bg-emerald">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="12" height="16" rx="3"></rect><line x1="12" y1="8" x2="12" y2="8.01"></line></svg>
+            <!-- 3. System Status Card -->
+            <div class="card-white">
+              <div class="card-title-line">
+                <span class="title-tag-group">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                  System Status
+                </span>
+                <span style="font-size:8.5px; color:#94a3b8; font-weight:600;">All systems operational</span>
+              </div>
+              <div class="system-status-grid">
+                <div class="sys-widget-item">
+                  <div class="sys-icon-circle icon-bg-emerald">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="12" height="16" rx="3"></rect><line x1="12" y1="8" x2="12" y2="8.01"></line></svg>
+                  </div>
+                  <div class="sys-meta-text">
+                    <span class="sys-label-dim">Wearables</span>
+                    <span class="sys-val-heavy">12 / 12</span>
+                    <span class="sys-badge-micro pill-normal">Online</span>
+                  </div>
                 </div>
-                <div class="sys-meta-text">
-                  <span class="sys-label-dim">Wearables</span>
-                  <span class="sys-val-heavy">12 / 12</span>
-                  <span class="sys-badge-micro pill-normal">Online</span>
+                <div class="sys-widget-item">
+                  <div class="sys-icon-circle icon-bg-blue">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.93 19.07a10 10 0 0 1 0-14.14"></path><circle cx="12" cy="12" r="2"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+                  </div>
+                  <div class="sys-meta-text">
+                    <span class="sys-label-dim">Base Station</span>
+                    <span class="sys-val-heavy" style="color:#0284c7;">Connected</span>
+                    <span style="font-size:7.5px; color:#64748b; font-family:var(--font-mono);">-63 dBm</span>
+                  </div>
+                </div>
+                <div class="sys-widget-item">
+                  <div class="sys-icon-circle icon-bg-orange">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                  </div>
+                  <div class="sys-meta-text">
+                    <span class="sys-label-dim">Data Storage</span>
+                    <span class="sys-val-heavy" style="color:#059669;">Recording</span>
+                    <span class="sys-badge-micro pill-normal">Normal</span>
+                  </div>
+                </div>
+                <div class="sys-widget-item">
+                  <div class="sys-icon-circle icon-bg-sky">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
+                  </div>
+                  <div class="sys-meta-text">
+                    <span class="sys-label-dim">Network</span>
+                    <span class="sys-val-heavy">Stable</span>
+                    <span style="font-size:7.5px; color:#64748b;">No packet loss</span>
+                  </div>
                 </div>
               </div>
+            </div>
+          </section>
 
-              <div class="sys-widget-item">
-                <div class="sys-icon-circle icon-bg-blue">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.93 19.07a10 10 0 0 1 0-14.14"></path><circle cx="12" cy="12" r="2"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
-                </div>
-                <div class="sys-meta-text">
-                  <span class="sys-label-dim">Base Station</span>
-                  <span class="sys-val-heavy" style="color:#0284c7;">Connected</span>
-                  <span style="font-size:9.5px; color:#64748b; font-family:var(--font-mono);">-63 dBm</span>
+          <!-- Row 2: Live Sensor Telemetry (6 Cards) + AI Risk Analysis -->
+          <section class="row-sensors-ai">
+            <div>
+              <div class="telemetry-block-head">
+                <h2 class="telemetry-title-h2">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                  Live Sensor Telemetry
+                </h2>
+                <div class="telemetry-stamp-wrap">
+                  <span>Last updated: <span id="telemetryTimeStr">10:20:02 PM</span></span>
+                  <select class="realtime-pill-btn" id="streamRateSelect">
+                    <option value="realtime">Real-time ▾</option>
+                    <option value="5s">5s Polling</option>
+                    <option value="pause">Pause</option>
+                  </select>
                 </div>
               </div>
-
-              <div class="sys-widget-item">
-                <div class="sys-icon-circle icon-bg-orange">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+              <div class="telemetry-cards-6">
+                <!-- 1. Heart Rate -->
+                <div class="sensor-box">
+                  <div class="sensor-box-top">
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="#ef4444"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    <span class="sensor-name-lbl">Heart Rate</span>
+                  </div>
+                  <div class="sensor-value-bold-row">
+                    <span class="sensor-big-number" id="cardValHR">100</span>
+                    <span class="sensor-unit-lbl">BPM</span>
+                  </div>
+                  <span class="sensor-pill-status pill-status-elevated" id="cardBadgeHR">Elevated</span>
+                  <svg class="sensor-spark-svg" viewBox="0 0 100 24" preserveAspectRatio="none">
+                    <path id="sparklineHR" d="M0,18 Q15,4 30,16 T60,8 T80,18 T100,10" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round"></path>
+                  </svg>
+                  <div class="sensor-normal-guide">Normal: 60 – 100</div>
                 </div>
-                <div class="sys-meta-text">
-                  <span class="sys-label-dim">Data Storage</span>
-                  <span class="sys-val-heavy" style="color:#059669;">Recording</span>
+
+                <!-- 2. SpO2 -->
+                <div class="sensor-box">
+                  <div class="sensor-box-top">
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="#0284c7"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                    <span class="sensor-name-lbl">SpO₂</span>
+                  </div>
+                  <div class="sensor-value-bold-row">
+                    <span class="sensor-big-number" id="cardValSpO2">96</span>
+                    <span class="sensor-unit-lbl">%</span>
+                  </div>
+                  <span class="sensor-pill-status pill-status-normal" id="cardBadgeSpO2">Normal</span>
+                  <svg class="sensor-spark-svg" viewBox="0 0 100 24" preserveAspectRatio="none">
+                    <path id="sparklineSpO2" d="M0,12 Q20,18 40,10 T70,16 T100,8" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"></path>
+                  </svg>
+                  <div class="sensor-normal-guide">Normal: 95 – 100</div>
+                </div>
+
+                <!-- 3. Skin Temp -->
+                <div class="sensor-box">
+                  <div class="sensor-box-top">
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#f97316" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
+                    <span class="sensor-name-lbl">Skin Temp.</span>
+                  </div>
+                  <div class="sensor-value-bold-row">
+                    <span class="sensor-big-number" id="cardValTemp">37.1</span>
+                    <span class="sensor-unit-lbl">°C</span>
+                  </div>
+                  <span class="sensor-pill-status pill-status-normal" id="cardBadgeTemp">Normal</span>
+                  <svg class="sensor-spark-svg" viewBox="0 0 100 24" preserveAspectRatio="none">
+                    <path id="sparklineTemp" d="M0,14 Q25,8 50,14 T80,10 T100,12" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"></path>
+                  </svg>
+                  <div class="sensor-normal-guide">Normal: 35.5 – 37.5</div>
+                </div>
+
+                <!-- 4. CO Exposure -->
+                <div class="sensor-box">
+                  <div class="sensor-box-top">
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="#0284c7"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
+                    <span class="sensor-name-lbl">CO Exposure</span>
+                  </div>
+                  <div class="sensor-value-bold-row">
+                    <span class="sensor-big-number" id="cardValCO">169</span>
+                    <span class="sensor-unit-lbl">PPM</span>
+                  </div>
+                  <span class="sensor-pill-status pill-status-normal" id="cardBadgeCO">Normal</span>
+                  <svg class="sensor-spark-svg" viewBox="0 0 100 24" preserveAspectRatio="none">
+                    <path id="sparklineCO" d="M0,16 Q20,10 40,18 T70,8 T90,14 T100,6" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"></path>
+                  </svg>
+                  <div class="sensor-normal-guide">Normal: 0 – 200</div>
+                </div>
+
+                <!-- 5. Motion / Fall -->
+                <div class="sensor-box">
+                  <div class="sensor-box-top">
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#0284c7" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <span class="sensor-name-lbl">Motion / Fall</span>
+                  </div>
+                  <div class="sensor-value-bold-row">
+                    <span class="sensor-big-number" style="font-size:12px;" id="cardValMotion">Low activity</span>
+                  </div>
+                  <span class="sensor-pill-status pill-status-live" id="cardBadgeMotion">Live</span>
+                  <svg class="sensor-spark-svg" viewBox="0 0 100 24">
+                    <rect x="5" y="12" width="4" height="12" rx="2" fill="#38bdf8"></rect>
+                    <rect x="15" y="8" width="4" height="16" rx="2" fill="#38bdf8"></rect>
+                    <rect x="25" y="14" width="4" height="10" rx="2" fill="#38bdf8"></rect>
+                    <rect x="35" y="6" width="4" height="18" rx="2" fill="#38bdf8"></rect>
+                    <rect x="45" y="15" width="4" height="9" rx="2" fill="#38bdf8"></rect>
+                    <rect x="55" y="4" width="4" height="20" rx="2" fill="#38bdf8"></rect>
+                    <rect x="65" y="10" width="4" height="14" rx="2" fill="#38bdf8"></rect>
+                    <rect x="75" y="16" width="4" height="8" rx="2" fill="#38bdf8"></rect>
+                    <rect x="85" y="7" width="4" height="17" rx="2" fill="#38bdf8"></rect>
+                  </svg>
+                  <div class="sensor-normal-guide">Normal: Moderate</div>
+                </div>
+
+                <!-- 6. Battery -->
+                <div class="sensor-box">
+                  <div class="sensor-box-top">
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#10b981" stroke-width="2"><rect x="1" y="6" width="18" height="12" rx="2"></rect><line x1="23" y1="11" x2="23" y2="13"></line></svg>
+                    <span class="sensor-name-lbl">Battery</span>
+                  </div>
+                  <div class="sensor-value-bold-row">
+                    <span class="sensor-big-number" id="cardValBattery">84</span>
+                    <span class="sensor-unit-lbl">%</span>
+                  </div>
+                  <span class="sensor-pill-status pill-status-normal" id="cardBadgeBattery">Good</span>
+                  <svg class="sensor-spark-svg" viewBox="0 0 100 24" preserveAspectRatio="none">
+                    <path d="M0,18 C30,18 70,14 100,10" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"></path>
+                  </svg>
+                  <div class="sensor-normal-guide">Normal: &gt; 20 %</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- AI Risk Analysis Card -->
+            <div class="card-white ai-risk-card">
+              <div class="card-title-line">
+                <span class="ai-header-tag">
+                  <span class="ai-purple-circle">AI</span>
+                  AI Risk Analysis
+                </span>
+              </div>
+              <div class="ai-bars-vertical-list">
+                <div class="ai-bar-line">
+                  <span>Heart rate</span>
+                  <div class="ai-track-bg"><div class="ai-bar-orange" id="barHR" style="width: 25%;"></div></div>
+                  <strong id="wHR">+4</strong>
+                </div>
+                <div class="ai-bar-line">
+                  <span>SpO₂</span>
+                  <div class="ai-track-bg"><div class="ai-bar-neutral" id="barSpO2" style="width: 0%;"></div></div>
+                  <strong id="wSpO2">+0</strong>
+                </div>
+                <div class="ai-bar-line">
+                  <span>CO exposure</span>
+                  <div class="ai-track-bg"><div class="ai-bar-orange" id="barCO" style="width: 30%;"></div></div>
+                  <strong id="wCO">+5</strong>
+                </div>
+                <div class="ai-bar-line">
+                  <span>Temperature</span>
+                  <div class="ai-track-bg"><div class="ai-bar-orange" id="barTemp" style="width: 10%;"></div></div>
+                  <strong id="wTemp">+1</strong>
+                </div>
+                <div class="ai-bar-line">
+                  <span>Motion / fatigue</span>
+                  <div class="ai-track-bg"><div class="ai-bar-red" id="barMotion" style="width: 60%;"></div></div>
+                  <strong id="wMotion">+12</strong>
+                </div>
+              </div>
+              <div class="ai-alert-callout-box">
+                <div class="ai-alert-icon">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <div class="ai-callout-text">
+                  <h4 id="fatigueHeadline">Elevated attention</h4>
+                  <p id="fatigueDetail">Heart rate remains above baseline while movement recovery is low.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Row 3: 24-Hour Trends + Recent Events + Reports & Sharing -->
+          <section class="row-bottom-trio">
+            <!-- 1. 24-Hour Trends Card -->
+            <div class="card-white">
+              <div class="card-title-line">
+                <span class="title-tag-group">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
+                  24-Hour Trends
+                </span>
+              </div>
+              <div class="trend-filter-chips">
+                <button class="chip-btn active" data-metric="hr">Heart Rate</button>
+                <button class="chip-btn" data-metric="spo2">SpO₂</button>
+                <button class="chip-btn" data-metric="temp">Temperature</button>
+                <button class="chip-btn" data-metric="co">CO (MQ-9)</button>
+                <button class="chip-btn" data-metric="motion">Motion</button>
+                <button class="chip-btn" data-metric="battery">Battery</button>
+              </div>
+              <div class="trend-canvas-wrap">
+                <svg viewBox="0 0 380 110" class="trend-svg-full" preserveAspectRatio="none">
+                  <line x1="28" y1="12" x2="375" y2="12" stroke="#f1f5f9" stroke-width="1"></line>
+                  <line x1="28" y1="50" x2="375" y2="50" stroke="#f1f5f9" stroke-width="1"></line>
+                  <line x1="28" y1="88" x2="375" y2="88" stroke="#f1f5f9" stroke-width="1"></line>
+                  <text x="5" y="16" class="trend-axis-num" id="yMax">140</text>
+                  <text x="5" y="54" class="trend-axis-num" id="yMid">100</text>
+                  <text x="10" y="92" class="trend-axis-num" id="yMin">60</text>
+                  <line x1="28" y1="50" x2="375" y2="50" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4 4"></line>
+                  <defs>
+                    <linearGradient id="trendFillGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#f87171" stop-opacity="0.3"></stop>
+                      <stop offset="50%" stop-color="#34d399" stop-opacity="0.15"></stop>
+                      <stop offset="100%" stop-color="#34d399" stop-opacity="0.0"></stop>
+                    </linearGradient>
+                  </defs>
+                  <path id="trendSvgArea" d="M28,88 Q70,76 110,84 T190,72 T260,80 T330,54 T375,44 L375,96 L28,96 Z" fill="url(#trendFillGrad)"></path>
+                  <path id="trendSvgLine" d="M28,88 Q70,76 110,84 T190,72 T260,80 T330,54 T375,44" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round"></path>
+                  <g transform="translate(325, 3)">
+                    <rect width="44" height="22" rx="4" fill="#ef4444"></rect>
+                    <text x="22" y="9" fill="#ffffff" font-size="6.5" font-weight="bold" text-anchor="middle">100 BPM</text>
+                    <text x="22" y="17" fill="#fee2e2" font-size="5.5" text-anchor="middle">10:20 PM</text>
+                  </g>
+                </svg>
+              </div>
+              <div class="trend-time-axis">
+                <span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span>
+              </div>
+            </div>
+
+            <!-- 2. Recent Events Card -->
+            <div class="card-white">
+              <div class="card-title-line">
+                <span class="title-tag-group">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                  Recent Events
+                </span>
+                <a href="#" class="map-link-btn" id="btnViewAllEvents">View All</a>
+              </div>
+              <div class="events-table-list">
+                <div class="event-row-item">
+                  <div class="event-row-left">
+                    <span class="event-time-tag">10:20 PM</span>
+                    <span class="dot-yellow">●</span>
+                    <span class="event-desc-text">Heart rate elevated (100 BPM)</span>
+                  </div>
+                  <span class="sys-badge-micro pill-caution">Caution</span>
+                </div>
+                <div class="event-row-item">
+                  <div class="event-row-left">
+                    <span class="event-time-tag">09:38 PM</span>
+                    <span class="dot-green">●</span>
+                    <span class="event-desc-text">Telemetry received</span>
+                  </div>
+                  <span class="sys-badge-micro pill-normal">Normal</span>
+                </div>
+                <div class="event-row-item">
+                  <div class="event-row-left">
+                    <span class="event-time-tag">09:30 PM</span>
+                    <span class="dot-green">●</span>
+                    <span class="event-desc-text">Sensor checks passed</span>
+                  </div>
+                  <span class="sys-badge-micro pill-normal">Normal</span>
+                </div>
+                <div class="event-row-item">
+                  <div class="event-row-left">
+                    <span class="event-time-tag">08:15 PM</span>
+                    <span class="dot-green" style="color:#0284c7">●</span>
+                    <span class="event-desc-text">Entered Plant Area 1</span>
+                  </div>
+                  <span class="sys-badge-micro pill-info">Info</span>
+                </div>
+                <div class="event-row-item">
+                  <div class="event-row-left">
+                    <span class="event-time-tag">07:42 PM</span>
+                    <span class="dot-green">●</span>
+                    <span class="event-desc-text">Battery level 84 %</span>
+                  </div>
                   <span class="sys-badge-micro pill-normal">Normal</span>
                 </div>
               </div>
-
-              <div class="sys-widget-item">
-                <div class="sys-icon-circle icon-bg-sky">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
-                </div>
-                <div class="sys-meta-text">
-                  <span class="sys-label-dim">Network</span>
-                  <span class="sys-val-heavy">Stable</span>
-                  <span style="font-size:9.5px; color:#64748b;">No packet loss</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Row 2: Live Sensor Telemetry (6 Cards) + AI Risk Analysis -->
-        <section class="row-sensors-ai">
-          <!-- Left: 6 Telemetry Cards -->
-          <div>
-            <div class="telemetry-block-head">
-              <h2 class="telemetry-title-h2">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                Live Sensor Telemetry
-              </h2>
-              <div class="telemetry-stamp-wrap">
-                <span>Last updated: <span id="telemetryTimeStr">10:20:02 PM</span></span>
-                <select class="realtime-pill-btn" id="streamRateSelect">
-                  <option value="realtime">Real-time ▾</option>
-                  <option value="5s">5s Polling</option>
-                  <option value="pause">Pause</option>
-                </select>
-              </div>
             </div>
 
-            <div class="telemetry-cards-6">
-              <!-- 1. Heart Rate -->
-              <div class="sensor-box">
-                <div class="sensor-box-top">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="#ef4444"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                  <span class="sensor-name-lbl">Heart Rate</span>
-                </div>
-                <div class="sensor-value-bold-row">
-                  <span class="sensor-big-number" id="cardValHR">100</span>
-                  <span class="sensor-unit-lbl">BPM</span>
-                </div>
-                <span class="sensor-pill-status pill-status-elevated" id="cardBadgeHR">Elevated</span>
-                <svg class="sensor-spark-svg" viewBox="0 0 100 24" preserveAspectRatio="none">
-                  <path id="sparklineHR" d="M0,18 Q15,4 30,16 T60,8 T80,18 T100,10" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round"></path>
-                </svg>
-                <div class="sensor-normal-guide">Normal: 60 – 100</div>
+            <!-- 3. Reports & Sharing Card -->
+            <div class="card-white">
+              <div class="card-title-line">
+                <span class="title-tag-group">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                  Reports &amp; Sharing
+                </span>
               </div>
-
-              <!-- 2. SpO2 -->
-              <div class="sensor-box">
-                <div class="sensor-box-top">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="#0284c7"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
-                  <span class="sensor-name-lbl">SpO₂</span>
-                </div>
-                <div class="sensor-value-bold-row">
-                  <span class="sensor-big-number" id="cardValSpO2">96</span>
-                  <span class="sensor-unit-lbl">%</span>
-                </div>
-                <span class="sensor-pill-status pill-status-normal" id="cardBadgeSpO2">Normal</span>
-                <svg class="sensor-spark-svg" viewBox="0 0 100 24" preserveAspectRatio="none">
-                  <path id="sparklineSpO2" d="M0,12 Q20,18 40,10 T70,16 T100,8" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"></path>
-                </svg>
-                <div class="sensor-normal-guide">Normal: 95 – 100</div>
-              </div>
-
-              <!-- 3. Skin Temp -->
-              <div class="sensor-box">
-                <div class="sensor-box-top">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f97316" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
-                  <span class="sensor-name-lbl">Skin Temp.</span>
-                </div>
-                <div class="sensor-value-bold-row">
-                  <span class="sensor-big-number" id="cardValTemp">37.1</span>
-                  <span class="sensor-unit-lbl">°C</span>
-                </div>
-                <span class="sensor-pill-status pill-status-normal" id="cardBadgeTemp">Normal</span>
-                <svg class="sensor-spark-svg" viewBox="0 0 100 24" preserveAspectRatio="none">
-                  <path id="sparklineTemp" d="M0,14 Q25,8 50,14 T80,10 T100,12" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"></path>
-                </svg>
-                <div class="sensor-normal-guide">Normal: 35.5 – 37.5</div>
-              </div>
-
-              <!-- 4. CO Exposure -->
-              <div class="sensor-box">
-                <div class="sensor-box-top">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="#0284c7"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
-                  <span class="sensor-name-lbl">CO Exposure</span>
-                </div>
-                <div class="sensor-value-bold-row">
-                  <span class="sensor-big-number" id="cardValCO">169</span>
-                  <span class="sensor-unit-lbl">PPM</span>
-                </div>
-                <span class="sensor-pill-status pill-status-normal" id="cardBadgeCO">Normal</span>
-                <svg class="sensor-spark-svg" viewBox="0 0 100 24" preserveAspectRatio="none">
-                  <path id="sparklineCO" d="M0,16 Q20,10 40,18 T70,8 T90,14 T100,6" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"></path>
-                </svg>
-                <div class="sensor-normal-guide">Normal: 0 – 200</div>
-              </div>
-
-              <!-- 5. Motion / Fall -->
-              <div class="sensor-box">
-                <div class="sensor-box-top">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#0284c7" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                  <span class="sensor-name-lbl">Motion / Fall</span>
-                </div>
-                <div class="sensor-value-bold-row">
-                  <span class="sensor-big-number" style="font-size:15px;" id="cardValMotion">Low activity</span>
-                </div>
-                <span class="sensor-pill-status pill-status-live" id="cardBadgeMotion">Live</span>
-                <svg class="sensor-spark-svg" viewBox="0 0 100 24">
-                  <rect x="5" y="12" width="4" height="12" rx="2" fill="#38bdf8"></rect>
-                  <rect x="15" y="8" width="4" height="16" rx="2" fill="#38bdf8"></rect>
-                  <rect x="25" y="14" width="4" height="10" rx="2" fill="#38bdf8"></rect>
-                  <rect x="35" y="6" width="4" height="18" rx="2" fill="#38bdf8"></rect>
-                  <rect x="45" y="15" width="4" height="9" rx="2" fill="#38bdf8"></rect>
-                  <rect x="55" y="4" width="4" height="20" rx="2" fill="#38bdf8"></rect>
-                  <rect x="65" y="10" width="4" height="14" rx="2" fill="#38bdf8"></rect>
-                  <rect x="75" y="16" width="4" height="8" rx="2" fill="#38bdf8"></rect>
-                  <rect x="85" y="7" width="4" height="17" rx="2" fill="#38bdf8"></rect>
-                </svg>
-                <div class="sensor-normal-guide">Normal: Moderate</div>
-              </div>
-
-              <!-- 6. Battery -->
-              <div class="sensor-box">
-                <div class="sensor-box-top">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#10b981" stroke-width="2"><rect x="1" y="6" width="18" height="12" rx="2"></rect><line x1="23" y1="11" x2="23" y2="13"></line></svg>
-                  <span class="sensor-name-lbl">Battery</span>
-                </div>
-                <div class="sensor-value-bold-row">
-                  <span class="sensor-big-number" id="cardValBattery">84</span>
-                  <span class="sensor-unit-lbl">%</span>
-                </div>
-                <span class="sensor-pill-status pill-status-normal" id="cardBadgeBattery">Good</span>
-                <svg class="sensor-spark-svg" viewBox="0 0 100 24" preserveAspectRatio="none">
-                  <path d="M0,18 C30,18 70,14 100,10" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"></path>
-                </svg>
-                <div class="sensor-normal-guide">Normal: > 20 %</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right: AI Risk Analysis Card -->
-          <div class="card-white ai-risk-card">
-            <div class="card-title-line">
-              <span class="ai-header-tag">
-                <span class="ai-purple-circle">AI</span>
-                AI Risk Analysis
-              </span>
-            </div>
-
-            <div class="ai-bars-vertical-list">
-              <div class="ai-bar-line">
-                <span>Heart rate</span>
-                <div class="ai-track-bg">
-                  <div class="ai-bar-orange" id="barHR" style="width: 25%;"></div>
-                </div>
-                <strong id="wHR">+4</strong>
-              </div>
-
-              <div class="ai-bar-line">
-                <span>SpO₂</span>
-                <div class="ai-track-bg">
-                  <div class="ai-bar-neutral" id="barSpO2" style="width: 0%;"></div>
-                </div>
-                <strong id="wSpO2">+0</strong>
-              </div>
-
-              <div class="ai-bar-line">
-                <span>CO exposure</span>
-                <div class="ai-track-bg">
-                  <div class="ai-bar-orange" id="barCO" style="width: 30%;"></div>
-                </div>
-                <strong id="wCO">+5</strong>
-              </div>
-
-              <div class="ai-bar-line">
-                <span>Temperature</span>
-                <div class="ai-track-bg">
-                  <div class="ai-bar-orange" id="barTemp" style="width: 10%;"></div>
-                </div>
-                <strong id="wTemp">+1</strong>
-              </div>
-
-              <div class="ai-bar-line">
-                <span>Motion / fatigue</span>
-                <div class="ai-track-bg">
-                  <div class="ai-bar-red" id="barMotion" style="width: 60%;"></div>
-                </div>
-                <strong id="wMotion">+12</strong>
-              </div>
-            </div>
-
-            <!-- Elevated attention Callout Box -->
-            <div class="ai-alert-callout-box">
-              <div class="ai-alert-icon">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              </div>
-              <div class="ai-callout-text">
-                <h4 id="fatigueHeadline">Elevated attention</h4>
-                <p id="fatigueDetail">Heart rate remains above baseline while movement recovery is low.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Row 3: 24-Hour Trends + Recent Events + Reports & Sharing -->
-        <section class="row-bottom-trio">
-          <!-- 1. 24-Hour Trends Card -->
-          <div class="card-white">
-            <div class="card-title-line">
-              <span class="title-tag-group">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
-                24-Hour Trends
-              </span>
-            </div>
-
-            <!-- Metric Filter Chips -->
-            <div class="trend-filter-chips">
-              <button class="chip-btn active" data-metric="hr">Heart Rate</button>
-              <button class="chip-btn" data-metric="spo2">SpO₂</button>
-              <button class="chip-btn" data-metric="temp">Temperature</button>
-              <button class="chip-btn" data-metric="co">CO (MQ-9)</button>
-              <button class="chip-btn" data-metric="motion">Motion</button>
-              <button class="chip-btn" data-metric="battery">Battery</button>
-            </div>
-
-            <div class="trend-canvas-wrap">
-              <svg viewBox="0 0 380 150" class="trend-svg-full" preserveAspectRatio="none">
-                <line x1="28" y1="20" x2="375" y2="20" stroke="#f1f5f9" stroke-width="1"></line>
-                <line x1="28" y1="65" x2="375" y2="65" stroke="#f1f5f9" stroke-width="1"></line>
-                <line x1="28" y1="110" x2="375" y2="110" stroke="#f1f5f9" stroke-width="1"></line>
-
-                <text x="5" y="24" class="trend-axis-num" id="yMax">140</text>
-                <text x="5" y="69" class="trend-axis-num" id="yMid">100</text>
-                <text x="10" y="114" class="trend-axis-num" id="yMin">60</text>
-
-                <!-- Red Dashed Threshold Line at 100 -->
-                <line x1="28" y1="65" x2="375" y2="65" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4 4"></line>
-
-                <defs>
-                  <linearGradient id="trendFillGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#f87171" stop-opacity="0.3"></stop>
-                    <stop offset="50%" stop-color="#34d399" stop-opacity="0.15"></stop>
-                    <stop offset="100%" stop-color="#34d399" stop-opacity="0.0"></stop>
-                  </linearGradient>
-                </defs>
-
-                <path id="trendSvgArea" d="M28,110 Q70,95 110,105 T190,90 T260,100 T330,70 T375,55 L375,120 L28,120 Z" fill="url(#trendFillGrad)"></path>
-                <path id="trendSvgLine" d="M28,110 Q70,95 110,105 T190,90 T260,100 T330,70 T375,55" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"></path>
-
-                <!-- Tooltip Badge at 100 BPM / 10:20 PM -->
-                <g transform="translate(325, 10)">
-                  <rect width="50" height="28" rx="4" fill="#ef4444"></rect>
-                  <text x="25" y="12" fill="#ffffff" font-size="8" font-weight="bold" text-anchor="middle">100 BPM</text>
-                  <text x="25" y="22" fill="#fee2e2" font-size="7" text-anchor="middle">10:20 PM</text>
-                </g>
-              </svg>
-
-              <div class="trend-time-axis">
-                <span>00:00</span>
-                <span>04:00</span>
-                <span>08:00</span>
-                <span>12:00</span>
-                <span>16:00</span>
-                <span>20:00</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2. Recent Events Card -->
-          <div class="card-white">
-            <div class="card-title-line">
-              <span class="title-tag-group">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                Recent Events
-              </span>
-              <a href="#" class="map-link-btn" id="btnViewAllEvents">View All</a>
-            </div>
-
-            <div class="events-table-list">
-              <div class="event-row-item">
-                <div class="event-row-left">
-                  <span class="event-time-tag">10:20 PM</span>
-                  <span class="dot-yellow">●</span>
-                  <span class="event-desc-text">Heart rate elevated (100 BPM)</span>
-                </div>
-                <span class="sys-badge-micro pill-caution">Caution</span>
-              </div>
-
-              <div class="event-row-item">
-                <div class="event-row-left">
-                  <span class="event-time-tag">09:38 PM</span>
-                  <span class="dot-green">●</span>
-                  <span class="event-desc-text">Telemetry received</span>
-                </div>
-                <span class="sys-badge-micro pill-normal">Normal</span>
-              </div>
-
-              <div class="event-row-item">
-                <div class="event-row-left">
-                  <span class="event-time-tag">09:30 PM</span>
-                  <span class="dot-green">●</span>
-                  <span class="event-desc-text">Sensor checks passed</span>
-                </div>
-                <span class="sys-badge-micro pill-normal">Normal</span>
-              </div>
-
-              <div class="event-row-item">
-                <div class="event-row-left">
-                  <span class="event-time-tag">08:15 PM</span>
-                  <span class="dot-green" style="color:#0284c7">●</span>
-                  <span class="event-desc-text">Entered Plant Area 1</span>
-                </div>
-                <span class="sys-badge-micro pill-info">Info</span>
-              </div>
-
-              <div class="event-row-item">
-                <div class="event-row-left">
-                  <span class="event-time-tag">07:42 PM</span>
-                  <span class="dot-green">●</span>
-                  <span class="event-desc-text">Battery level 84 %</span>
-                </div>
-                <span class="sys-badge-micro pill-normal">Normal</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. Reports & Sharing Card -->
-          <div class="card-white">
-            <div class="card-title-line">
-              <span class="title-tag-group">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
-                Reports & Sharing
-              </span>
-            </div>
-
-            <div class="sharing-dual-cards">
-              <!-- Action 1: Send Worker Report -->
-              <div class="report-action-panel">
-                <div class="report-panel-left">
-                  <div class="panel-icon-wrap panel-purple-theme">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              <div class="sharing-dual-cards">
+                <div class="report-action-panel">
+                  <div class="report-panel-left">
+                    <div class="panel-icon-wrap panel-purple-theme">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    </div>
+                    <div class="panel-titles">
+                      <span class="panel-head">Send Worker Report</span>
+                      <span class="panel-desc">Generate and share a detailed safety report for this worker.</span>
+                    </div>
                   </div>
-                  <div class="panel-titles">
-                    <span class="panel-head">Send Worker Report</span>
-                    <span class="panel-desc">Generate and share a detailed safety report for this worker.</span>
+                  <div class="panel-buttons-group">
+                    <button class="btn-preview-outline" id="btnPreviewWorkerReport">Preview</button>
+                    <button class="btn-send-solid btn-purple-bg" id="btnSubmitWorkerReport">Send Report →</button>
                   </div>
                 </div>
-                <div class="panel-buttons-group">
-                  <button class="btn-preview-outline" id="btnPreviewWorkerReport">Preview</button>
-                  <button class="btn-send-solid btn-purple-bg" id="btnSubmitWorkerReport">Send Report →</button>
+                <div class="report-action-panel">
+                  <div class="report-panel-left">
+                    <div class="panel-icon-wrap panel-blue-theme">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <div class="panel-titles">
+                      <span class="panel-head">Send to Insurance Company</span>
+                      <span class="panel-desc">Share verified incident/safety report with authorized insurer.</span>
+                    </div>
+                  </div>
+                  <div class="panel-buttons-group">
+                    <button class="btn-preview-outline" id="btnPreviewInsurance">Preview</button>
+                    <button class="btn-send-solid btn-blue-bg" id="btnSubmitInsurance">Send to Insurer →</button>
+                  </div>
                 </div>
               </div>
-
-              <!-- Action 2: Send to Insurance Company -->
-              <div class="report-action-panel">
-                <div class="report-panel-left">
-                  <div class="panel-icon-wrap panel-blue-theme">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                  </div>
-                  <div class="panel-titles">
-                    <span class="panel-head">Send to Insurance Company</span>
-                    <span class="panel-desc">Share verified incident/safety report with authorized insurer.</span>
-                  </div>
-                </div>
-                <div class="panel-buttons-group">
-                  <button class="btn-preview-outline" id="btnPreviewInsurance">Preview</button>
-                  <button class="btn-send-solid btn-blue-bg" id="btnSubmitInsurance">Send to Insurer →</button>
-                </div>
+              <div class="quick-report-actions-trio">
+                <button class="quick-action-btn" id="btnQuickPdf">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="#ef4444"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+                  <div class="quick-action-meta"><strong>Download PDF</strong><span>Complete report</span></div>
+                </button>
+                <button class="quick-action-btn" id="btnQuickEmail">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#0284c7" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                  <div class="quick-action-meta"><strong>Email Report</strong><span>Custom recipients</span></div>
+                </button>
+                <button class="quick-action-btn" id="btnQuickSchedule">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#0d9488" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                  <div class="quick-action-meta"><strong>Schedule Reports</strong><span>Automatic sharing</span></div>
+                </button>
               </div>
             </div>
+          </section>
+        </main>
+      </div>
 
-            <!-- 3 Quick Action Buttons -->
-            <div class="quick-report-actions-trio">
-              <button class="quick-action-btn" id="btnQuickPdf">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#ef4444"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
-                <div class="quick-action-meta">
-                  <strong>Download PDF</strong>
-                  <span>Complete report</span>
-                </div>
-              </button>
+      <!-- ============================================================= -->
+      <!-- PAGE: Workers -->
+      <!-- ============================================================= -->
+      <div class="page-view" id="page-workers">
+        <div class="secondary-page-content">
+          <h2>👷 Worker Fleet Overview</h2>
+          <table class="workers-table">
+            <thead>
+              <tr>
+                <th>Device ID</th>
+                <th>Worker Name</th>
+                <th>Sector</th>
+                <th>Heart Rate</th>
+                <th>SpO₂</th>
+                <th>CO (PPM)</th>
+                <th>Risk Score</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="workersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
 
-              <button class="quick-action-btn" id="btnQuickEmail">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#0284c7" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-                <div class="quick-action-meta">
-                  <strong>Email Report</strong>
-                  <span>Custom recipients</span>
-                </div>
-              </button>
+      <!-- ============================================================= -->
+      <!-- PAGE: Live Map -->
+      <!-- ============================================================= -->
+      <div class="page-view" id="page-livemap">
+        <div class="secondary-page-content" style="display:flex; flex-direction:column;">
+          <h2>🗺️ Live Worker Locations — Industrial Plant Map</h2>
+          <div class="fullmap-wrap">
+            <div id="fullLeafletMap"></div>
+          </div>
+        </div>
+      </div>
 
-              <button class="quick-action-btn" id="btnQuickSchedule">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#0d9488" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                <div class="quick-action-meta">
-                  <strong>Schedule Reports</strong>
-                  <span>Automatic sharing</span>
-                </div>
-              </button>
+      <!-- ============================================================= -->
+      <!-- PAGE: Alerts -->
+      <!-- ============================================================= -->
+      <div class="page-view" id="page-alerts">
+        <div class="secondary-page-content">
+          <h2>🚨 Active Safety Alerts</h2>
+          <div class="alert-card-item">
+            <div class="alert-icon-wrap alert-icon-yellow">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            </div>
+            <div class="alert-meta">
+              <h4>Elevated Heart Rate — R. Kumar (VG-014)</h4>
+              <p>Heart rate reached 100 BPM, above resting baseline of 72–92 BPM. Worker in Sector B (Boiler Plant Area 1). Fatigue index rising; movement recovery below normal threshold.</p>
+              <div class="alert-ts">10:20 PM • Sector B • Day Shift</div>
             </div>
           </div>
-        </section>
-      </main>
-    </div>
-  </div>
+          <div class="alert-card-item">
+            <div class="alert-icon-wrap alert-icon-yellow">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            </div>
+            <div class="alert-meta">
+              <h4>Inactivity During High Temperature Exposure</h4>
+              <p>Worker VG-014 showed reduced physical activity while ambient temperature reading exceeded comfortable threshold. Possible early-stage heat stress fatigue.</p>
+              <div class="alert-ts">09:35 PM • Sector B • Day Shift</div>
+            </div>
+          </div>
+          <div style="margin-top:14px; padding:10px 14px; background:#f0fdf4; border:1px solid #d1fae5; border-radius:8px; font-size:11.5px; color:#065f46;">
+            <strong>✅ No critical red-level alerts.</strong> All workers are operating within safe threshold ranges. Edge AI continuous sensor fusion active.
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- PAGE: Reports -->
+      <!-- ============================================================= -->
+      <div class="page-view" id="page-reports">
+        <div class="secondary-page-content">
+          <h2>📊 Shift Reports & Safety Dossiers</h2>
+          <div class="analytics-grid">
+            <div class="analytics-card">
+              <h3>📋 Today's Shift Summary</h3>
+              <div style="font-size:11.5px; line-height:1.75; color:#475569;">
+                <div><strong>Shift:</strong> Day (06:00 – 18:00)</div>
+                <div><strong>Workers Monitored:</strong> 12</div>
+                <div><strong>Total Telemetry Packets:</strong> 8,426</div>
+                <div><strong>Average Risk Score:</strong> 28 / 100 (Safe)</div>
+                <div><strong>Peak HR Event:</strong> R. Kumar at 100 BPM (10:20 PM)</div>
+                <div><strong>CO Exposure:</strong> All workers below 200 PPM TWA-8h limit</div>
+                <div><strong>SOS Triggers:</strong> 0</div>
+                <div><strong>Fall Detections:</strong> 0</div>
+              </div>
+            </div>
+            <div class="analytics-card">
+              <h3>📑 Recent Generated Reports</h3>
+              <div style="font-size:11.5px; line-height:1.9; color:#475569;">
+                <div>📄 VG-014_R_Kumar_DailyAudit.pdf — <span style="color:#10b981; font-weight:700;">Generated</span></div>
+                <div>📄 VG-023_S_Patel_ThermalStress.pdf — <span style="color:#10b981; font-weight:700;">Generated</span></div>
+                <div>📄 VG-007_A_Sharma_ClearShift.pdf — <span style="color:#10b981; font-weight:700;">Generated</span></div>
+                <div>📄 Plant_Weekly_Summary_W42.pdf — <span style="color:#f59e0b; font-weight:700;">Pending</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- PAGE: Analytics -->
+      <!-- ============================================================= -->
+      <div class="page-view" id="page-analytics">
+        <div class="secondary-page-content">
+          <h2>📈 Safety Analytics Dashboard</h2>
+          <div class="analytics-grid">
+            <div class="analytics-card">
+              <h3>Risk Score Distribution (Today)</h3>
+              <div class="analytics-bar-group">
+                <div class="analytics-bar-row"><span>0–25 Safe</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:75%; background:#10b981;"></div></div><span>9</span></div>
+                <div class="analytics-bar-row"><span>26–50 Low</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:16%; background:#f59e0b;"></div></div><span>2</span></div>
+                <div class="analytics-bar-row"><span>51–75 Elevated</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:8%; background:#f97316;"></div></div><span>1</span></div>
+                <div class="analytics-bar-row"><span>76–100 Critical</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:0%; background:#ef4444;"></div></div><span>0</span></div>
+              </div>
+            </div>
+            <div class="analytics-card">
+              <h3>Sensor Alert Frequency (Last 7 Days)</h3>
+              <div class="analytics-bar-group">
+                <div class="analytics-bar-row"><span>Heart Rate</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:45%; background:#ef4444;"></div></div><span>14</span></div>
+                <div class="analytics-bar-row"><span>CO / Gas</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:30%; background:#f97316;"></div></div><span>9</span></div>
+                <div class="analytics-bar-row"><span>Temperature</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:20%; background:#f59e0b;"></div></div><span>6</span></div>
+                <div class="analytics-bar-row"><span>SpO₂</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:10%; background:#0284c7;"></div></div><span>3</span></div>
+                <div class="analytics-bar-row"><span>Fall / Motion</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:5%; background:#8b5cf6;"></div></div><span>1</span></div>
+              </div>
+            </div>
+            <div class="analytics-card">
+              <h3>LoRa Network Statistics</h3>
+              <div style="font-size:11.5px; line-height:1.75; color:#475569;">
+                <div><strong>Uptime:</strong> 99.97%</div>
+                <div><strong>Avg RSSI:</strong> -63 dBm</div>
+                <div><strong>Packets Delivered:</strong> 41,204 / 41,208</div>
+                <div><strong>Packet Loss:</strong> 0.01%</div>
+                <div><strong>Max Range Achieved:</strong> 4.2 km (Sector D)</div>
+              </div>
+            </div>
+            <div class="analytics-card">
+              <h3>Worker Safety Score Ranking</h3>
+              <div class="analytics-bar-group">
+                <div class="analytics-bar-row"><span>A. Sharma</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:14%; background:#10b981;"></div></div><span>14</span></div>
+                <div class="analytics-bar-row"><span>R. Kumar</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:30%; background:#10b981;"></div></div><span>30</span></div>
+                <div class="analytics-bar-row"><span>S. Patel</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:68%; background:#f97316;"></div></div><span>68</span></div>
+                <div class="analytics-bar-row"><span>M. Singh</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:92%; background:#ef4444;"></div></div><span>92</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- PAGE: Insurance -->
+      <!-- ============================================================= -->
+      <div class="page-view" id="page-insurance">
+        <div class="secondary-page-content">
+          <h2>🛡️ Insurance & Compliance Portal</h2>
+          <div class="insurance-summary-grid">
+            <div class="insurance-stat-card">
+              <div class="stat-num" style="color:#10b981;">0</div>
+              <div class="stat-label">Loss-Time Incidents (This Month)</div>
+            </div>
+            <div class="insurance-stat-card">
+              <div class="stat-num" style="color:#0284c7;">41,204</div>
+              <div class="stat-label">Verified Telemetry Records</div>
+            </div>
+            <div class="insurance-stat-card">
+              <div class="stat-num" style="color:#10b981;">100%</div>
+              <div class="stat-label">OSHA Compliance Score</div>
+            </div>
+            <div class="insurance-stat-card">
+              <div class="stat-num" style="color:#f59e0b;">₹2.4L</div>
+              <div class="stat-label">Estimated Premium Savings</div>
+            </div>
+          </div>
+          <div style="margin-top:14px; padding:12px 16px; background:#eff6ff; border:1px solid #dbeafe; border-radius:8px; font-size:11.5px; color:#1e40af; line-height:1.55;">
+            <strong>ISO 45001 Certification Status:</strong> Active compliance achieved. All wearable telemetry packets include AES-128 LoRa authentication and are cryptographically sealed with SHA-256 hash for underwriting verification. Digital consent verified for all 12 monitored workers.
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- PAGE: Device Management -->
+      <!-- ============================================================= -->
+      <div class="page-view" id="page-devices">
+        <div class="secondary-page-content">
+          <h2>🔧 Device Management</h2>
+          <table class="device-table">
+            <thead>
+              <tr>
+                <th>Device ID</th>
+                <th>Assigned Worker</th>
+                <th>Firmware</th>
+                <th>Battery</th>
+                <th>RSSI</th>
+                <th>Last Ping</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="deviceTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- PAGE: Settings -->
+      <!-- ============================================================= -->
+      <div class="page-view" id="page-settings">
+        <div class="secondary-page-content">
+          <h2>⚙️ System Configuration</h2>
+          <div class="settings-group">
+            <h3>LoRa Network</h3>
+            <div class="setting-row"><span class="setting-label">Frequency Band</span><span class="setting-value">433 MHz ISM</span></div>
+            <div class="setting-row"><span class="setting-label">Spreading Factor</span><span class="setting-value">SF7 (Fast)</span></div>
+            <div class="setting-row"><span class="setting-label">TX Power</span><span class="setting-value">+20 dBm</span></div>
+            <div class="setting-row"><span class="setting-label">Coding Rate</span><span class="setting-value">4/5</span></div>
+          </div>
+          <div class="settings-group">
+            <h3>Alert Thresholds</h3>
+            <div class="setting-row"><span class="setting-label">Heart Rate (High)</span><span class="setting-value">&gt; 120 BPM</span></div>
+            <div class="setting-row"><span class="setting-label">SpO₂ (Low)</span><span class="setting-value">&lt; 94%</span></div>
+            <div class="setting-row"><span class="setting-label">Skin Temperature (High)</span><span class="setting-value">&gt; 38.5°C</span></div>
+            <div class="setting-row"><span class="setting-label">CO Exposure (Danger)</span><span class="setting-value">&gt; 200 PPM</span></div>
+            <div class="setting-row"><span class="setting-label">Fall Detection G-Force</span><span class="setting-value">&gt; 2.5g</span></div>
+          </div>
+          <div class="settings-group">
+            <h3>System Preferences</h3>
+            <div class="setting-row">
+              <span class="setting-label">Auto-refresh Telemetry</span>
+              <div class="toggle-switch active" id="toggleAutoRefresh"></div>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Sound Notifications</span>
+              <div class="toggle-switch active" id="toggleSound"></div>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Dark Mode Sidebar</span>
+              <div class="toggle-switch active" id="toggleDarkSidebar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.main-viewport -->
+  </div><!-- /.command-layout -->
 
   <!-- Interactive Modal 1: Worker Safety Compliance Report -->
   <div class="modal-overlay" id="reportPreviewModal">
@@ -733,83 +873,49 @@
       <div class="modal-head-row">
         <div>
           <h3>Worker Safety & Shift Health Dossier</h3>
-          <span style="font-size:11px; color:#64748b;">Shift ID: VG-AUDIT-2026-X014 • Sector B Day Shift</span>
+          <span style="font-size:10px; color:#64748b;">Shift ID: VG-AUDIT-2026-X014 • Sector B Day Shift</span>
         </div>
         <button class="modal-close-cross" id="closeReportModalBtn">&times;</button>
       </div>
-
       <div class="modal-inner-body">
-        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:8px;">
+        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; background:#f8fafc; border:1px solid #e2e8f0; padding:10px; border-radius:8px;">
           <div>
-            <span style="font-size:10px; color:#94a3b8; font-weight:700; text-transform:uppercase;">Worker</span>
-            <div style="font-size:14px; font-weight:800; color:#0f172a;" id="modalWorkerName">R. Kumar</div>
+            <span style="font-size:9px; color:#94a3b8; font-weight:700; text-transform:uppercase;">Worker</span>
+            <div style="font-size:13px; font-weight:800; color:#0f172a;" id="modalWorkerName">R. Kumar</div>
           </div>
           <div>
-            <span style="font-size:10px; color:#94a3b8; font-weight:700; text-transform:uppercase;">Device ID</span>
-            <div style="font-size:14px; font-weight:800; color:#0f172a;" id="modalDeviceId">VG-014</div>
+            <span style="font-size:9px; color:#94a3b8; font-weight:700; text-transform:uppercase;">Device ID</span>
+            <div style="font-size:13px; font-weight:800; color:#0f172a;" id="modalDeviceId">VG-014</div>
           </div>
           <div>
-            <span style="font-size:10px; color:#94a3b8; font-weight:700; text-transform:uppercase;">Risk State</span>
-            <div style="font-size:14px; font-weight:800; color:#059669;" id="modalRiskScore">30 / 100 (Safe)</div>
+            <span style="font-size:9px; color:#94a3b8; font-weight:700; text-transform:uppercase;">Risk State</span>
+            <div style="font-size:13px; font-weight:800; color:#059669;" id="modalRiskScore">30 / 100 (Safe)</div>
           </div>
           <div>
-            <span style="font-size:10px; color:#94a3b8; font-weight:700; text-transform:uppercase;">CO TWA 8h</span>
-            <div style="font-size:14px; font-weight:800; color:#0f172a;" id="modalCOExposure">169 PPM (Safe)</div>
+            <span style="font-size:9px; color:#94a3b8; font-weight:700; text-transform:uppercase;">CO TWA 8h</span>
+            <div style="font-size:13px; font-weight:800; color:#0f172a;" id="modalCOExposure">169 PPM (Safe)</div>
           </div>
         </div>
-
-        <h4 style="font-size:12px; font-weight:800; text-transform:uppercase; color:#334155;">Incident & Continuous Biometric Audit Log</h4>
-        <table style="width:100%; border-collapse:collapse; font-size:12px; border:1px solid #e2e8f0; border-radius:6px; overflow:hidden;">
+        <h4 style="font-size:11px; font-weight:800; text-transform:uppercase; color:#334155;">Incident & Continuous Biometric Audit Log</h4>
+        <table style="width:100%; border-collapse:collapse; font-size:11px; border:1px solid #e2e8f0; border-radius:6px; overflow:hidden;">
           <thead style="background:#f1f5f9; text-align:left;">
             <tr>
-              <th style="padding:8px 10px;">Time</th>
-              <th style="padding:8px 10px;">Heart Rate</th>
-              <th style="padding:8px 10px;">SpO₂</th>
-              <th style="padding:8px 10px;">Skin Temp</th>
-              <th style="padding:8px 10px;">Gas Reading</th>
-              <th style="padding:8px 10px;">Risk Status</th>
+              <th style="padding:6px 8px;">Time</th><th style="padding:6px 8px;">Heart Rate</th><th style="padding:6px 8px;">SpO₂</th><th style="padding:6px 8px;">Skin Temp</th><th style="padding:6px 8px;">Gas Reading</th><th style="padding:6px 8px;">Risk Status</th>
             </tr>
           </thead>
           <tbody id="modalAuditTableBody">
-            <tr>
-              <td style="padding:8px 10px; border-bottom:1px solid #f1f5f9;">10:20:00 PM</td>
-              <td style="padding:8px 10px; border-bottom:1px solid #f1f5f9; color:#ef4444; font-weight:700;">100 BPM</td>
-              <td style="padding:8px 10px; border-bottom:1px solid #f1f5f9;">96 %</td>
-              <td style="padding:8px 10px; border-bottom:1px solid #f1f5f9;">37.1 °C</td>
-              <td style="padding:8px 10px; border-bottom:1px solid #f1f5f9;">169 PPM</td>
-              <td style="padding:8px 10px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro pill-normal">SAFE (30)</span></td>
-            </tr>
-            <tr>
-              <td style="padding:8px 10px; border-bottom:1px solid #f1f5f9;">10:19:57 PM</td>
-              <td style="padding:8px 10px; border-bottom:1px solid #f1f5f9;">99 BPM</td>
-              <td style="padding:8px 10px; border-bottom:1px solid #f1f5f9;">96 %</td>
-              <td style="padding:8px 10px; border-bottom:1px solid #f1f5f9;">37.1 °C</td>
-              <td style="padding:8px 10px; border-bottom:1px solid #f1f5f9;">168 PPM</td>
-              <td style="padding:8px 10px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro pill-normal">SAFE (30)</span></td>
-            </tr>
-            <tr>
-              <td style="padding:8px 10px;">10:19:55 PM</td>
-              <td style="padding:8px 10px;">98 BPM</td>
-              <td style="padding:8px 10px;">97 %</td>
-              <td style="padding:8px 10px;">37.0 °C</td>
-              <td style="padding:8px 10px;">167 PPM</td>
-              <td style="padding:8px 10px;"><span class="sys-badge-micro pill-normal">SAFE (29)</span></td>
-            </tr>
+            <tr><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">10:20:00 PM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9; color:#ef4444; font-weight:700;">100 BPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">96 %</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">37.1 °C</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">169 PPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro pill-normal">SAFE (30)</span></td></tr>
+            <tr><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">10:19:57 PM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">99 BPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">96 %</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">37.1 °C</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">168 PPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro pill-normal">SAFE (30)</span></td></tr>
+            <tr><td style="padding:6px 8px;">10:19:55 PM</td><td style="padding:6px 8px;">98 BPM</td><td style="padding:6px 8px;">97 %</td><td style="padding:6px 8px;">37.0 °C</td><td style="padding:6px 8px;">167 PPM</td><td style="padding:6px 8px;"><span class="sys-badge-micro pill-normal">SAFE (29)</span></td></tr>
           </tbody>
         </table>
-
-        <div style="background:#f0fdf4; border-left:3px solid #10b981; padding:10px 12px; border-radius:4px; font-size:11px; color:#166534; line-height:1.4;">
+        <div style="background:#f0fdf4; border-left:3px solid #10b981; padding:8px 10px; border-radius:4px; font-size:10px; color:#166534; line-height:1.4;">
           <strong>Autonomous Field Certification:</strong> Data verified through AES-128 LoRa transmission. Conforms to OSHA Air Contaminants 1910.1000 and DGMS Worker Safety Guidelines.
         </div>
       </div>
-
       <div class="modal-foot-row">
-        <button class="btn-modal-action" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155;" onclick="window.print()">
-          Print / Save PDF
-        </button>
-        <button class="btn-modal-action" style="background:#0284c7; border:none; color:#ffffff;" id="btnDispatchReport">
-          Send Report to Dispatch
-        </button>
+        <button class="btn-modal-action" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155;" onclick="window.print()">Print / Save PDF</button>
+        <button class="btn-modal-action" style="background:#0284c7; border:none; color:#ffffff;" id="btnDispatchReport">Send Report to Dispatch</button>
       </div>
     </div>
   </div>
@@ -820,50 +926,33 @@
       <div class="modal-head-row">
         <div>
           <h3>Worker's Compensation & Underwriting Incident Audit</h3>
-          <span style="font-size:11px; color:#64748b;">Carrier Audit Docket: INS-VG-2026-90412 • Insured Entity: Heavy Industry Plant #4</span>
+          <span style="font-size:10px; color:#64748b;">Carrier Audit Docket: INS-VG-2026-90412 • Insured Entity: Heavy Industry Plant #4</span>
         </div>
         <button class="modal-close-cross" id="closeInsuranceModalBtn">&times;</button>
       </div>
-
       <div class="modal-inner-body">
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:14px; border-radius:8px; display:grid; grid-template-columns: repeat(4, 1fr); gap:10px;">
-          <div>
-            <span style="font-size:10px; color:#94a3b8; font-weight:700;">Worker Consent</span>
-            <div style="font-size:13px; font-weight:800; color:#059669;">Verified (Signed)</div>
-          </div>
-          <div>
-            <span style="font-size:10px; color:#94a3b8; font-weight:700;">Incident Status</span>
-            <div style="font-size:13px; font-weight:800; color:#0284c7;">Zero Loss-Time</div>
-          </div>
-          <div>
-            <span style="font-size:10px; color:#94a3b8; font-weight:700;">Exposure Hours</span>
-            <div style="font-size:13px; font-weight:800; color:#0f172a;">4.2h / Within Limits</div>
-          </div>
-          <div>
-            <span style="font-size:10px; color:#94a3b8; font-weight:700;">LoRa Auth Hash</span>
-            <div style="font-size:11px; font-family:var(--font-mono); color:#475569;">0x7F2A...9C14</div>
-          </div>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:8px; display:grid; grid-template-columns: repeat(4, 1fr); gap:10px;">
+          <div><span style="font-size:9px; color:#94a3b8; font-weight:700;">Worker Consent</span><div style="font-size:12px; font-weight:800; color:#059669;">Verified (Signed)</div></div>
+          <div><span style="font-size:9px; color:#94a3b8; font-weight:700;">Incident Status</span><div style="font-size:12px; font-weight:800; color:#0284c7;">Zero Loss-Time</div></div>
+          <div><span style="font-size:9px; color:#94a3b8; font-weight:700;">Exposure Hours</span><div style="font-size:12px; font-weight:800; color:#0f172a;">4.2h / Within Limits</div></div>
+          <div><span style="font-size:9px; color:#94a3b8; font-weight:700;">LoRa Auth Hash</span><div style="font-size:10px; font-family:var(--font-mono); color:#475569;">0x7F2A...9C14</div></div>
         </div>
-
-        <div style="background:#eff6ff; border-left:3px solid #3b82f6; padding:10px 12px; border-radius:4px; font-size:11px; color:#1e40af; line-height:1.4;">
+        <div style="background:#eff6ff; border-left:3px solid #3b82f6; padding:8px 10px; border-radius:4px; font-size:10px; color:#1e40af; line-height:1.4;">
           <strong>Consent-Based Telemetry Sharing Notice:</strong> Under ISO 45001 and Worker Compensation Board protocols, telemetry is shared exclusively for occupational risk assessment, premium underwriting credits, and incident mitigation verification.
         </div>
       </div>
-
       <div class="modal-foot-row">
-        <button class="btn-modal-action" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155;" onclick="window.print()">
-          Print Insurance Dossier
-        </button>
-        <button class="btn-modal-action" style="background:#2563eb; border:none; color:#ffffff;" id="btnConfirmSendInsurer">
-          Transmit to Insurer Portal
-        </button>
+        <button class="btn-modal-action" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155;" onclick="window.print()">Print Insurance Dossier</button>
+        <button class="btn-modal-action" style="background:#2563eb; border:none; color:#ffffff;" id="btnConfirmSendInsurer">Transmit to Insurer Portal</button>
       </div>
     </div>
   </div>
 
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <!-- Scripts -->
-  <script src="dashboard/js/telemetryMock.js"></script>
-  <script src="dashboard/js/riskEngine.js"></script>
-  <script src="dashboard/js/app.js"></script>
+  <script src="js/telemetryMock.js"></script>
+  <script src="js/riskEngine.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
