@@ -407,6 +407,14 @@ document.addEventListener('DOMContentLoaded', () => {
     heroGaugeRing.style.stroke = worker.drs > 70 ? '#ef4444' : (worker.drs > 40 ? '#f59e0b' : '#10b981');
     heroDrsBadge.style.color = worker.drs > 70 ? '#ef4444' : (worker.drs > 40 ? '#f59e0b' : '#34d399');
 
+    // Hero card container alert highlighting
+    const heroCardElem = document.querySelector('.worker-hero-card');
+    if (heroCardElem) {
+      heroCardElem.classList.remove('hero-alert-critical', 'hero-alert-caution');
+      if (worker.drs >= 70) heroCardElem.classList.add('hero-alert-critical');
+      else if (worker.drs >= 40) heroCardElem.classList.add('hero-alert-caution');
+    }
+
     vHR.textContent = v.hr;
     vSpO2.textContent = v.spo2;
     vTemp.textContent = v.temp;
@@ -414,20 +422,154 @@ document.addEventListener('DOMContentLoaded', () => {
     vMotion.textContent = v.motion;
     vBattery.textContent = v.battery;
 
-    cardValHR.textContent = v.hr;
-    cardBadgeHR.textContent = v.hrBadge;
-    cardBadgeHR.className = `sensor-pill-status ${v.hrClass === 'badge-elevated-red' ? 'pill-status-elevated' : 'pill-status-normal'}`;
+    // Elements for dynamic hero vital tags and highlight boxes
+    const tagHR = document.getElementById('tagHR');
+    const tagSpO2 = document.getElementById('tagSpO2');
+    const tagTemp = document.getElementById('tagTemp');
+    const tagCO = document.getElementById('tagCO');
+    const tagMotion = document.getElementById('tagMotion');
+    const tagBattery = document.getElementById('tagBattery');
 
+    const itemHR = document.getElementById('itemHR');
+    const itemSpO2 = document.getElementById('itemSpO2');
+    const itemTemp = document.getElementById('itemTemp');
+    const itemCO = document.getElementById('itemCO');
+    const itemMotion = document.getElementById('itemMotion');
+    const itemBattery = document.getElementById('itemBattery');
+
+    const cardHR = document.getElementById('cardHR');
+    const cardSpO2 = document.getElementById('cardSpO2');
+    const cardTemp = document.getElementById('cardTemp');
+    const cardCO = document.getElementById('cardCO');
+    const cardMotion = document.getElementById('cardMotion');
+    const cardBattery = document.getElementById('cardBattery');
+
+    // 1. HR Status & Highlighting
+    if (v.hr > 120) {
+      if (tagHR) { tagHR.textContent = 'HIGH'; tagHR.className = 'v-tag tag-danger-pill'; }
+      if (itemHR) itemHR.className = 'hero-vital-item vital-highlight-danger';
+      if (cardHR) cardHR.className = 'sensor-box sensor-alert-danger';
+      cardBadgeHR.textContent = 'HIGH';
+      cardBadgeHR.className = 'sensor-pill-status pill-status-elevated';
+    } else if (v.hr >= 95) {
+      if (tagHR) { tagHR.textContent = 'ELEVATED'; tagHR.className = 'v-tag tag-elevated-pill'; }
+      if (itemHR) itemHR.className = 'hero-vital-item vital-highlight-elevated';
+      if (cardHR) cardHR.className = 'sensor-box sensor-alert-elevated';
+      cardBadgeHR.textContent = 'Elevated';
+      cardBadgeHR.className = 'sensor-pill-status pill-status-elevated';
+    } else {
+      if (tagHR) { tagHR.textContent = 'NORMAL'; tagHR.className = 'v-tag tag-normal-pill'; }
+      if (itemHR) itemHR.className = 'hero-vital-item';
+      if (cardHR) cardHR.className = 'sensor-box';
+      cardBadgeHR.textContent = 'Normal';
+      cardBadgeHR.className = 'sensor-pill-status pill-status-normal';
+    }
+
+    // 2. SpO2 Status & Highlighting
+    if (v.spo2 < 93) {
+      if (tagSpO2) { tagSpO2.textContent = 'CRITICAL'; tagSpO2.className = 'v-tag tag-danger-pill'; }
+      if (itemSpO2) itemSpO2.className = 'hero-vital-item vital-highlight-danger';
+      if (cardSpO2) cardSpO2.className = 'sensor-box sensor-alert-danger';
+      cardBadgeSpO2.textContent = 'Critical';
+      cardBadgeSpO2.className = 'sensor-pill-status pill-status-elevated';
+    } else if (v.spo2 < 95) {
+      if (tagSpO2) { tagSpO2.textContent = 'WATCH'; tagSpO2.className = 'v-tag tag-elevated-pill'; }
+      if (itemSpO2) itemSpO2.className = 'hero-vital-item vital-highlight-elevated';
+      if (cardSpO2) cardSpO2.className = 'sensor-box sensor-alert-elevated';
+      cardBadgeSpO2.textContent = 'Watch';
+      cardBadgeSpO2.className = 'sensor-pill-status pill-status-elevated';
+    } else {
+      if (tagSpO2) { tagSpO2.textContent = 'NORMAL'; tagSpO2.className = 'v-tag tag-normal-pill'; }
+      if (itemSpO2) itemSpO2.className = 'hero-vital-item';
+      if (cardSpO2) cardSpO2.className = 'sensor-box';
+      cardBadgeSpO2.textContent = 'Normal';
+      cardBadgeSpO2.className = 'sensor-pill-status pill-status-normal';
+    }
+
+    // 3. Skin Temp Status & Highlighting
+    if (v.temp > 38.0) {
+      if (tagTemp) { tagTemp.textContent = 'HIGH'; tagTemp.className = 'v-tag tag-danger-pill'; }
+      if (itemTemp) itemTemp.className = 'hero-vital-item vital-highlight-danger';
+      if (cardTemp) cardTemp.className = 'sensor-box sensor-alert-danger';
+      cardBadgeTemp.textContent = 'High';
+      cardBadgeTemp.className = 'sensor-pill-status pill-status-elevated';
+    } else if (v.temp > 37.5) {
+      if (tagTemp) { tagTemp.textContent = 'ELEVATED'; tagTemp.className = 'v-tag tag-elevated-pill'; }
+      if (itemTemp) itemTemp.className = 'hero-vital-item vital-highlight-elevated';
+      if (cardTemp) cardTemp.className = 'sensor-box sensor-alert-elevated';
+      cardBadgeTemp.textContent = 'Elevated';
+      cardBadgeTemp.className = 'sensor-pill-status pill-status-elevated';
+    } else {
+      if (tagTemp) { tagTemp.textContent = 'NORMAL'; tagTemp.className = 'v-tag tag-normal-pill'; }
+      if (itemTemp) itemTemp.className = 'hero-vital-item';
+      if (cardTemp) cardTemp.className = 'sensor-box';
+      cardBadgeTemp.textContent = 'Normal';
+      cardBadgeTemp.className = 'sensor-pill-status pill-status-normal';
+    }
+
+    // 4. CO Gas Status & Highlighting
+    if (v.gas > 200) {
+      if (tagCO) { tagCO.textContent = 'DANGER'; tagCO.className = 'v-tag tag-danger-pill'; }
+      if (itemCO) itemCO.className = 'hero-vital-item vital-highlight-danger';
+      if (cardCO) cardCO.className = 'sensor-box sensor-alert-danger';
+      cardBadgeCO.textContent = 'Danger';
+      cardBadgeCO.className = 'sensor-pill-status pill-status-elevated';
+    } else if (v.gas > 150) {
+      if (tagCO) { tagCO.textContent = 'MONITOR'; tagCO.className = 'v-tag tag-elevated-pill'; }
+      if (itemCO) itemCO.className = 'hero-vital-item vital-highlight-elevated';
+      if (cardCO) cardCO.className = 'sensor-box sensor-alert-elevated';
+      cardBadgeCO.textContent = 'Monitor';
+      cardBadgeCO.className = 'sensor-pill-status pill-status-elevated';
+    } else {
+      if (tagCO) { tagCO.textContent = 'NORMAL'; tagCO.className = 'v-tag tag-normal-pill'; }
+      if (itemCO) itemCO.className = 'hero-vital-item';
+      if (cardCO) cardCO.className = 'sensor-box';
+      cardBadgeCO.textContent = 'Normal';
+      cardBadgeCO.className = 'sensor-pill-status pill-status-normal';
+    }
+
+    // 5. Motion Status & Highlighting
+    if (v.motion.toLowerCase().includes('stumble') || v.motion.toLowerCase().includes('erratic') || v.motion.toLowerCase().includes('fall')) {
+      if (tagMotion) { tagMotion.textContent = 'ALERT'; tagMotion.className = 'v-tag tag-danger-pill'; }
+      if (itemMotion) itemMotion.className = 'hero-vital-item vital-highlight-danger';
+      if (cardMotion) cardMotion.className = 'sensor-box sensor-alert-danger';
+      cardBadgeMotion.textContent = 'Alert';
+      cardBadgeMotion.className = 'sensor-pill-status pill-status-elevated';
+    } else {
+      if (tagMotion) { tagMotion.textContent = 'LIVE'; tagMotion.className = 'v-tag tag-live-pill'; }
+      if (itemMotion) itemMotion.className = 'hero-vital-item';
+      if (cardMotion) cardMotion.className = 'sensor-box';
+      cardBadgeMotion.textContent = 'Live';
+      cardBadgeMotion.className = 'sensor-pill-status pill-status-live';
+    }
+
+    // 6. Battery Status & Highlighting
+    if (v.battery < 25) {
+      if (tagBattery) { tagBattery.textContent = 'LOW'; tagBattery.className = 'v-tag tag-danger-pill'; }
+      if (itemBattery) itemBattery.className = 'hero-vital-item vital-highlight-danger';
+      if (cardBattery) cardBattery.className = 'sensor-box sensor-alert-danger';
+      cardBadgeBattery.textContent = 'Low';
+      cardBadgeBattery.className = 'sensor-pill-status pill-status-elevated';
+    } else if (v.battery < 60) {
+      if (tagBattery) { tagBattery.textContent = 'FAIR'; tagBattery.className = 'v-tag tag-elevated-pill'; }
+      if (itemBattery) itemBattery.className = 'hero-vital-item';
+      if (cardBattery) cardBattery.className = 'sensor-box';
+      cardBadgeBattery.textContent = 'Fair';
+      cardBadgeBattery.className = 'sensor-pill-status pill-status-normal';
+    } else {
+      if (tagBattery) { tagBattery.textContent = 'GOOD'; tagBattery.className = 'v-tag tag-normal-pill'; }
+      if (itemBattery) itemBattery.className = 'hero-vital-item';
+      if (cardBattery) cardBattery.className = 'sensor-box';
+      cardBadgeBattery.textContent = 'Good';
+      cardBadgeBattery.className = 'sensor-pill-status pill-status-normal';
+    }
+
+    cardValHR.textContent = v.hr;
     cardValSpO2.textContent = v.spo2;
-    cardBadgeSpO2.textContent = v.spo2Badge;
     cardValTemp.textContent = v.temp;
-    cardBadgeTemp.textContent = v.tempBadge;
     cardValCO.textContent = v.gas;
-    cardBadgeCO.textContent = v.gasBadge;
     cardValMotion.textContent = v.motion;
-    cardBadgeMotion.textContent = v.motionBadge;
     cardValBattery.textContent = v.battery;
-    cardBadgeBattery.textContent = v.batteryBadge;
 
     headerRssi.textContent = worker.rssi;
 

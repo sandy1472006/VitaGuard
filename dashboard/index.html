@@ -182,29 +182,29 @@
                 </div>
               </div>
               <div class="hero-vitals-strip">
-                <div class="hero-vital-item">
+                <div class="hero-vital-item" id="itemHR">
                   <span>❤️ HR <strong id="vHR">100</strong> BPM</span>
-                  <span class="v-tag tag-elevated-pill">Elevated</span>
+                  <span class="v-tag tag-elevated-pill" id="tagHR">Elevated</span>
                 </div>
-                <div class="hero-vital-item">
+                <div class="hero-vital-item" id="itemSpO2">
                   <span>💧 SpO₂ <strong id="vSpO2">96</strong> %</span>
-                  <span class="v-tag tag-normal-pill">Normal</span>
+                  <span class="v-tag tag-normal-pill" id="tagSpO2">Normal</span>
                 </div>
-                <div class="hero-vital-item">
+                <div class="hero-vital-item" id="itemTemp">
                   <span>🌡️ <strong id="vTemp">37.1</strong> °C</span>
-                  <span class="v-tag tag-normal-pill">Normal</span>
+                  <span class="v-tag tag-normal-pill" id="tagTemp">Normal</span>
                 </div>
-                <div class="hero-vital-item">
+                <div class="hero-vital-item" id="itemCO">
                   <span>☁️ CO <strong id="vCO">169</strong> PPM</span>
-                  <span class="v-tag tag-normal-pill">Normal</span>
+                  <span class="v-tag tag-normal-pill" id="tagCO">Normal</span>
                 </div>
-                <div class="hero-vital-item">
+                <div class="hero-vital-item" id="itemMotion">
                   <span>🏃 <strong id="vMotion">Low activity</strong></span>
-                  <span class="v-tag tag-live-pill">Live</span>
+                  <span class="v-tag tag-live-pill" id="tagMotion">Live</span>
                 </div>
-                <div class="hero-vital-item">
+                <div class="hero-vital-item" id="itemBattery">
                   <span>🔋 <strong id="vBattery">84</strong> %</span>
-                  <span class="v-tag tag-normal-pill">Good</span>
+                  <span class="v-tag tag-normal-pill" id="tagBattery">Good</span>
                 </div>
               </div>
             </div>
@@ -304,9 +304,9 @@
               </div>
               <div class="telemetry-cards-6">
                 <!-- 1. Heart Rate -->
-                <div class="sensor-box">
+                <div class="sensor-box" id="cardHR">
                   <div class="sensor-box-top">
-                    <svg viewBox="0 0 24 24" width="11" height="11" fill="#ef4444"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="#ef4444"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                     <span class="sensor-name-lbl">Heart Rate</span>
                   </div>
                   <div class="sensor-value-bold-row">
@@ -321,9 +321,9 @@
                 </div>
 
                 <!-- 2. SpO2 -->
-                <div class="sensor-box">
+                <div class="sensor-box" id="cardSpO2">
                   <div class="sensor-box-top">
-                    <svg viewBox="0 0 24 24" width="11" height="11" fill="#0284c7"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="#0284c7"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
                     <span class="sensor-name-lbl">SpO₂</span>
                   </div>
                   <div class="sensor-value-bold-row">
@@ -338,9 +338,9 @@
                 </div>
 
                 <!-- 3. Skin Temp -->
-                <div class="sensor-box">
+                <div class="sensor-box" id="cardTemp">
                   <div class="sensor-box-top">
-                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#f97316" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#f97316" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
                     <span class="sensor-name-lbl">Skin Temp.</span>
                   </div>
                   <div class="sensor-value-bold-row">
@@ -355,9 +355,9 @@
                 </div>
 
                 <!-- 4. CO Exposure -->
-                <div class="sensor-box">
+                <div class="sensor-box" id="cardCO">
                   <div class="sensor-box-top">
-                    <svg viewBox="0 0 24 24" width="11" height="11" fill="#0284c7"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="#0284c7"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
                     <span class="sensor-name-lbl">CO Exposure</span>
                   </div>
                   <div class="sensor-value-bold-row">
@@ -372,13 +372,13 @@
                 </div>
 
                 <!-- 5. Motion / Fall -->
-                <div class="sensor-box">
+                <div class="sensor-box" id="cardMotion">
                   <div class="sensor-box-top">
-                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#0284c7" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#0284c7" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                     <span class="sensor-name-lbl">Motion / Fall</span>
                   </div>
                   <div class="sensor-value-bold-row">
-                    <span class="sensor-big-number" style="font-size:12px;" id="cardValMotion">Low activity</span>
+                    <span class="sensor-big-number sensor-val-motion" id="cardValMotion">Low activity</span>
                   </div>
                   <span class="sensor-pill-status pill-status-live" id="cardBadgeMotion">Live</span>
                   <svg class="sensor-spark-svg" viewBox="0 0 100 24">
@@ -396,9 +396,9 @@
                 </div>
 
                 <!-- 6. Battery -->
-                <div class="sensor-box">
+                <div class="sensor-box" id="cardBattery">
                   <div class="sensor-box-top">
-                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#10b981" stroke-width="2"><rect x="1" y="6" width="18" height="12" rx="2"></rect><line x1="23" y1="11" x2="23" y2="13"></line></svg>
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#10b981" stroke-width="2"><rect x="1" y="6" width="18" height="12" rx="2"></rect><line x1="23" y1="11" x2="23" y2="13"></line></svg>
                     <span class="sensor-name-lbl">Battery</span>
                   </div>
                   <div class="sensor-value-bold-row">
