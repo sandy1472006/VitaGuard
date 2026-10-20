@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VitaGuard SUPERVISOR | Live Wearable Safety Monitor</title>
+  <link rel="icon" type="image/svg+xml" href="dashboard/assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard/css/dashboard.css">
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="top-nav">
+    <div class="nav-left">
+      <div class="logo-box">
+        <svg class="cross-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">VitaGuard</span>
+        <span class="brand-sub">SUPERVISOR</span>
+      </div>
+    </div>
+    
+    <div class="nav-right">
+      <button class="status-pill live-view" id="liveViewBadge">
+        <span class="pulse-dot"></span>
+        <span>Live supervisor view</span>
+      </button>
+      <button class="status-pill demo-toggle active" id="demoToggleBtn">
+        <span class="dot-indicator">●</span>
+        <span>DEMO SIMULATION</span>
+      </button>
+      <button class="sos-trigger-btn" id="sosTriggerBtn" title="Simulate Hardware SOS Button Press">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        <span>TRIGGER SOS</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Emergency Banner (Hidden by default, triggered by SOS) -->
+  <div class="emergency-banner" id="emergencyBanner">
+    <div class="emergency-content">
+      <div class="emergency-pulse"></div>
+      <div class="emergency-text">
+        <strong>CRITICAL SAFETY ALERT:</strong> Hardware SOS Triggered by Worker <span id="sosWorkerTag">VG-014 (R. Kumar)</span> | Priority Packet 152 Received | Black-Box Telemetry Frozen
+      </div>
+      <button class="dismiss-sos-btn" id="dismissSosBtn">Acknowledge & Reset</button>
+    </div>
+  </div>
+
+  <main class="dashboard-container">
+    <!-- Top Hero Section -->
+    <section class="hero-bar">
+      <div class="hero-left">
+        <div class="kicker">LIVE WEARABLE SAFETY MONITOR</div>
+        <h1 class="hero-title">Worker safety, clear in seconds.</h1>
+        <p class="hero-subtitle">One active wearable. One clear dynamic safety score.</p>
+      </div>
+
+      <div class="hero-right">
+        <div class="control-card">
+          <div class="control-group">
+            <label for="workerSelect">ACTIVE WEARABLE</label>
+            <div class="select-wrapper">
+              <span class="active-dot"></span>
+              <select id="workerSelect">
+                <option value="VG-014">VG-014 • R. Kumar (Elevated Fatigue)</option>
+                <option value="VG-007">VG-007 • A. Sharma (Normal / Baseline)</option>
+                <option value="VG-023">VG-023 • S. Patel (Thermal / Heat Strain)</option>
+                <option value="VG-042">VG-042 • M. Singh (Gas Hazard Warning)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="control-group endpoint-group">
+            <label for="baseStationIp">BASE STATION WI-FI ADDRESS</label>
+            <div class="input-action-wrapper">
+              <input type="text" id="baseStationIp" value="http://192.168.4.1/telemetry" spellcheck="false" placeholder="ESP32 Telemetry URL">
+              <button class="connect-btn" id="connectBtn">CONNECT</button>
+            </div>
+            <span class="input-caption">Paste the ESP32 telemetry endpoint. Demo values are simulated.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top Row: Risk Score, Worker Profile, Predictive Analytics -->
+    <section class="cards-grid top-row">
+      <!-- 1. Dynamic Risk Score Card -->
+      <div class="card dark-card risk-card">
+        <div class="card-header-clean">
+          <span class="card-kicker">DYNAMIC RISK SCORE</span>
+        </div>
+        
+        <div class="gauge-container">
+          <div class="donut-gauge">
+            <svg viewBox="0 0 160 160" class="gauge-svg">
+              <circle cx="80" cy="80" r="66" class="gauge-track"></circle>
+              <circle cx="80" cy="80" r="66" class="gauge-fill" id="gaugeProgressRing"></circle>
+            </svg>
+            <div class="gauge-inner">
+              <div class="score-number-wrap">
+                <span class="score-val" id="drsValue">30</span>
+                <span class="score-max">/100</span>
+              </div>
+              <span class="score-status-badge status-safe" id="drsBadge">SAFE</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="risk-footer">
+          <p class="risk-headline" id="drsHeadline">Safety indicators are within the current watch range.</p>
+          <p class="risk-sub">Score combines multiple validated signals—not one sensor.</p>
+        </div>
+      </div>
+
+      <!-- 2. Worker Profile Card -->
+      <div class="card light-card profile-card">
+        <div class="card-header-clean">
+          <span class="card-kicker text-muted">WORKER PROFILE</span>
+        </div>
+
+        <div class="profile-info">
+          <h2 class="worker-name" id="workerName">R. Kumar</h2>
+          <div class="worker-sub" id="workerSub">VG-014 • Sector B - Day Shift</div>
+
+          <div class="profile-meta-list">
+            <div class="meta-row">
+              <span class="meta-label">Personal baseline</span>
+              <span class="meta-val" id="profileBaseline">HR 72-92 BPM</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Last packet</span>
+              <span class="meta-val" id="profileLastPacket">Just now</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Connection</span>
+              <span class="meta-val" id="profileConnection">Wi-Fi / LoRa • -63 dBm</span>
+            </div>
+          </div>
+
+          <button class="btn-outline report-btn" id="openReportBtn">
+            PREPARE WORKER REPORT
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Predictive Analytics Card -->
+      <div class="card light-card predictive-card">
+        <div class="card-header-clean">
+          <span class="card-kicker kicker-orange">PREDICTIVE ANALYTICS</span>
+        </div>
+
+        <div class="predictive-content">
+          <h3 class="predictive-title" id="predTitle">Stable risk trend</h3>
+          <p class="predictive-desc" id="predDesc">No immediate escalation predicted from the current trend.</p>
+          
+          <div class="trend-status orange-status" id="predTrendStatus">
+            <span class="trend-dot">●</span>
+            <span id="predTrendText">Monitor closely</span>
+          </div>
+
+          <div class="disclaimer-note">
+            Safety guidance only. Not a medical diagnosis.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Middle Section: Live Sensor Data -->
+    <section class="telemetry-section">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">LIVE SENSOR DATA</span>
+          <h2 class="section-title">Current wearable telemetry</h2>
+        </div>
+        <div class="live-update-stamp" id="updateStamp">DEMO UPDATE JUST NOW</div>
+      </div>
+
+      <div class="metrics-grid">
+        <!-- Metric 1: Heart Rate -->
+        <div class="metric-card" id="cardHeartRate">
+          <div class="metric-label">HEART RATE</div>
+          <div class="metric-value-row">
+            <span class="metric-num" id="valHeartRate">99</span>
+            <span class="metric-unit">BPM</span>
+          </div>
+          <div class="metric-badge badge-elevated" id="badgeHeartRate">ELEVATED</div>
+        </div>
+
+        <!-- Metric 2: SpO2 -->
+        <div class="metric-card" id="cardSpO2">
+          <div class="metric-label">SpO₂</div>
+          <div class="metric-value-row">
+            <span class="metric-num" id="valSpO2">96</span>
+            <span class="metric-unit">%</span>
+          </div>
+          <div class="metric-badge badge-normal" id="badgeSpO2">NORMAL</div>
+        </div>
+
+        <!-- Metric 3: Temperature -->
+        <div class="metric-card" id="cardTemp">
+          <div class="metric-label">TEMPERATURE</div>
+          <div class="metric-value-row">
+            <span class="metric-num" id="valTemp">37.1</span>
+            <span class="metric-unit">°C</span>
+          </div>
+          <div class="metric-badge badge-normal" id="badgeTemp">NORMAL</div>
+        </div>
+
+        <!-- Metric 4: CO Exposure -->
+        <div class="metric-card" id="cardCO">
+          <div class="metric-label">CO EXPOSURE</div>
+          <div class="metric-value-row">
+            <span class="metric-num" id="valCO">171</span>
+            <span class="metric-unit">PPM</span>
+          </div>
+          <div class="metric-badge badge-normal" id="badgeCO">NORMAL</div>
+        </div>
+
+        <!-- Metric 5: Motion -->
+        <div class="metric-card" id="cardMotion">
+          <div class="metric-label">MOTION</div>
+          <div class="metric-value-row">
+            <span class="metric-num text-sm" id="valMotion">Low activity</span>
+          </div>
+          <div class="metric-badge badge-normal" id="badgeMotion">LIVE</div>
+        </div>
+
+        <!-- Metric 6: Battery -->
+        <div class="metric-card" id="cardBattery">
+          <div class="metric-label">BATTERY</div>
+          <div class="metric-value-row">
+            <span class="metric-num" id="valBattery">84</span>
+            <span class="metric-unit">%</span>
+          </div>
+          <div class="metric-badge badge-normal" id="badgeBattery">GOOD</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Row: AI Sensor Fusion Breakdown & Fatigue Analysis -->
+    <section class="cards-grid bottom-row">
+      <!-- Left: Personal AI + Sensor Fusion Breakdown -->
+      <div class="card light-card fusion-card">
+        <div class="card-header-between">
+          <div>
+            <span class="card-kicker text-muted">PERSONAL AI + SENSOR FUSION</span>
+            <h3 class="fusion-title">Why the score is <span id="fusionScoreHighlight">30</span></h3>
+          </div>
+          <span class="badge-pill-live">LIVE</span>
+        </div>
+
+        <div class="bars-container">
+          <div class="bar-row">
+            <span class="bar-name">Heart rate</span>
+            <div class="bar-track">
+              <div class="bar-fill orange-bar" id="barHR" style="width: 14%;"></div>
+            </div>
+            <span class="bar-weight" id="weightHR">+4</span>
+          </div>
+
+          <div class="bar-row">
+            <span class="bar-name">SpO₂</span>
+            <div class="bar-track">
+              <div class="bar-fill neutral-bar" id="barSpO2" style="width: 0%;"></div>
+            </div>
+            <span class="bar-weight" id="weightSpO2">+0</span>
+          </div>
+
+          <div class="bar-row">
+            <span class="bar-name">CO exposure</span>
+            <div class="bar-track">
+              <div class="bar-fill orange-bar" id="barCO" style="width: 18%;"></div>
+            </div>
+            <span class="bar-weight" id="weightCO">+5</span>
+          </div>
+
+          <div class="bar-row">
+            <span class="bar-name">Temperature</span>
+            <div class="bar-track">
+              <div class="bar-fill orange-bar" id="barTemp" style="width: 5%;"></div>
+            </div>
+            <span class="bar-weight" id="weightTemp">+1</span>
+          </div>
+
+          <div class="bar-row">
+            <span class="bar-name">Motion / fatigue</span>
+            <div class="bar-track">
+              <div class="bar-fill orange-bar" id="barMotion" style="width: 42%;"></div>
+            </div>
+            <span class="bar-weight" id="weightMotion">+12</span>
+          </div>
+        </div>
+
+        <div class="pipeline-breadcrumbs">
+          <span>Sensor validation</span>
+          <span class="sep">—</span>
+          <span>Personal baseline</span>
+          <span class="sep">—</span>
+          <span>AI sensor fusion</span>
+          <span class="sep">—</span>
+          <span class="text-teal font-semibold">Dynamic risk score</span>
+        </div>
+      </div>
+
+      <!-- Right: Fatigue Analysis -->
+      <div class="card light-card fatigue-card">
+        <div class="card-header-between">
+          <span class="card-kicker text-muted">FATIGUE ANALYSIS</span>
+          <span class="badge-elevated-pill" id="fatigueBadge">ELEVATED</span>
+        </div>
+
+        <div class="fatigue-body">
+          <h3 class="fatigue-title" id="fatigueTitle">Requires attention</h3>
+          <p class="fatigue-desc" id="fatigueDesc">
+            Heart rate remains above the worker's normal range with lower movement recovery.
+          </p>
+
+          <div class="fatigue-gauge-wrap">
+            <div class="fatigue-slider-track">
+              <div class="fatigue-pointer" id="fatiguePointer" style="left: 72%;"></div>
+            </div>
+            <div class="slider-labels">
+              <span>Normal</span>
+              <span>Elevated</span>
+            </div>
+          </div>
+
+          <div class="disclaimer-note">
+            Fatigue is a safety indicator, not a health diagnosis.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Telemetry Inspector Drawer Toggle -->
+    <section class="telemetry-log-toggle-wrap">
+      <button class="toggle-log-btn" id="toggleLogBtn">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        <span>Toggle Base Station LoRa Packet Stream (Protocol 151/152)</span>
+      </button>
+    </section>
+
+    <!-- Telemetry Log Drawer -->
+    <div class="telemetry-log-drawer" id="telemetryDrawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span class="terminal-dot"></span>
+          <span>Base Station Telemetry Feed (Raw RF Stream)</span>
+        </div>
+        <div class="drawer-actions">
+          <button class="clear-btn" id="clearLogBtn">Clear Log</button>
+        </div>
+      </div>
+      <pre class="telemetry-terminal" id="rawLogTerminal">
+[00:00:01] BASE_STATION_INIT: LoRa SX1278 433MHz / BW=125kHz / SF=7 / CR=4/5 READY.
+[00:00:02] HTTP_SERVER_INIT: Telemetry REST endpoint listening at http://192.168.4.1/telemetry
+[00:00:04] RX_PKT_151: VITAGUARD,VG-014,HR=99,SPO2=96,SKINTEMP=37.1,AMBTEMP=31.2,GAS_ADC=1240,AX=0.12,AY=-0.21,AZ=9.78,ACC_MAG=9.79,SOS=0,RSSI=-63dBm
+      </pre>
+    </div>
+  </main>
+
+  <!-- Worker Safety Report Modal -->
+  <div class="modal-backdrop" id="reportModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="logo-box-sm">
+            <svg class="cross-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </div>
+          <div>
+            <h3>VitaGuard Safety Compliance Report</h3>
+            <span class="report-meta" id="reportTimestamp">Generated: Just Now • Shift Audit ID: VG-REP-2026-X014</span>
+          </div>
+        </div>
+        <button class="close-modal-btn" id="closeReportBtn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="report-summary-grid">
+          <div class="report-stat">
+            <span class="stat-lbl">Worker</span>
+            <span class="stat-val" id="repWorkerName">R. Kumar</span>
+          </div>
+          <div class="report-stat">
+            <span class="stat-lbl">Wearable ID</span>
+            <span class="stat-val" id="repWorkerID">VG-014</span>
+          </div>
+          <div class="report-stat">
+            <span class="stat-lbl">Dynamic Risk Score</span>
+            <span class="stat-val text-teal" id="repScore">30 / 100 (Safe)</span>
+          </div>
+          <div class="report-stat">
+            <span class="stat-lbl">CO Exposure (TWA)</span>
+            <span class="stat-val" id="repCO">171 PPM (Within Limit)</span>
+          </div>
+        </div>
+
+        <h4 class="modal-section-title">Telemetry & Incident Log (Rolling 60s Buffer)</h4>
+        <div class="audit-table-wrap">
+          <table class="audit-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Heart Rate</th>
+                <th>SpO₂</th>
+                <th>Temp</th>
+                <th>CO (PPM)</th>
+                <th>Risk State</th>
+                <th>SOS State</th>
+              </tr>
+            </thead>
+            <tbody id="auditTableBody">
+              <tr>
+                <td>T-00s</td>
+                <td>99 BPM</td>
+                <td>96%</td>
+                <td>37.1°C</td>
+                <td>171</td>
+                <td><span class="tag-safe">Safe (30)</span></td>
+                <td>Normal (0)</td>
+              </tr>
+              <tr>
+                <td>T-10s</td>
+                <td>98 BPM</td>
+                <td>96%</td>
+                <td>37.0°C</td>
+                <td>169</td>
+                <td><span class="tag-safe">Safe (29)</span></td>
+                <td>Normal (0)</td>
+              </tr>
+              <tr>
+                <td>T-20s</td>
+                <td>97 BPM</td>
+                <td>97%</td>
+                <td>37.0°C</td>
+                <td>165</td>
+                <td><span class="tag-safe">Safe (28)</span></td>
+                <td>Normal (0)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-notice">
+          <strong>Supervisor Sign-off:</strong> Autonomous telemetry record verified via LoRa encrypted base-station link. Certified for industrial Occupational Safety and Health compliance.
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" id="printReportBtn">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          Print / Save PDF
+        </button>
+        <button class="btn-primary" id="confirmReportBtn">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="dashboard/js/telemetryMock.js"></script>
+  <script src="dashboard/js/riskEngine.js"></script>
+  <script src="dashboard/js/app.js"></script>
+</body>
+</html>

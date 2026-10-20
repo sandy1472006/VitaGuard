@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use VitaGuard, cite the project and its associated documentation."
+title: "VitaGuard 2.0"
+abstract: "An AI-enabled multisensor wearable worker-safety platform integrating physiological, environmental and movement monitoring with local alerts and wireless emergency communication."
+type: software
+authors:
+  - family-names: "Mahajan"
+    given-names: "Sandesh"
+    affiliation: "Project lead/contact; verify contributor and inventorship roles before publication"
+version: "1.0.0"
+date-released: "2026-10-20"
+license: "MIT"
+repository-code: "https://github.com/sandy1472006/VitaGuard"

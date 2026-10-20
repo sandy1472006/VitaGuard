@@ -1,0 +1,2 @@
+# ILLUSTRATIVE MESSAGE ONLY — replace with exact released protocol
+VITAGUARD,SOS,WORKER001,EVENT_ID=[sequence],SOS=1

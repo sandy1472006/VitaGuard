@@ -1,0 +1,43 @@
+# Copy to the firmware's actual configuration path and replace values from release source.
+# This template intentionally does not invent thresholds or model parameters.
+device:
+  firmware_version: "FILL_FROM_RELEASE"
+  device_id_format: "WORKER001"
+sensors:
+  max30102:
+    sample_interval_ms: "FILL_FROM_RELEASE"
+    signal_quality_rules: "FILL_FROM_RELEASE"
+  temperature:
+    model: "CONFIRM_DS18B20_OR_MLX90614"
+    sample_interval_ms: "FILL_FROM_RELEASE"
+  bmp280:
+    sample_interval_ms: "FILL_FROM_RELEASE"
+  mq9:
+    sample_interval_ms: "FILL_FROM_RELEASE"
+    warmup_policy: "FILL_FROM_RELEASE"
+    calibration_version: "FILL_FROM_RELEASE"
+  adxl345:
+    sample_interval_ms: "FILL_FROM_RELEASE"
+    fall_model_version: "FILL_FROM_RELEASE"
+risk_engine:
+  model_versions: "FILL_FROM_RELEASE"
+  score_formula_version: "FILL_FROM_RELEASE"
+  thresholds: "FILL_FROM_RELEASE"
+  state_transition_rules: "FILL_FROM_RELEASE"
+communication:
+  lora_frequency_hz: "FILL_FROM_RELEASE_AND_VERIFY_REGULATORY_COMPLIANCE"
+  spreading_factor: "FILL_FROM_RELEASE"
+  bandwidth_hz: "FILL_FROM_RELEASE"
+  coding_rate: "FILL_FROM_RELEASE"
+  telemetry_period_ms: "FILL_FROM_RELEASE"
+  ack_enabled: "FILL_FROM_RELEASE"
+  retry_count: "FILL_FROM_RELEASE"
+  retry_period_ms: "FILL_FROM_RELEASE"
+emergency:
+  debounce_ms: "FILL_FROM_RELEASE"
+  hold_time_ms: "FILL_FROM_RELEASE"
+  cancellation_policy: "FILL_FROM_RELEASE"
+  local_alert_pattern: "FILL_FROM_RELEASE"
+logging:
+  incident_history_seconds: 60
+  storage_type: "FILL_FROM_RELEASE"

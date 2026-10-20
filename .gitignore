@@ -1,0 +1,44 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+secrets/
+credentials/
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.json
+config.private.*
+wifi_credentials.*
+
+# Local build outputs
+build/
+dist/
+.pio/
+.arduino/
+*.elf
+*.bin
+*.hex
+*.map
+*.o
+*.a
+
+# Local IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Private or sensitive data
+private-data/
+raw-worker-data/
+health-data/
+unredacted-logs/
+*.pcap
+*.sqlite
+*.db
+
+# Local test results should be intentionally added only after review
+results/private/

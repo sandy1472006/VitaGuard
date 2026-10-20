@@ -1,0 +1,30 @@
+flowchart TD
+  subgraph W["Wearable unit"]
+    S1["MAX30102: optical vitals"]
+    S2["Contact temperature sensor"]
+    S3["BMP280: ambient context"]
+    S4["MQ-9 gas response"]
+    S5["ADXL345: motion/impact"]
+    B["ESP32 acquisition + validity checks"]
+    AI["Domain models + personal baseline + fusion"]
+    SCORE["Dynamic Risk Score 0–100 / status"]
+    ALERT["Vibration, buzzer, LEDs"]
+    SOS["SOS input + priority event"]
+    STORE["Rolling 60 s incident history"]
+    COMM["LoRa; configured BLE/GSM fallback"]
+    S1-->B
+    S2-->B
+    S3-->B
+    S4-->B
+    S5-->B
+    B-->AI-->SCORE
+    SCORE-->ALERT
+    SCORE-->STORE
+    SOS-->ALERT
+    SOS-->STORE
+    SCORE-->COMM
+    SOS-->COMM
+  end
+  COMM-->RX["Receiving station"]
+  RX-->UI["Dashboard, worker status, event log"]
+  UI-->REPORT["Individual and organization reports"]

@@ -1,0 +1,14 @@
+stateDiagram-v2
+  [*] --> Initializing
+  Initializing --> Normal: Required initialization succeeds
+  Initializing --> SensorFault: Required sensor unavailable
+  Normal --> Caution: Persistent elevated-risk condition
+  Caution --> Normal: Condition cleared with hysteresis
+  Caution --> Alert: High-risk condition
+  Alert --> Caution: Severity reduces under reset rules
+  Normal --> Emergency: Manual SOS or validated emergency event
+  Caution --> Emergency: Manual SOS or validated emergency event
+  Alert --> Emergency: Manual SOS or validated emergency event
+  SensorFault --> Normal: Fault cleared and data valid
+  SensorFault --> Emergency: Manual SOS remains available
+  Emergency --> Normal: Explicit reset/acknowledgement policy satisfied

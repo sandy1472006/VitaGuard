@@ -1,0 +1,17 @@
+sequenceDiagram
+  participant U as Worker
+  participant W as Wearable
+  participant H as Event History Buffer
+  participant R as Radio Link
+  participant B as Base Receiver
+  participant D as Dashboard
+  U->>W: Press SOS button
+  W->>W: Debounce and accept press
+  W->>H: Freeze/mark preceding event history
+  W->>W: Latch emergency state and activate local alerts
+  W->>R: Send priority SOS packet
+  R->>B: Deliver packet when link is available
+  B->>B: Validate packet / detect duplicate if supported
+  B->>D: Raise event and record receiver timestamp
+  B-->>W: ACK if supported by release protocol
+  W->>R: Retry according to configured policy if required
