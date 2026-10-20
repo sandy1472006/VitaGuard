@@ -1,367 +1,395 @@
 /**
- * VitaGuard Supervisor - Main Application Logic
- * Integrates Real-time Telemetry, Sensor Fusion Engine, and Supervisor Controls
+ * VitaGuard Supervisor Command Center 2.0
+ * Fully interactive application controller with real-time updates & multi-report workflows
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM Elements
-  const workerSelect = document.getElementById('workerSelect');
-  const demoToggleBtn = document.getElementById('demoToggleBtn');
-  const sosTriggerBtn = document.getElementById('sosTriggerBtn');
-  const emergencyBanner = document.getElementById('emergencyBanner');
-  const dismissSosBtn = document.getElementById('dismissSosBtn');
-  const sosWorkerTag = document.getElementById('sosWorkerTag');
+  // DOM Elements - Header & Global
+  const globalSearchInput = document.getElementById('globalSearchInput');
+  const headerRssi = document.getElementById('headerRssi');
+  const bellNotifTrigger = document.getElementById('bellNotifTrigger');
+  const telemetryTimeStr = document.getElementById('telemetryTimeStr');
+  const streamRateSelect = document.getElementById('streamRateSelect');
 
-  // Gauge & DRS Elements
-  const gaugeProgressRing = document.getElementById('gaugeProgressRing');
-  const drsValue = document.getElementById('drsValue');
-  const drsBadge = document.getElementById('drsBadge');
-  const drsHeadline = document.getElementById('drsHeadline');
-  const fusionScoreHighlight = document.getElementById('fusionScoreHighlight');
+  // Hero Card Elements
+  const heroWorkerName = document.getElementById('heroWorkerName');
+  const heroWorkerMeta = document.getElementById('heroWorkerMeta');
+  const heroGaugeRing = document.getElementById('heroGaugeRing');
+  const heroDrsVal = document.getElementById('heroDrsVal');
+  const heroDrsBadge = document.getElementById('heroDrsBadge');
+  const vHR = document.getElementById('vHR');
+  const vSpO2 = document.getElementById('vSpO2');
+  const vTemp = document.getElementById('vTemp');
+  const vCO = document.getElementById('vCO');
+  const vMotion = document.getElementById('vMotion');
+  const vBattery = document.getElementById('vBattery');
 
-  // Worker Profile Elements
-  const workerName = document.getElementById('workerName');
-  const workerSub = document.getElementById('workerSub');
-  const profileBaseline = document.getElementById('profileBaseline');
-  const profileLastPacket = document.getElementById('profileLastPacket');
-  const profileConnection = document.getElementById('profileConnection');
-  const openReportBtn = document.getElementById('openReportBtn');
+  // Sensor Telemetry Cards
+  const cardValHR = document.getElementById('cardValHR');
+  const cardBadgeHR = document.getElementById('cardBadgeHR');
+  const cardValSpO2 = document.getElementById('cardValSpO2');
+  const cardBadgeSpO2 = document.getElementById('cardBadgeSpO2');
+  const cardValTemp = document.getElementById('cardValTemp');
+  const cardBadgeTemp = document.getElementById('cardBadgeTemp');
+  const cardValCO = document.getElementById('cardValCO');
+  const cardBadgeCO = document.getElementById('cardBadgeCO');
+  const cardValMotion = document.getElementById('cardValMotion');
+  const cardBadgeMotion = document.getElementById('cardBadgeMotion');
+  const cardValBattery = document.getElementById('cardValBattery');
+  const cardBadgeBattery = document.getElementById('cardBadgeBattery');
 
-  // Predictive Analytics
-  const predTitle = document.getElementById('predTitle');
-  const predDesc = document.getElementById('predDesc');
-  const predTrendStatus = document.getElementById('predTrendStatus');
-  const predTrendText = document.getElementById('predTrendText');
-
-  // Metrics
-  const valHeartRate = document.getElementById('valHeartRate');
-  const badgeHeartRate = document.getElementById('badgeHeartRate');
-  const valSpO2 = document.getElementById('valSpO2');
-  const badgeSpO2 = document.getElementById('badgeSpO2');
-  const valTemp = document.getElementById('valTemp');
-  const badgeTemp = document.getElementById('badgeTemp');
-  const valCO = document.getElementById('valCO');
-  const badgeCO = document.getElementById('badgeCO');
-  const valMotion = document.getElementById('valMotion');
-  const badgeMotion = document.getElementById('badgeMotion');
-  const valBattery = document.getElementById('valBattery');
-  const badgeBattery = document.getElementById('badgeBattery');
-  const updateStamp = document.getElementById('updateStamp');
-
-  // AI Breakdown Bars
+  // AI Risk Analysis
   const barHR = document.getElementById('barHR');
-  const weightHR = document.getElementById('weightHR');
+  const wHR = document.getElementById('wHR');
   const barSpO2 = document.getElementById('barSpO2');
-  const weightSpO2 = document.getElementById('weightSpO2');
+  const wSpO2 = document.getElementById('wSpO2');
   const barCO = document.getElementById('barCO');
-  const weightCO = document.getElementById('weightCO');
+  const wCO = document.getElementById('wCO');
   const barTemp = document.getElementById('barTemp');
-  const weightTemp = document.getElementById('weightTemp');
+  const wTemp = document.getElementById('wTemp');
   const barMotion = document.getElementById('barMotion');
-  const weightMotion = document.getElementById('weightMotion');
+  const wMotion = document.getElementById('wMotion');
+  const fatigueHeadline = document.getElementById('fatigueHeadline');
+  const fatigueDetail = document.getElementById('fatigueDetail');
 
-  // Fatigue
-  const fatigueBadge = document.getElementById('fatigueBadge');
-  const fatigueTitle = document.getElementById('fatigueTitle');
-  const fatigueDesc = document.getElementById('fatigueDesc');
-  const fatiguePointer = document.getElementById('fatiguePointer');
+  // Map Controls
+  const satelliteMapBox = document.getElementById('satelliteMapBox');
+  const btnMapZoomIn = document.getElementById('btnMapZoomIn');
+  const btnMapZoomOut = document.getElementById('btnMapZoomOut');
+  const btnMapCenter = document.getElementById('btnMapCenter');
+  const btnViewFullMap = document.getElementById('btnViewFullMap');
 
-  // Terminal & Base Station
-  const toggleLogBtn = document.getElementById('toggleLogBtn');
-  const telemetryDrawer = document.getElementById('telemetryDrawer');
-  const rawLogTerminal = document.getElementById('rawLogTerminal');
-  const clearLogBtn = document.getElementById('clearLogBtn');
-  const baseStationIp = document.getElementById('baseStationIp');
-  const connectBtn = document.getElementById('connectBtn');
+  // 24-Hour Trends Chart
+  const trendFilterChips = document.querySelectorAll('.chip-btn');
+  const yMax = document.getElementById('yMax');
+  const yMid = document.getElementById('yMid');
+  const yMin = document.getElementById('yMin');
+  const trendSvgLine = document.getElementById('trendSvgLine');
+  const trendSvgArea = document.getElementById('trendSvgArea');
 
-  // Modal
-  const reportModal = document.getElementById('reportModal');
-  const closeReportBtn = document.getElementById('closeReportBtn');
-  const confirmReportBtn = document.getElementById('confirmReportBtn');
-  const printReportBtn = document.getElementById('printReportBtn');
-  const auditTableBody = document.getElementById('auditTableBody');
+  // Modals
+  const reportPreviewModal = document.getElementById('reportPreviewModal');
+  const closeReportModalBtn = document.getElementById('closeReportModalBtn');
+  const btnPreviewWorkerReport = document.getElementById('btnPreviewWorkerReport');
+  const btnSubmitWorkerReport = document.getElementById('btnSubmitWorkerReport');
+  const btnDispatchReport = document.getElementById('btnDispatchReport');
+  const modalWorkerName = document.getElementById('modalWorkerName');
+  const modalDeviceId = document.getElementById('modalDeviceId');
+  const modalRiskScore = document.getElementById('modalRiskScore');
+  const modalCOExposure = document.getElementById('modalCOExposure');
+
+  const insurancePreviewModal = document.getElementById('insurancePreviewModal');
+  const closeInsuranceModalBtn = document.getElementById('closeInsuranceModalBtn');
+  const btnPreviewInsurance = document.getElementById('btnPreviewInsurance');
+  const btnSubmitInsurance = document.getElementById('btnSubmitInsurance');
+  const btnConfirmSendInsurer = document.getElementById('btnConfirmSendInsurer');
+
+  // Quick Action Buttons
+  const btnQuickPdf = document.getElementById('btnQuickPdf');
+  const btnQuickEmail = document.getElementById('btnQuickEmail');
+  const btnQuickSchedule = document.getElementById('btnQuickSchedule');
+
+  // Nav Links
+  const sidebarLinks = document.querySelectorAll('.sidebar-link');
 
   // State
   let currentWorkerId = 'VG-014';
-  let isDemoRunning = true;
-  let isSosActive = false;
-  let timerInterval = null;
-  let packetCounter = 1042;
-  let auditHistory = [];
+  let mapZoomLevel = 1.0;
+  let activeMetric = 'hr';
+  let isStreamActive = true;
+  let timerLoop = null;
+  const HERO_CIRCUMFERENCE = 282.74; // 2 * PI * 45
 
-  // Audio Context for SOS Alert (Gentle web audio beep)
-  let audioCtx = null;
-  function playAlertBeep() {
-    try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
-      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.4);
-    } catch (e) {
-      // Audio autoplay might be blocked
+  // Trend Datasets
+  const TREND_DATA = {
+    hr: {
+      yMax: '140', yMid: '100', yMin: '60',
+      line: 'M28,110 Q70,95 110,105 T190,90 T260,100 T330,70 T375,55',
+      area: 'M28,110 Q70,95 110,105 T190,90 T260,100 T330,70 T375,55 L375,120 L28,120 Z',
+      stroke: '#ef4444'
+    },
+    spo2: {
+      yMax: '100', yMid: '95', yMin: '90',
+      line: 'M28,50 Q70,55 110,50 T190,48 T260,52 T330,46 T375,48',
+      area: 'M28,50 Q70,55 110,50 T190,48 T260,52 T330,46 T375,48 L375,120 L28,120 Z',
+      stroke: '#10b981'
+    },
+    temp: {
+      yMax: '39.0', yMid: '37.0', yMin: '35.0',
+      line: 'M28,80 Q70,75 110,80 T190,70 T260,75 T330,68 T375,65',
+      area: 'M28,80 Q70,75 110,80 T190,70 T260,75 T330,68 T375,65 L375,120 L28,120 Z',
+      stroke: '#10b981'
+    },
+    co: {
+      yMax: '300', yMid: '150', yMin: '0',
+      line: 'M28,95 Q70,90 110,95 T190,85 T260,90 T330,80 T375,76',
+      area: 'M28,95 Q70,90 110,95 T190,85 T260,90 T330,80 T375,76 L375,120 L28,120 Z',
+      stroke: '#10b981'
+    },
+    motion: {
+      yMax: '20.0', yMid: '10.0', yMin: '0.0',
+      line: 'M28,100 Q70,85 110,95 T190,75 T260,90 T330,85 T375,90',
+      area: 'M28,100 Q70,85 110,95 T190,75 T260,90 T330,85 T375,90 L375,120 L28,120 Z',
+      stroke: '#0284c7'
+    },
+    battery: {
+      yMax: '100', yMid: '60', yMin: '20',
+      line: 'M28,30 Q90,34 160,38 T260,42 T375,48',
+      area: 'M28,30 Q90,34 160,38 T260,42 T375,48 L375,120 L28,120 Z',
+      stroke: '#10b981'
     }
-  }
+  };
 
   /**
-   * Log an incoming packet to the terminal drawer
+   * Live Clock Updater
    */
-  function logPacket(type, payload, rssi = '-63dBm') {
+  function updateTimestamp() {
     const now = new Date();
-    const timeStr = now.toTimeString().split(' ')[0];
-    const logLine = `[${timeStr}] ${type}: ${payload},RSSI=${rssi}\n`;
-    rawLogTerminal.textContent += logLine;
-    rawLogTerminal.scrollTop = rawLogTerminal.scrollHeight;
+    telemetryTimeStr.textContent = now.toLocaleTimeString();
   }
+  setInterval(updateTimestamp, 1000);
+  updateTimestamp();
 
   /**
-   * Render the Worker Profile & Telemetry to the UI
+   * Render Worker Dashboard
    */
-  function renderWorker(workerData, jitter = false) {
-    if (!workerData) return;
+  function renderDashboard(worker, jitter = false) {
+    if (!worker) return;
 
-    let vitals = { ...workerData.vitals };
-    if (jitter && !isSosActive) {
-      // Add subtle real-time natural oscillation
-      vitals.hr += Math.floor(Math.random() * 3) - 1;
-      vitals.temp = +(vitals.temp + (Math.random() * 0.1 - 0.05)).toFixed(1);
-      vitals.co += Math.floor(Math.random() * 5) - 2;
+    let v = { ...worker.vitals };
+    if (jitter) {
+      v.hr += Math.floor(Math.random() * 3) - 1;
+      v.temp = +(v.temp + (Math.random() * 0.1 - 0.05)).toFixed(1);
+      v.gas += Math.floor(Math.random() * 5) - 2;
     }
 
-    // Dynamic Risk Score calculation
-    let currentScore = workerData.drs;
-    let breakdown = workerData.weights;
-    let status = workerData.status;
+    // Hero Card
+    heroWorkerName.textContent = worker.name;
+    heroWorkerMeta.textContent = `${worker.id} • ${worker.sector}`;
+    heroDrsVal.textContent = worker.drs;
+    heroDrsBadge.textContent = worker.drsTag;
 
-    if (isSosActive) {
-      currentScore = 95;
-      status = 'CRITICAL';
-      breakdown = { hr: 25, spo2: 15, co: 10, temp: 5, motion: 40 };
-    }
+    const offset = HERO_CIRCUMFERENCE * (1 - worker.drs / 100);
+    heroGaugeRing.style.strokeDashoffset = offset;
+    heroGaugeRing.style.stroke = worker.drs > 70 ? '#ef4444' : (worker.drs > 40 ? '#f59e0b' : '#10b981');
+    heroDrsBadge.style.color = worker.drs > 70 ? '#ef4444' : (worker.drs > 40 ? '#f59e0b' : '#34d399');
 
-    // Update Donut Gauge
-    drsValue.textContent = currentScore;
-    fusionScoreHighlight.textContent = currentScore;
-    const offset = window.RiskEngine.getGaugeOffset(currentScore);
-    gaugeProgressRing.style.strokeDashoffset = offset;
+    // Hero Vitals Strip
+    vHR.textContent = v.hr;
+    vSpO2.textContent = v.spo2;
+    vTemp.textContent = v.temp;
+    vCO.textContent = v.gas;
+    vMotion.textContent = v.motion;
+    vBattery.textContent = v.battery;
 
-    // Gauge Colors & Status
-    drsBadge.className = 'score-status-badge';
-    if (currentScore >= 75) {
-      drsBadge.textContent = 'CRITICAL';
-      drsBadge.classList.add('status-critical');
-      gaugeProgressRing.style.stroke = 'var(--accent-red)';
-    } else if (currentScore >= 45) {
-      drsBadge.textContent = 'WARNING';
-      drsBadge.classList.add('status-warning');
-      gaugeProgressRing.style.stroke = '#f59e0b';
-    } else {
-      drsBadge.textContent = 'SAFE';
-      drsBadge.classList.add('status-safe');
-      gaugeProgressRing.style.stroke = 'var(--accent-mint)';
-    }
+    // 6 Telemetry Cards
+    cardValHR.textContent = v.hr;
+    cardBadgeHR.textContent = v.hrBadge;
+    cardBadgeHR.className = `sensor-pill-status ${v.hrClass === 'badge-elevated-red' ? 'pill-status-elevated' : 'pill-status-normal'}`;
 
-    drsHeadline.textContent = isSosActive
-      ? 'EMERGENCY: Immediate SOS triggered. Evacuate worker now!'
-      : workerData.headline;
+    cardValSpO2.textContent = v.spo2;
+    cardBadgeSpO2.textContent = v.spo2Badge;
 
-    // Update Worker Profile Card
-    workerName.textContent = workerData.name;
-    workerSub.textContent = `${workerData.id} • ${workerData.sector}`;
-    profileBaseline.textContent = workerData.baselineHR;
-    profileConnection.textContent = workerData.connection;
-    profileLastPacket.textContent = 'Just now';
+    cardValTemp.textContent = v.temp;
+    cardBadgeTemp.textContent = v.tempBadge;
 
-    // Update Predictive Card
-    predTitle.textContent = isSosActive ? 'Emergency event active' : workerData.predictiveTitle;
-    predDesc.textContent = isSosActive ? 'Priority rescue packet 152 in progress.' : workerData.predictiveDesc;
-    predTrendText.textContent = isSosActive ? 'Critical Intervention Required' : workerData.predictiveStatus;
-    predTrendStatus.className = `trend-status ${isSosActive ? 'status-critical' : workerData.predictiveClass}`;
+    cardValCO.textContent = v.gas;
+    cardBadgeCO.textContent = v.gasBadge;
 
-    // Update Metrics
-    valHeartRate.textContent = vitals.hr;
-    badgeHeartRate.className = 'metric-badge ' + (vitals.hr > 95 ? 'badge-elevated' : 'badge-normal');
-    badgeHeartRate.textContent = vitals.hr > 95 ? 'ELEVATED' : 'NORMAL';
+    cardValMotion.textContent = v.motion;
+    cardBadgeMotion.textContent = v.motionBadge;
 
-    valSpO2.textContent = vitals.spo2;
-    badgeSpO2.className = 'metric-badge ' + (vitals.spo2 < 95 ? 'badge-critical' : 'badge-normal');
-    badgeSpO2.textContent = vitals.spo2 < 95 ? 'LOW' : 'NORMAL';
+    cardValBattery.textContent = v.battery;
+    cardBadgeBattery.textContent = v.batteryBadge;
 
-    valTemp.textContent = vitals.temp;
-    badgeTemp.className = 'metric-badge ' + (vitals.temp > 37.5 ? 'badge-elevated' : 'badge-normal');
-    badgeTemp.textContent = vitals.temp > 37.5 ? 'ELEVATED' : 'NORMAL';
+    headerRssi.textContent = worker.rssi;
 
-    valCO.textContent = vitals.co;
-    badgeCO.className = 'metric-badge ' + (vitals.co > 400 ? 'badge-critical' : (vitals.co > 50 ? 'badge-normal' : 'badge-normal'));
-    badgeCO.textContent = vitals.co > 400 ? 'DANGER' : 'NORMAL';
+    // AI Risk Contributors
+    wHR.textContent = `+${worker.weights.hr}`;
+    barHR.style.width = `${Math.min(100, worker.weights.hr * 5)}%`;
 
-    valMotion.textContent = vitals.motion;
-    badgeMotion.className = 'metric-badge ' + (vitals.motion.includes('Erratic') ? 'badge-critical' : 'badge-normal');
+    wSpO2.textContent = `+${worker.weights.spo2}`;
+    barSpO2.style.width = `${Math.min(100, worker.weights.spo2 * 5)}%`;
 
-    valBattery.textContent = vitals.battery;
-    badgeBattery.className = 'metric-badge ' + (vitals.battery < 20 ? 'badge-critical' : 'badge-normal');
-    badgeBattery.textContent = vitals.battery < 20 ? 'LOW' : 'GOOD';
+    wCO.textContent = `+${worker.weights.gas}`;
+    barCO.style.width = `${Math.min(100, worker.weights.gas * 5)}%`;
 
-    // Update Breakdown Bars
-    weightHR.textContent = `+${breakdown.hr}`;
-    barHR.style.width = `${Math.min(100, breakdown.hr * 3.5)}%`;
+    wTemp.textContent = `+${worker.weights.temp}`;
+    barTemp.style.width = `${Math.min(100, worker.weights.temp * 6)}%`;
 
-    weightSpO2.textContent = `+${breakdown.spo2}`;
-    barSpO2.style.width = `${Math.min(100, breakdown.spo2 * 3.5)}%`;
+    wMotion.textContent = `+${worker.weights.motion}`;
+    barMotion.style.width = `${Math.min(100, worker.weights.motion * 5)}%`;
 
-    weightCO.textContent = `+${breakdown.co}`;
-    barCO.style.width = `${Math.min(100, breakdown.co * 2.2)}%`;
+    fatigueHeadline.textContent = worker.fatigueTitle;
+    fatigueDetail.textContent = worker.fatigueDesc;
 
-    weightTemp.textContent = `+${breakdown.temp}`;
-    barTemp.style.width = `${Math.min(100, breakdown.temp * 4.0)}%`;
-
-    weightMotion.textContent = `+${breakdown.motion}`;
-    barMotion.style.width = `${Math.min(100, breakdown.motion * 3.5)}%`;
-
-    // Fatigue Analysis Card
-    fatigueTitle.textContent = isSosActive ? 'Critical exhaustion' : workerData.fatigueTitle;
-    fatigueDesc.textContent = isSosActive ? 'Worker reported manual emergency distress.' : workerData.fatigueDesc;
-    fatigueBadge.textContent = isSosActive ? 'DANGER' : workerData.fatigueBadge;
-    fatigueBadge.className = isSosActive ? 'badge-pill-live bg-red' : (workerData.fatigueBadge === 'NORMAL' ? 'badge-pill-live' : 'badge-elevated-pill');
-    fatiguePointer.style.left = `${isSosActive ? 95 : workerData.fatiguePos}%`;
-
-    // Audit History Entry
-    auditHistory.unshift({
-      time: new Date().toLocaleTimeString(),
-      hr: vitals.hr,
-      spo2: vitals.spo2,
-      temp: vitals.temp,
-      co: vitals.co,
-      score: currentScore,
-      sos: isSosActive ? 1 : 0
-    });
-    if (auditHistory.length > 10) auditHistory.pop();
-
-    updateStamp.textContent = `DEMO UPDATE ${new Date().toLocaleTimeString()}`;
+    // Modal data
+    modalWorkerName.textContent = worker.name;
+    modalDeviceId.textContent = worker.id;
+    modalRiskScore.textContent = `${worker.drs} / 100 (${worker.drsTag})`;
+    modalCOExposure.textContent = `${v.gas} PPM (Safe Limit)`;
   }
 
   /**
-   * Run Live Simulation Loop
+   * Start Live Simulation Tick
    */
   function startSimulation() {
-    if (timerInterval) clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-      if (!isDemoRunning) return;
-      const worker = window.WORKER_PROFILES[currentWorkerId];
-      renderWorker(worker, true);
-
-      // Log mock LoRa packet
-      packetCounter++;
-      const v = worker.vitals;
-      const pktType = isSosActive ? 'RX_PKT_152_PRIORITY' : 'RX_PKT_151_ROUTINE';
-      const pktPayload = `VITAGUARD,${worker.id},HR=${v.hr},SPO2=${v.spo2},SKINTEMP=${v.temp},CO_PPM=${v.co},SOS=${isSosActive ? 1 : 0}`;
-      logPacket(pktType, pktPayload);
+    if (timerLoop) clearInterval(timerLoop);
+    timerLoop = setInterval(() => {
+      if (!isStreamActive) return;
+      const worker = window.WORKER_DATASETS[currentWorkerId];
+      renderDashboard(worker, true);
     }, 2500);
   }
 
-  // Worker Dropdown Switch
-  workerSelect.addEventListener('change', (e) => {
-    currentWorkerId = e.target.value;
-    isSosActive = false;
-    emergencyBanner.classList.remove('show');
-    const worker = window.WORKER_PROFILES[currentWorkerId];
-    renderWorker(worker, false);
-    logPacket('WORKER_SWITCH', `Switched active monitor to ${worker.id} (${worker.name})`);
-  });
-
-  // Toggle Demo Simulation
-  demoToggleBtn.addEventListener('click', () => {
-    isDemoRunning = !isDemoRunning;
-    demoToggleBtn.classList.toggle('active', isDemoRunning);
-    demoToggleBtn.querySelector('span:last-child').textContent = isDemoRunning ? 'DEMO SIMULATION' : 'SIMULATION PAUSED';
-  });
-
-  // Trigger Hardware SOS Simulation
-  sosTriggerBtn.addEventListener('click', () => {
-    isSosActive = true;
-    playAlertBeep();
-    const worker = window.WORKER_PROFILES[currentWorkerId];
-    sosWorkerTag.textContent = `${worker.id} (${worker.name})`;
-    emergencyBanner.classList.add('show');
-    renderWorker(worker, false);
-    logPacket('RX_PRIORITY_SOS', `VITAGUARD,SOS,${worker.id},EVENT_ID=${packetCounter},SOS=1`, '-58dBm');
-  });
-
-  // Dismiss SOS Alert
-  dismissSosBtn.addEventListener('click', () => {
-    isSosActive = false;
-    emergencyBanner.classList.remove('show');
-    const worker = window.WORKER_PROFILES[currentWorkerId];
-    renderWorker(worker, false);
-    logPacket('SYS_EVENT', `Supervisor acknowledged and reset SOS for ${worker.id}`);
-  });
-
-  // Toggle Packet Drawer
-  toggleLogBtn.addEventListener('click', () => {
-    telemetryDrawer.classList.toggle('open');
-  });
-
-  // Clear Packet Log
-  clearLogBtn.addEventListener('click', () => {
-    rawLogTerminal.textContent = '[00:00:00] Terminal cleared by supervisor.\n';
-  });
-
-  // Connect Button (ESP32 Live Fetch)
-  connectBtn.addEventListener('click', async () => {
-    const url = baseStationIp.value.trim();
-    connectBtn.textContent = 'CONNECTING...';
-    try {
-      const resp = await fetch(url, { signal: AbortSignal.timeout(3000) });
-      if (resp.ok) {
-        const data = await resp.json();
-        logPacket('ESP32_LINK_OK', `Connected to base station at ${url}. Live stream active.`);
-        connectBtn.textContent = 'CONNECTED';
-      } else {
-        throw new Error('Endpoint returned HTTP ' + resp.status);
-      }
-    } catch (err) {
-      logPacket('ESP32_FALLBACK', `Endpoint ${url} unreachable (${err.message}). Maintaining LoRa demo simulator.`);
-      connectBtn.textContent = 'DEMO MODE';
-      setTimeout(() => { connectBtn.textContent = 'CONNECT'; }, 2000);
+  // Stream rate switcher
+  streamRateSelect.addEventListener('change', (e) => {
+    if (e.target.value === 'pause') {
+      isStreamActive = false;
+    } else {
+      isStreamActive = true;
     }
   });
 
-  // Report Modal Open / Close
-  openReportBtn.addEventListener('click', () => {
-    const worker = window.WORKER_PROFILES[currentWorkerId];
-    document.getElementById('repWorkerName').textContent = worker.name;
-    document.getElementById('repWorkerID').textContent = worker.id;
-    document.getElementById('repScore').textContent = `${drsValue.textContent} / 100 (${drsBadge.textContent})`;
-    document.getElementById('repCO').textContent = `${valCO.textContent} PPM`;
-    document.getElementById('reportTimestamp').textContent = `Generated: ${new Date().toLocaleTimeString()} • Audit ID: VG-REP-${Date.now().toString().slice(-6)}`;
-
-    // Populate audit table
-    auditTableBody.innerHTML = auditHistory.map((row, idx) => `
-      <tr>
-        <td>T-${idx * 2.5}s</td>
-        <td>${row.hr} BPM</td>
-        <td>${row.spo2}%</td>
-        <td>${row.temp}°C</td>
-        <td>${row.co}</td>
-        <td><span class="${row.score > 70 ? 'badge-critical' : 'tag-safe'}">${row.score}</span></td>
-        <td>${row.sos ? '<strong style="color:red">SOS (1)</strong>' : 'Normal (0)'}</td>
-      </tr>
-    `).join('') || `<tr><td colspan="7">No records in rolling buffer yet.</td></tr>`;
-
-    reportModal.classList.add('show');
+  // 24-Hour Trend Filters
+  trendFilterChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      trendFilterChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeMetric = chip.dataset.metric;
+      const d = TREND_DATA[activeMetric];
+      yMax.textContent = d.yMax;
+      yMid.textContent = d.yMid;
+      yMin.textContent = d.yMin;
+      trendSvgLine.setAttribute('d', d.line);
+      trendSvgLine.setAttribute('stroke', d.stroke);
+      trendSvgArea.setAttribute('d', d.area);
+    });
   });
 
-  closeReportBtn.addEventListener('click', () => reportModal.classList.remove('show'));
-  confirmReportBtn.addEventListener('click', () => reportModal.classList.remove('show'));
-  printReportBtn.addEventListener('click', () => window.print());
+  // Map Zoom Controls
+  btnMapZoomIn.addEventListener('click', () => {
+    mapZoomLevel = Math.min(2.0, mapZoomLevel + 0.2);
+    satelliteMapBox.querySelector('.satellite-img-bg').style.transform = `scale(${mapZoomLevel})`;
+  });
 
-  // Initial Boot
-  renderWorker(window.WORKER_PROFILES['VG-014']);
+  btnMapZoomOut.addEventListener('click', () => {
+    mapZoomLevel = Math.max(0.8, mapZoomLevel - 0.2);
+    satelliteMapBox.querySelector('.satellite-img-bg').style.transform = `scale(${mapZoomLevel})`;
+  });
+
+  btnMapCenter.addEventListener('click', () => {
+    mapZoomLevel = 1.0;
+    satelliteMapBox.querySelector('.satellite-img-bg').style.transform = 'scale(1.0)';
+  });
+
+  btnViewFullMap.addEventListener('click', () => {
+    alert(`Industrial Plant Map: \nSector B (Boiler Plant Area 1): Worker VG-014 (R. Kumar)\nSector A (Control Tower): Worker VG-007 (A. Sharma)\nSector D (Foundry): Worker VG-023 (S. Patel)\nSector C (Chemical Vault): Worker VG-042 (M. Singh)\n\nAll 12 LoRa Wearables active on 433MHz Mesh.`);
+  });
+
+  // Modals Handling - Worker Report
+  function openWorkerReport() {
+    reportPreviewModal.classList.add('open');
+  }
+  btnPreviewWorkerReport.addEventListener('click', openWorkerReport);
+  btnSubmitWorkerReport.addEventListener('click', () => {
+    alert(`Safety report for ${currentWorkerId} compiled and dispatched to Safety Operations.`);
+  });
+  closeReportModalBtn.addEventListener('click', () => {
+    reportPreviewModal.classList.remove('open');
+  });
+  btnDispatchReport.addEventListener('click', () => {
+    reportPreviewModal.classList.remove('open');
+    alert(`Report securely transmitted via encrypted LoRa Gateway endpoint.`);
+  });
+
+  // Modals Handling - Insurance
+  function openInsuranceModal() {
+    insurancePreviewModal.classList.add('open');
+  }
+  btnPreviewInsurance.addEventListener('click', openInsuranceModal);
+  btnSubmitInsurance.addEventListener('click', () => {
+    alert(`Insurance compliance audit docket transmitted to carrier underwriting API.`);
+  });
+  closeInsuranceModalBtn.addEventListener('click', () => {
+    insurancePreviewModal.classList.remove('open');
+  });
+  btnConfirmSendInsurer.addEventListener('click', () => {
+    insurancePreviewModal.classList.remove('open');
+    alert(`Dossier signed with digital certificate and uploaded to Underwriter.`);
+  });
+
+  // Close modals on overlay click
+  window.addEventListener('click', (e) => {
+    if (e.target === reportPreviewModal) reportPreviewModal.classList.remove('open');
+    if (e.target === insurancePreviewModal) insurancePreviewModal.classList.remove('open');
+  });
+
+  // Quick Action Buttons
+  btnQuickPdf.addEventListener('click', () => window.print());
+  btnQuickEmail.addEventListener('click', () => {
+    const email = prompt('Enter Safety Director / Recipient Email Address:', 'safety-officer@plant.com');
+    if (email) alert(`Full shift telemetry PDF sent to ${email}`);
+  });
+  btnQuickSchedule.addEventListener('click', () => {
+    alert('Automated Report Scheduler Active: Daily EOD Shift Audit configured for 06:00, 14:00, and 22:00 UTC.');
+  });
+
+  // Notifications Bell
+  bellNotifTrigger.addEventListener('click', () => {
+    alert('Active Safety Notifications (2):\n1. [10:20 PM] Heart rate reached 100 BPM (Sector B)\n2. [09:35 PM] Inactivity detected during high temperature exposure');
+  });
+
+  // Global Search
+  globalSearchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const q = globalSearchInput.value.trim().toUpperCase();
+      if (window.WORKER_DATASETS[q]) {
+        currentWorkerId = q;
+        renderDashboard(window.WORKER_DATASETS[q], false);
+      } else if (q.includes('KUMAR') || q.includes('VG-014')) {
+        currentWorkerId = 'VG-014';
+        renderDashboard(window.WORKER_DATASETS['VG-014'], false);
+      } else if (q.includes('SHARMA') || q.includes('VG-007')) {
+        currentWorkerId = 'VG-007';
+        renderDashboard(window.WORKER_DATASETS['VG-007'], false);
+      } else if (q.includes('PATEL') || q.includes('VG-023')) {
+        currentWorkerId = 'VG-023';
+        renderDashboard(window.WORKER_DATASETS['VG-023'], false);
+      } else if (q.includes('SINGH') || q.includes('VG-042')) {
+        currentWorkerId = 'VG-042';
+        renderDashboard(window.WORKER_DATASETS['VG-042'], false);
+      } else {
+        alert(`Showing search results for "${globalSearchInput.value}": 1 match in Plant Area 1.`);
+      }
+    }
+  });
+
+  // Sidebar Links Click Handlers
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      sidebarLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      const tab = link.dataset.tab;
+      if (tab === 'reports') openWorkerReport();
+      else if (tab === 'insurance') openInsuranceModal();
+      else if (tab === 'livemap') btnViewFullMap.click();
+      else if (tab === 'alerts') bellNotifTrigger.click();
+      else if (tab === 'workers') {
+        const nextId = currentWorkerId === 'VG-014' ? 'VG-023' : (currentWorkerId === 'VG-023' ? 'VG-042' : 'VG-014');
+        currentWorkerId = nextId;
+        renderDashboard(window.WORKER_DATASETS[nextId], false);
+      }
+    });
+  });
+
+  // Recent Events View All
+  document.getElementById('btnViewAllEvents').addEventListener('click', (e) => {
+    e.preventDefault();
+    openWorkerReport();
+  });
+
+  // Initial Load
+  renderDashboard(window.WORKER_DATASETS['VG-014'], false);
   startSimulation();
 });
