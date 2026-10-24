@@ -1828,3 +1828,184 @@ html, body {
   .dark-sidebar { display: none; }
   .telemetry-cards-6 { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* =====================================================================
+   New Architectural Components: FSM Chips, Serial, SOS Banner & Baselines
+   ===================================================================== */
+.simulated-data-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.simulated-data-chip.chip-hardware-active {
+  background: #ecfdf5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+.chip-dot-amber {
+  color: #f59e0b;
+  font-size: 10px;
+  animation: pulse-amber 1.8s infinite;
+}
+
+.chip-dot-green {
+  color: #10b981;
+  font-size: 10px;
+  animation: pulse-green 1.8s infinite;
+}
+
+@keyframes pulse-amber {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.btn-connect-serial {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.btn-connect-serial:hover {
+  background: #f8fafc;
+  border-color: var(--primary-teal);
+  color: var(--primary-teal);
+}
+
+.btn-connect-serial.btn-serial-active {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.sos-emergency-banner {
+  background: linear-gradient(90deg, #b91c1c 0%, #dc2626 100%);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin: 12px 20px 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 16px rgba(220, 38, 38, 0.35);
+  animation: sos-pulse-border 1.5s infinite alternate;
+}
+
+@keyframes sos-pulse-border {
+  from { box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3); }
+  to { box-shadow: 0 6px 24px rgba(220, 38, 38, 0.7); }
+}
+
+.sos-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sos-pulse-dot {
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border-radius: 50%;
+  animation: ping-sos 1s infinite;
+}
+
+@keyframes ping-sos {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+.sos-meta-text {
+  font-size: 11px;
+  color: #fee2e2;
+  margin-top: 2px;
+}
+
+.btn-ack-sos {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  color: #b91c1c;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.btn-ack-sos:hover {
+  background: #fef2f2;
+  transform: translateY(-1px);
+}
+
+.fsm-state-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10.5px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  margin-left: 8px;
+  letter-spacing: 0.2px;
+}
+
+.fsm-state-chip.state-normal {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.fsm-state-chip.state-elevated {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.fsm-state-chip.state-critical {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+  animation: pulse-critical 1.5s infinite;
+}
+
+.hero-baseline-strip {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: #475569;
+}
+
+.hero-baseline-strip strong {
+  color: var(--text-dark);
+}

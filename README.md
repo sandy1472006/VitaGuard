@@ -130,9 +130,9 @@ Judging criteria for hardware-software hackathons consistently prioritize **deep
 ```
 
 ### 1. Sub-Second Multi-Modal Hazard Correlation (Sensor Fusion)
-* **The Software Problem:** Software cannot infer true worker distress from a single noisy sensor. An elevated heart rate ($99\text{ BPM}$) could simply mean the worker walked up a ladder. A transient spike in gas ($171\text{ ppm}$) could just be a passing forklift exhaust.
+* **The Software Problem:** Software cannot infer true worker distress from a single noisy sensor. An elevated heart rate ($99\text{ BPM}$) could simply mean the worker walked up a ladder. A transient spike in gas ($38\text{ ppm}$) could just be a passing forklift exhaust.
 * **The Hardware Solution:** Dedicated physical hardware captures simultaneous biometric, ambient, and inertial channels. 
-* **The Synergy:** VitaGuard's Edge AI correlates these signals instantaneously: when heart rate is elevated ($99\text{ BPM}$) *while* movement is low (fatigued), contact skin temperature is high ($37.1^\circ\text{C}$), and $\text{CO}$ is creeping ($171\text{ ppm}$), the algorithm recognizes **acute hypoxic fatigue** and calculates an elevated Dynamic Risk Score ($30 \rightarrow 65+$), alerting the supervisor hours before clinical syncope occurs.
+* **The Synergy:** VitaGuard's Edge AI correlates these signals instantaneously: when heart rate is elevated ($99\text{ BPM}$) *while* movement is low (fatigued), contact skin temperature is high ($37.1^\circ\text{C}$), and $\text{CO}$ is creeping ($38\text{ ppm}$ vs $16\text{ ppm}$ baseline), the algorithm recognizes **acute hypoxic fatigue** and calculates an elevated Dynamic Risk Score ($30 \rightarrow 65+$), alerting the supervisor hours before clinical syncope occurs.
 
 ### 2. Zero-Dependency Off-Grid Resilience (LoRa 433MHz RF)
 * **The Hardware Problem:** Standard IoT hardware relies on cloud connectivity. In petrochemical refineries with thick metal distillation towers, or in underground mines, cellular and Wi-Fi signals suffer severe attenuation ($> 40\text{ dB}$ loss).
@@ -212,7 +212,7 @@ VitaGuard 2.0 integrates high-reliability sensor subsystems on a unified carrier
   MAX30102 PPG Optical LEDs                   :   4.5 mA
   ADXL345 + BMP280 + DS18B20                  :   1.2 mA
   MQ-9 Internal Heating Element (Pulsed 5V)    :  65.0 mA
-  SX1278 LoRa Tx (1.2s packet every 2.5s @ 20dBm): 38.0 mA (Time-averaged)
+  SX1278 LoRa Tx (41.2ms airtime packet every 2.5s @ +20dBm): 38.0 mA (Time-averaged)
   Status LEDs & Quiescent LDO                  :   3.3 mA
   -------------------------------------------------------------
   TOTAL AVERAGE CURRENT CONSUMPTION           : 160.0 mA
@@ -264,7 +264,7 @@ $$\text{TSI}(t) = \max(0, \; T_{\text{skin}}(t) - 37.0) \times 12.0 + \max(0, \;
 ### 4. Kinetic Movement & Fatigue Recovery Index (FRI)
 From the 3-axis accelerometer vector magnitude $a_{\text{mag}}(t) = \sqrt{a_x^2 + a_y^2 + a_z^2}$:
 $$\text{Jerk}(t) = \frac{\Delta a_{\text{mag}}(t)}{\Delta t}$$
-If $a_{\text{mag}} < 1.1\text{ m/s}^2$ continuously for $> 180\text{ s}$ while $z_{\text{HR}} > 2.0$, the system flags **fatigue exhaustion without physiological recovery**:
+If $|a_{\text{mag}} - 9.8\text{ m/s}^2| < 1.1\text{ m/s}^2$ (kinetic deviation from $1.0\text{g}$ Earth gravity indicating prolonged static immobility) continuously for $> 180\text{ s}$ while $z_{\text{HR}} > 2.0$, the system flags **fatigue exhaustion without physiological recovery**:
 $$\Phi_{\text{fatigue}}(t) = \alpha \cdot z_{\text{HR}}(t) + \beta \cdot (1 - \text{ActivityRatio})$$
 
 ### 5. Unified Dynamic Risk Score ($DRS \in [0, 100]$)
@@ -384,23 +384,34 @@ The VitaGuard Supervisor Console provides safety engineers and shift supervisors
 </div>
 
 ### Key Dashboard Architectural Capabilities:
-1. **Dynamic Risk Score Dial (0 - 100):** Visual circular SVG progress ring dynamically color-coded:
-   * **🟢 SAFE ($0 - 44$):** Green arc. Normal operations; metrics within personal baseline.
-   * **🟠 WARNING ($45 - 74$):** Amber arc. Early heat stress, climbing heart rate, or elevated fatigue.
-   * **🔴 CRITICAL ($75 - 100$):** Red flashing arc. Immediate danger, toxic gas exposure, or active SOS.
-2. **Worker Profile & Shift Baselines:** Tracks worker identity (`VG-014 • R. Kumar`), shift sector (`Sector B - Day Shift`), calibrated baseline (`HR 72-92 BPM`), and RF link quality (`-63 dBm`).
-3. **Predictive Analytics & Early Warning:** Analyzes rolling trends over a $15\text{-minute}$ sliding window to alert supervisors to gradual physiological collapse or persistent tachycardia before statutory alarm limits are breached.
-4. **Live 6-Metric Telemetry Grid:** Real-time synchronized gauges for Heart Rate ($99\text{ BPM}$ - Elevated), $\text{SpO}_2$ ($96\%$ - Normal), Contact Temperature ($37.1^\circ\text{C}$ - Normal), $\text{CO}$ Exposure ($171\text{ PPM}$ - Normal), Movement activity (Low activity), and Battery ($84\%$).
-5. **Personal AI + Sensor Fusion Breakdown:** Transparently explains *why* the score is what it is (e.g. Heart rate $+4$, $\text{SpO}_2$ $+0$, $\text{CO}$ $+5$, Temperature $+1$, Motion/Fatigue $+12 \implies \text{Score } 30$).
-6. **Fatigue & Recovery Analysis:** Visual horizontal gradient index tracking cardiovascular workload versus kinetic rest periods.
-7. **Interactive Hackathon Demonstrator:**
-   * **Multi-Worker Switcher:** Toggle between Worker profiles: `VG-014` (Fatigue), `VG-007` (Baseline), `VG-023` (Heat Strain), `VG-042` (Gas Hazard).
-   * **Hardware SOS Simulation:** One-click test button triggers simulated Packet 152, sounding web alarms and freezing black-box telemetry.
-   * **Live LoRa Packet Terminal:** Expandable drawer displaying real incoming serial telemetry streams.
-   * **Worker Safety Compliance Report:** Generates immutable shift audit summaries ready for immediate printing or PDF export.
+1. **Dynamic Risk Score Dial (0 - 100):** Visual circular SVG progress ring dynamically color-coded to unified regulatory risk bands:
+   * **🟢 SAFE ($0 - 44$):** Green arc. Normal operations; metrics within personal 120s baseline.
+   * **🟠 WARNING ($45 - 74$):** Amber arc. Early heat stress, climbing heart rate (> personal baseline max), or elevated fatigue.
+   * **🔴 CRITICAL ($75 - 100$):** Red flashing arc. Immediate danger, toxic gas exposure (>200 PPM ceiling), acute hypoxia (<92% SpO₂), or active SOS.
+2. **Personal AI + Sensor Fusion Breakdown:** Transparently explains *why* the score is what it is with exact mathematical weight summation (Heart rate $+4$, $\text{SpO}_2$ $+0$, $\text{CO}$ $+5$, Temperature $+1$, Motion/Fatigue $+20 \implies \text{Score } 30$).
+3. **Live 6-Metric Telemetry Grid:** Real-time synchronized gauges for Heart Rate ($100\text{ BPM}$ - Caution, above 92 BPM personal baseline max), $\text{SpO}_2$ ($96\%$ - Normal), Contact Temperature ($37.1^\circ\text{C}$ - Normal), $\text{CO}$ Exposure ($16\text{ PPM}$ - Safe, OSHA PEL < 50 PPM, NIOSH REL < 35 PPM), Movement activity (Low activity), and Battery ($84\%$).
+4. **120-Second Shift-Readiness Baseline Calibration:** Personalized baseline established at shift start (Resting HR 76 BPM, Max Safe HR 92 BPM, Ambient CO 12 PPM).
+5. **Web Serial API for Physical Hardware over HTTPS:** Direct `navigator.serial` integration allowing judges to plug in a physical ESP32 Base Station via USB and stream real-time Protocol 151/152 packets into the hosted dashboard with zero mixed-content issues.
+6. **Emergency SOS & Finite State Machine Loop:** Complete FSM transition handling (`NormalMonitoring` $\rightarrow$ `ElevatedWatch` $\rightarrow$ `CriticalAlarm` $\rightarrow$ `AwaitSupervisorAck` $\rightarrow$ `NormalMonitoring`) featuring high-priority red alert banner with Packet 152 `EVENT_ID` and supervisor **"Acknowledge & Clear Alarm"** clearance button.
+7. **9 Comprehensive Industrial Supervisor Views:**
+   * **Live Telemetry Dashboard:** Viewport-optimized command center with real satellite plant imagery and radar scanning.
+   * **Worker Fleet Overview:** 12-worker live roster with individual biometrics, risk bands, and instant view switching.
+   * **Live Map:** Interactive Leaflet GIS map with plant sector pins for all 12 workers.
+   * **Active Safety Alerts:** Dynamic multi-tier alert feed (Critical CO/gait alarms, thermal warnings, baseline cautions).
+   * **Shift Safety Dossiers:** Immutable shift audit summaries with 60-second black-box rolling ring buffer tables and PDF export.
+   * **Safety Analytics & Risk Distribution:** Dynamic fleet distribution across regulatory bands (10 Safe, 1 Warning, 1 Critical) and 3.2 km RF link validation.
+   * **Insurance & Underwriting Portal:** Verified records audit and ISO 45001-aligned safety compliance.
+   * **Device Management:** Hardware fleet inventory, firmware tracking, battery health, and LoRa RSSI.
+   * **System Settings & Thresholds:** Network RF parameters, medical caution/danger thresholds, and audio-visual preferences.
 
 👉 **Experience the Live Web Simulator:** [https://sandy1472006.github.io/VitaGuard/](https://sandy1472006.github.io/VitaGuard/)  
 🎥 **Physical Prototype Video Demonstration:** [https://drive.google.com/drive/folders/1RO9VPznZsdl6sS9kMKoxTeTSW7GhWBj5](https://drive.google.com/drive/folders/1RO9VPznZsdl6sS9kMKoxTeTSW7GhWBj5)
+
+#### 📑 Sample Field Safety Reports & Dispatch Artifacts:
+* 📋 **[Worker Safety & Shift Health Dossier (A4 Print-Ready)](https://sandy1472006.github.io/VitaGuard/worker-report.html):** Full 2-page biometric shift audit with exposure curves, risk band breakdown, and supervisor sign-off.
+* 🛡️ **[Occupational Safety & Underwriting Statement](https://sandy1472006.github.io/VitaGuard/insurance-report.html):** Insurer verification docket for workmen's compensation under ISO 45001 & OSHA guidelines.
+* ✉️ **[Supervisor Email Dispatch Template](https://sandy1472006.github.io/VitaGuard/email-report.html):** Responsive email template with automated shift safety KPIs and direct audit links.
+* ⏱️ **[Automated Report Dispatch Scheduler](https://sandy1472006.github.io/VitaGuard/schedule-reports.html):** Interactive recurrence rules engine for daily, weekly, and monthly plant safety reporting.
 
 ---
 
@@ -414,7 +425,7 @@ VITAGUARD,<WORKER_ID>,HR=<val>,SPO2=<val>,SKINTEMP=<val>,AMBTEMP=<val>,PRESSURE=
 ```
 * **Sample 151 Message:**
   ```text
-  VITAGUARD,VG-014,HR=99,SPO2=96,SKINTEMP=37.1,AMBTEMP=31.2,PRESSURE=1012.4,GAS_ADC=1240,CO_PPM=171,AX=0.12,AY=-0.21,AZ=9.78,ACC_MAG=9.79,DRS=30,SOS=0
+  VITAGUARD,VG-014,HR=100,SPO2=96,SKINTEMP=37.1,AMBTEMP=31.2,PRESSURE=1012.4,GAS_ADC=240,CO_PPM=16,AX=0.12,AY=-0.21,AZ=9.78,ACC_MAG=9.79,DRS=30,SOS=0
   ```
 
 ### 2. Protocol 152: Priority Emergency SOS Event (Transmitted immediately upon ISR)
@@ -507,7 +518,7 @@ cd VitaGuard
 1. Connect the Base Station ESP32 via USB.
 2. Open [`firmware/base_station_receiver/base_station_receiver.ino`](firmware/base_station_receiver/base_station_receiver.ino).
 3. Click **Upload**.
-4. The Base Station will broadcast a Wi-Fi Access Point: `VitaGuard-BaseStation` (Password: `WorkerSafety2026`).
+4. The Base Station will broadcast a Wi-Fi Access Point: `VitaGuard-BaseStation` (Password: `<CONFIGURED_WIFI_KEY>` configured via `config/config.h`).
 
 ### Step 4: Launch the Live Supervisor Dashboard
 * Option A (Online): Open [https://sandy1472006.github.io/VitaGuard/](https://sandy1472006.github.io/VitaGuard/) in any modern web browser.

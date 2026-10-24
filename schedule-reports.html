@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schedule reports · VitaGuard</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap">
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(800px 400px at 10% 0,rgba(56,189,248,.2),transparent 60%),radial-gradient(800px 400px at 95% 0,rgba(139,92,246,.2),transparent 60%),#0a1020;color:#e8eefc;font-family:'DM Sans',sans-serif;padding:24px}
+.w{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+.g{background:linear-gradient(160deg,rgba(24,38,70,.8),rgba(12,20,38,.8));border:1px solid rgba(110,150,255,.2);border-radius:20px;padding:22px;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+h1{font:800 24px Sora;margin:0 0 4px}h2{font:700 16px Sora;margin:0 0 12px}p{margin:0 0 16px;color:#a9b9da;font-size:14px}
+label,.lb{display:block;font-size:13px;font-weight:600;color:#a9b9da;margin:14px 0 6px}
+select,input[type=time],input[type=email]{width:100%;background:#0e1830;color:#fff;border:1px solid #2b3d66;border-radius:12px;padding:11px 12px;font:500 14px 'DM Sans'}
+.seg{display:flex;gap:8px;flex-wrap:wrap}.seg button{flex:1;min-width:84px;padding:10px;border-radius:12px;border:1px solid #2b3d66;background:#0e1830;color:#e8eefc;font:600 13px 'DM Sans';cursor:pointer}
+.seg button[aria-pressed=true]{background:linear-gradient(135deg,#38bdf8,#6366f1);border:0;color:#06121f}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chip{display:flex;gap:8px;align-items:center;background:#16264a;border:1px solid #2b3d66;border-radius:99px;padding:5px 6px 5px 12px;font-size:13px}
+.chip button{border:0;background:#24376a;color:#fff;border-radius:99px;width:20px;height:20px;cursor:pointer}
+.sum{margin-top:18px;padding:14px;border-radius:14px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.35);font-size:14px;line-height:1.5}
+.go{margin-top:14px;width:100%;border:0;border-radius:12px;padding:13px;font:700 15px 'DM Sans';color:#06121f;background:linear-gradient(135deg,#38bdf8,#86efac);cursor:pointer}
+.it{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid rgba(110,150,255,.18);border-radius:14px;background:rgba(24,38,70,.6);margin-bottom:10px}
+.it .t{flex:1;font-size:14px}.it small{display:block;color:#a9b9da;margin-top:2px}
+.sw{width:44px;height:24px;border-radius:99px;border:0;background:#2b3d66;position:relative;cursor:pointer}.sw:after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:99px;background:#fff;transition:.2s}
+.sw[aria-checked=true]{background:#22c55e}.sw[aria-checked=true]:after{left:23px}
+.rm{border:0;background:transparent;color:#fca5a5;cursor:pointer;font:600 13px 'DM Sans'}
+:focus-visible{outline:2px solid #7dd3fc;outline-offset:2px}
+@media(max-width:760px){.w{grid-template-columns:1fr}}
+</style></head><body>
+<div class="w">
+<section class="g"><h1>Schedule reports</h1><p>Send safety reports automatically, with no one needing to remember.</p>
+<label for="rt">Report</label>
+<select id="rt"><option>Worker shift report</option><option>Fleet summary</option><option>Insurance verification</option></select>
+<div class="lb">How often</div>
+<div class="seg" id="fq"><button aria-pressed="false" data-v="Daily">Daily</button><button aria-pressed="true" data-v="Weekly">Weekly</button><button aria-pressed="false" data-v="Monthly">Monthly</button></div>
+<label for="dy" id="dl">Day of the week</label><select id="dy"></select>
+<label for="tm">Time</label><input type="time" id="tm" value="08:00">
+<label for="em">Recipients</label><input type="email" id="em" placeholder="Type an email and press Enter">
+<div class="chips" id="ch"></div>
+<div class="sum" id="sm" aria-live="polite"></div>
+<button class="go" id="sv">Save schedule</button></section>
+<section class="g"><h2>Active schedules</h2><div id="ls"></div></section>
+</div>
+<script>
+var D=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],S=[],R=['supervisor@plant4.example'],F='Weekly';
+var el=function(i){return document.getElementById(i)};
+try{S=JSON.parse(localStorage.getItem('vg_sched')||'null')||[]}catch(e){S=[]}
+if(!S.length)S=[{r:'Fleet summary',f:'Daily',d:'',t:'18:15',to:['supervisor@plant4.example'],on:true},{r:'Worker shift report',f:'Weekly',d:'Monday',t:'08:00',to:['safety@plant4.example'],on:true},{r:'Insurance verification',f:'Monthly',d:'1',t:'09:00',to:['insurer@carrier.example'],on:false}];
+function opts(){var d=el('dy');el('dl').style.display=d.style.display=F=='Daily'?'none':'block';
+ d.innerHTML=F=='Weekly'?D.map(function(x,i){return'<option'+(i==1?' selected':'')+'>'+x+'</option>'}).join(''):Array.from({length:28},function(_,i){return'<option>'+(i+1)+'</option>'}).join('');
+ el('dl').textContent=F=='Weekly'?'Day of the week':'Day of the month'}
+function when(f,d,t){return f=='Daily'?'Every day at '+t:f=='Weekly'?'Every '+d+' at '+t:'On day '+d+' of each month at '+t}
+function next(f,d,t){var n=new Date(),p=t.split(':'),x=new Date(n);x.setHours(+p[0],+p[1],0,0);
+ if(f=='Weekly'){x.setDate(x.getDate()+((D.indexOf(d)-x.getDay()+7)%7))}
+ if(f=='Monthly'){x.setDate(+d);if(x<n){x.setMonth(x.getMonth()+1)}}
+ if(f!='Monthly'&&x<n){x.setDate(x.getDate()+(f=='Daily'?1:7))}
+ return x.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'})+', '+t}
+function sum(){el('sm').textContent=when(F,el('dy').value,el('tm').value)+'. Next send: '+next(F,el('dy').value,el('tm').value)+'. To '+(R.length?R.join(', '):'nobody yet')+'.'}
+function chips(){el('ch').innerHTML='';R.forEach(function(r,i){var c=document.createElement('span');c.className='chip';c.textContent=r;var b=document.createElement('button');b.textContent='×';b.setAttribute('aria-label','Remove '+r);b.onclick=function(){R.splice(i,1);chips();sum()};c.appendChild(b);el('ch').appendChild(c)})}
+function list(){var l=el('ls');l.innerHTML='';S.forEach(function(s,i){var r=document.createElement('div');r.className='it';
+ r.innerHTML='<div class="t"><b></b><small></small></div>';r.querySelector('b').textContent=s.r;r.querySelector('small').textContent=when(s.f,s.d,s.t)+' · '+s.to.length+' recipient'+(s.to.length>1?'s':'');
+ var w=document.createElement('button');w.className='sw';w.setAttribute('role','switch');w.setAttribute('aria-checked',s.on);w.setAttribute('aria-label','Turn '+s.r+' on or off');w.onclick=function(){s.on=!s.on;save();list()};
+ var x=document.createElement('button');x.className='rm';x.textContent='Delete';x.onclick=function(){S.splice(i,1);save();list()};r.appendChild(w);r.appendChild(x);l.appendChild(r)})}
+function save(){try{localStorage.setItem('vg_sched',JSON.stringify(S))}catch(e){}}
+document.querySelectorAll('#fq button').forEach(function(b){b.onclick=function(){F=b.dataset.v;document.querySelectorAll('#fq button').forEach(function(o){o.setAttribute('aria-pressed',o==b)});opts();sum()}});
+el('em').onkeydown=function(e){if(e.key=='Enter'){e.preventDefault();var v=this.value.trim();if(/^\S+@\S+\.\S+$/.test(v)&&R.indexOf(v)<0){R.push(v);this.value='';chips();sum()}}};
+el('dy').onchange=el('tm').onchange=sum;
+el('sv').onclick=function(){if(!R.length)return;S.unshift({r:el('rt').value,f:F,d:F=='Daily'?'':el('dy').value,t:el('tm').value,to:R.slice(),on:true});save();list()};
+opts();chips();sum();list();
+</script></body></html>

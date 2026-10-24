@@ -1,7 +1,21 @@
 /**
  * VitaGuard Dynamic Risk Engine & Sensor Fusion Model
  * Implements real-time fusion for physiological, atmospheric, and kinetic parameters.
+ * Unified risk bands: SAFE (0–44), WARNING (45–74), CRITICAL (75–100)
  */
+
+const band = s => s >= 75 ? 'CRITICAL' : s >= 45 ? 'WARNING' : 'SAFE';
+
+/**
+ * Computes 8-hour Time Weighted Average (TWA) for CO samples at 2.5s sample interval
+ */
+const twa8 = samples => samples.reduce((a, s) => a + (s.co || s.gas || 0) * 2.5, 0) / (8 * 3600);
+
+if (typeof window !== 'undefined') {
+  window.band = band;
+  window.getRiskBand = band;
+  window.twa8 = twa8;
+}
 
 class RiskEngine {
   constructor() {
@@ -39,30 +53,35 @@ class RiskEngine {
     let tempExcess = Math.max(0, vitals.temp - 37.0);
     let tempWeight = Math.min(25, Math.round(tempExcess * 12.0));
 
-    // 4. Toxic Gas (CO PPM)
+    // 4. Toxic Gas (CO PPM) - NIOSH REL 35 PPM, OSHA PEL 50 PPM, Danger Ceiling 200 PPM
     let coWeight = 0;
-    if (vitals.co > 50) {
-      coWeight = Math.min(40, Math.round((vitals.co - 50) * 0.05));
+    if (vitals.co > 35) {
+      coWeight = Math.min(20, Math.round((vitals.co - 35) * 0.12));
     }
-    if (vitals.co > 400) {
-      coWeight = Math.min(40, 20 + Math.round((vitals.co - 400) * 0.05));
+    if (vitals.co > 200) {
+      coWeight = Math.min(40, 20 + Math.round((vitals.co - 200) * 0.04));
     }
 
     // 5. Motion / Fatigue Workload
+    // Checks kinetic deviation from 1g (~9.8 m/s^2) or activity state
     let motionWeight = 5;
     if (typeof vitals.motion === 'string') {
-      if (vitals.motion.includes('Low')) motionWeight = 12;
+      if (vitals.motion.includes('Low')) motionWeight = 20; // Fatigued inactivity during shift
       else if (vitals.motion.includes('exertion') || vitals.motion.includes('High')) motionWeight = 15;
-      else if (vitals.motion.includes('stumble') || vitals.motion.includes('Erratic')) motionWeight = 22;
-      else motionWeight = 2;
+      else if (vitals.motion.includes('stumble') || vitals.motion.includes('Erratic')) motionWeight = 20;
+      else motionWeight = 2; // Normal active
     }
 
     const totalRaw = hrWeight + spo2Weight + tempWeight + coWeight + motionWeight;
     const score = Math.max(0, Math.min(100, totalRaw));
 
-    let status = 'SAFE';
-    if (score >= 75) status = 'CRITICAL';
-    else if (score >= 45) status = 'WARNING';
+    // Guarantee exact breakdown sum matches score
+    const sumBreakdown = hrWeight + spo2Weight + tempWeight + coWeight + motionWeight;
+    if (sumBreakdown !== score && score > 0) {
+      motionWeight = Math.max(0, score - (hrWeight + spo2Weight + tempWeight + coWeight));
+    }
+
+    const status = band(score);
 
     return {
       score,
@@ -86,4 +105,8 @@ class RiskEngine {
   }
 }
 
-window.RiskEngine = new RiskEngine();
+const engineInstance = new RiskEngine();
+if (typeof window !== 'undefined') window.RiskEngine = engineInstance;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { RiskEngine: engineInstance, band, twa8 };
+}

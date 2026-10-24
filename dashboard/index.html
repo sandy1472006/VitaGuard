@@ -113,6 +113,15 @@
         </div>
 
         <div class="header-actions-right">
+          <span class="simulated-data-chip" id="simulatedDataChip" title="Simulated demo data currently driving metrics">
+            <span class="chip-dot-amber">●</span> Simulated Data
+          </span>
+
+          <button class="btn-connect-serial" id="btnConnectSerial" title="Connect physical ESP32 Base Station over Web Serial (115200 baud)">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <span>Connect Base Station</span>
+          </button>
+
           <span class="online-status-badge">
             <span class="dot-pulse-green"></span>
             <span>System Online</span>
@@ -128,7 +137,7 @@
 
           <div class="bell-button-wrap" id="bellNotifTrigger">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-            <span class="bell-red-badge">2</span>
+            <span class="bell-red-badge" id="bellBadgeCount">3</span>
           </div>
 
           <div class="user-profile-widget">
@@ -143,6 +152,23 @@
         </div>
       </header>
 
+      <!-- Critical SOS Emergency Alert Banner (AwaitSupervisorAck finite state transition) -->
+      <div id="sosEmergencyBanner" class="sos-emergency-banner" style="display:none;">
+        <div class="sos-banner-left">
+          <span class="sos-pulse-dot"></span>
+          <div>
+            <strong>🚨 CRITICAL EMERGENCY SOS • Packet 152 ACTIVE</strong>
+            <div class="sos-meta-text">EVENT_ID: <span id="sosEventId">#VG-SOS-042-991</span> • Worker: <span id="sosWorkerName">M. Singh (VG-042)</span> • Sector C Chemical Vault • ISR Radio Interrupt</div>
+          </div>
+        </div>
+        <div class="sos-banner-actions">
+          <button id="btnAcknowledgeSos" class="btn-ack-sos">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Acknowledge &amp; Clear Alarm (Supervisor ACK)
+          </button>
+        </div>
+      </div>
+
       <!-- ============================================================= -->
       <!-- PAGE: Dashboard (Main) -->
       <!-- ============================================================= -->
@@ -152,7 +178,10 @@
           <section class="row-top-trio">
             <!-- 1. Worker Hero Card -->
             <div class="worker-hero-card">
-              <span class="hero-top-badge">● LIVE</span>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="hero-top-badge">● LIVE</span>
+                <span class="fsm-state-chip state-normal" id="fsmStateChip">NormalMonitoring</span>
+              </div>
               <div class="hero-mid-row">
                 <div class="worker-avatar-title-group">
                   <div class="worker-helm-avatar">
@@ -177,14 +206,14 @@
                       <span class="drs-val-text" id="heroDrsVal">30</span>
                       <span class="drs-max-text">/100</span>
                     </div>
-                    <span class="drs-badge-text" id="heroDrsBadge">LOW RISK</span>
+                    <span class="drs-badge-text" id="heroDrsBadge">SAFE</span>
                   </div>
                 </div>
               </div>
               <div class="hero-vitals-strip">
                 <div class="hero-vital-item" id="itemHR">
                   <span>❤️ HR <strong id="vHR">100</strong> BPM</span>
-                  <span class="v-tag tag-elevated-pill" id="tagHR">Elevated</span>
+                  <span class="v-tag tag-elevated-pill" id="tagHR">Caution</span>
                 </div>
                 <div class="hero-vital-item" id="itemSpO2">
                   <span>💧 SpO₂ <strong id="vSpO2">96</strong> %</span>
@@ -195,8 +224,8 @@
                   <span class="v-tag tag-normal-pill" id="tagTemp">Normal</span>
                 </div>
                 <div class="hero-vital-item" id="itemCO">
-                  <span>☁️ CO <strong id="vCO">169</strong> PPM</span>
-                  <span class="v-tag tag-normal-pill" id="tagCO">Normal</span>
+                  <span>☁️ CO <strong id="vCO">16</strong> PPM</span>
+                  <span class="v-tag tag-normal-pill" id="tagCO">Safe</span>
                 </div>
                 <div class="hero-vital-item" id="itemMotion">
                   <span>🏃 <strong id="vMotion">Low activity</strong></span>
@@ -206,6 +235,10 @@
                   <span>🔋 <strong id="vBattery">84</strong> %</span>
                   <span class="v-tag tag-normal-pill" id="tagBattery">Good</span>
                 </div>
+              </div>
+              <div class="hero-baseline-strip" id="heroBaselineStrip">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>120s Calibrated Shift Baseline: Resting HR <strong id="lblRestingHR">76</strong> BPM • Safe Max <strong id="lblMaxSafeHR">92</strong> BPM • Ambient CO <strong id="lblAmbientCO">12</strong> PPM</span>
               </div>
             </div>
 
@@ -361,14 +394,14 @@
                     <span class="sensor-name-lbl">CO Exposure</span>
                   </div>
                   <div class="sensor-value-bold-row">
-                    <span class="sensor-big-number" id="cardValCO">169</span>
+                    <span class="sensor-big-number" id="cardValCO">16</span>
                     <span class="sensor-unit-lbl">PPM</span>
                   </div>
-                  <span class="sensor-pill-status pill-status-normal" id="cardBadgeCO">Normal</span>
+                  <span class="sensor-pill-status pill-status-normal" id="cardBadgeCO">Safe</span>
                   <svg class="sensor-spark-svg" viewBox="0 0 100 24" preserveAspectRatio="none">
                     <path id="sparklineCO" d="M0,16 Q20,10 40,18 T70,8 T90,14 T100,6" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"></path>
                   </svg>
-                  <div class="sensor-normal-guide">Normal: 0 – 200</div>
+                  <div class="sensor-normal-guide">Normal: &lt; 35 PPM (NIOSH REL)</div>
                 </div>
 
                 <!-- 5. Motion / Fall -->
@@ -445,8 +478,8 @@
                 </div>
                 <div class="ai-bar-line">
                   <span>Motion / fatigue</span>
-                  <div class="ai-track-bg"><div class="ai-bar-red" id="barMotion" style="width: 60%;"></div></div>
-                  <strong id="wMotion">+12</strong>
+                  <div class="ai-track-bg"><div class="ai-bar-red" id="barMotion" style="width: 70%;"></div></div>
+                  <strong id="wMotion">+20</strong>
                 </div>
               </div>
               <div class="ai-alert-callout-box">
@@ -663,29 +696,44 @@
       <!-- ============================================================= -->
       <div class="page-view" id="page-alerts">
         <div class="secondary-page-content">
-          <h2>🚨 Active Safety Alerts</h2>
-          <div class="alert-card-item">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <h2>🚨 Active Safety Alerts</h2>
+            <span style="font-size:12px; font-weight:700; color:#ef4444; background:#fef2f2; padding:4px 10px; border-radius:12px; border:1px solid #fecaca;">
+              1 Critical • 1 Warning • 1 Caution Active
+            </span>
+          </div>
+
+          <div class="alert-card-item" style="border-left: 4px solid #ef4444; background:#fff5f5;">
+            <div class="alert-icon-wrap" style="background:#fee2e2; color:#b91c1c;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            </div>
+            <div class="alert-meta">
+              <h4 style="color:#991b1b;">CRITICAL ALARM: Toxic CO Spike (840 PPM) &amp; Gait Stumble — M. Singh (VG-042)</h4>
+              <p>CO reading exceeded 200 PPM emergency ceiling (OSHA/NIOSH). Hypoxia desaturation at 91% SpO₂ with kinetic impact vector shock. Acoustic beacon active; supervisor evacuation initiated.</p>
+              <div class="alert-ts">Sector C • Chemical Processing • Priority LoRa Interrupt (Packet 152)</div>
+            </div>
+          </div>
+
+          <div class="alert-card-item" style="border-left: 4px solid #f59e0b;">
             <div class="alert-icon-wrap alert-icon-yellow">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
             </div>
             <div class="alert-meta">
-              <h4>Elevated Heart Rate — R. Kumar (VG-014)</h4>
-              <p>Heart rate reached 100 BPM, above resting baseline of 72–92 BPM. Worker in Sector B (Boiler Plant Area 1). Fatigue index rising; movement recovery below normal threshold.</p>
-              <div class="alert-ts">10:20 PM • Sector B • Day Shift</div>
+              <h4>WARNING: Thermal Heat Strain &amp; Tachycardia — S. Patel (VG-023)</h4>
+              <p>Skin temperature reached 38.6°C with heart rate 122 BPM (&gt; 120 BPM danger threshold). High foundry ambient heat index. Mandatory cool-zone rest cycle triggered.</p>
+              <div class="alert-ts">Sector D • Boiler Foundry • DRS 68/100 (Warning)</div>
             </div>
           </div>
-          <div class="alert-card-item">
-            <div class="alert-icon-wrap alert-icon-yellow">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+
+          <div class="alert-card-item" style="border-left: 4px solid #38bdf8;">
+            <div class="alert-icon-wrap" style="background:#e0f2fe; color:#0369a1;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
             </div>
             <div class="alert-meta">
-              <h4>Inactivity During High Temperature Exposure</h4>
-              <p>Worker VG-014 showed reduced physical activity while ambient temperature reading exceeded comfortable threshold. Possible early-stage heat stress fatigue.</p>
-              <div class="alert-ts">09:35 PM • Sector B • Day Shift</div>
+              <h4>CAUTION: Elevated Pulse Above Personal Baseline — R. Kumar (VG-014)</h4>
+              <p>Heart rate sustained at 100 BPM, exceeding personal 120s baseline maximum (92 BPM) by 8 BPM. Ambient CO nominal at 16 PPM (Safe). Early kinetic fatigue watch.</p>
+              <div class="alert-ts">Sector B • Boiler Plant 1 • DRS 30/100 (Safe / Baseline Watch)</div>
             </div>
-          </div>
-          <div style="margin-top:14px; padding:10px 14px; background:#f0fdf4; border:1px solid #d1fae5; border-radius:8px; font-size:11.5px; color:#065f46;">
-            <strong>✅ No critical red-level alerts.</strong> All workers are operating within safe threshold ranges. Edge AI continuous sensor fusion active.
           </div>
         </div>
       </div>
@@ -695,28 +743,28 @@
       <!-- ============================================================= -->
       <div class="page-view" id="page-reports">
         <div class="secondary-page-content">
-          <h2>📊 Shift Reports & Safety Dossiers</h2>
+          <h2>📊 Shift Reports &amp; Safety Dossiers</h2>
           <div class="analytics-grid">
             <div class="analytics-card">
-              <h3>📋 Today's Shift Summary</h3>
-              <div style="font-size:11.5px; line-height:1.75; color:#475569;">
-                <div><strong>Shift:</strong> Day (06:00 – 18:00)</div>
-                <div><strong>Workers Monitored:</strong> 12</div>
-                <div><strong>Total Telemetry Packets:</strong> 8,426</div>
-                <div><strong>Average Risk Score:</strong> 28 / 100 (Safe)</div>
-                <div><strong>Peak HR Event:</strong> R. Kumar at 100 BPM (10:20 PM)</div>
-                <div><strong>CO Exposure:</strong> All workers below 200 PPM TWA-8h limit</div>
-                <div><strong>SOS Triggers:</strong> 0</div>
-                <div><strong>Fall Detections:</strong> 0</div>
+              <h3>📋 Active Shift Summary</h3>
+              <div style="font-size:11.5px; line-height:1.8; color:#475569;">
+                <div><strong>Shift:</strong> <span id="reportShiftTitle">Day Shift (06:00 – 18:00)</span></div>
+                <div><strong>Workers Monitored:</strong> 12 active wearable nodes</div>
+                <div><strong>Total Telemetry Packets:</strong> 207,180 (99.91% delivery)</div>
+                <div><strong>Average Fleet Risk Score:</strong> 26 / 100 (Safe)</div>
+                <div><strong>Peak HR Incident:</strong> S. Patel at 122 BPM (Sector D Foundry)</div>
+                <div><strong>CO Exposure TWA-8h:</strong> Active fleet &lt; 35 PPM (NIOSH REL) / 50 PPM (OSHA PEL); peak 16 PPM</div>
+                <div><strong>SOS / Hazard Triggers:</strong> 1 Incident Contained (VG-042 Chemical Vault)</div>
+                <div><strong>Fall Detections:</strong> 0 Fatalities • 1 Stumble Vector Logged</div>
               </div>
             </div>
             <div class="analytics-card">
-              <h3>📑 Recent Generated Reports</h3>
-              <div style="font-size:11.5px; line-height:1.9; color:#475569;">
-                <div>📄 VG-014_R_Kumar_DailyAudit.pdf — <span style="color:#10b981; font-weight:700;">Generated</span></div>
-                <div>📄 VG-023_S_Patel_ThermalStress.pdf — <span style="color:#10b981; font-weight:700;">Generated</span></div>
-                <div>📄 VG-007_A_Sharma_ClearShift.pdf — <span style="color:#10b981; font-weight:700;">Generated</span></div>
-                <div>📄 Plant_Weekly_Summary_W42.pdf — <span style="color:#f59e0b; font-weight:700;">Pending</span></div>
+              <h3>📑 Generated Safety Reports &amp; Dispatch Samples</h3>
+              <div style="font-size:11.5px; line-height:2.2; color:#475569;">
+                <div><a href="worker-report.html" target="_blank" style="text-decoration:none; color:inherit; display:flex; justify-content:space-between; align-items:center;"><span>📋 <strong>Worker Safety Report (A4 Print-Ready):</strong> VG-014 R. Kumar</span><span style="color:#10b981; font-weight:700;">Open Report ↗</span></a></div>
+                <div><a href="insurance-report.html" target="_blank" style="text-decoration:none; color:inherit; display:flex; justify-content:space-between; align-items:center;"><span>🛡️ <strong>Underwriting Verification Statement:</strong> Policy Audit Docket</span><span style="color:#0284c7; font-weight:700;">Open Statement ↗</span></a></div>
+                <div><a href="email-report.html" target="_blank" style="text-decoration:none; color:inherit; display:flex; justify-content:space-between; align-items:center;"><span>✉️ <strong>Supervisor Email Dispatch Template:</strong> Shift Notification</span><span style="color:#8b5cf6; font-weight:700;">View Email ↗</span></a></div>
+                <div><a href="schedule-reports.html" target="_blank" style="text-decoration:none; color:inherit; display:flex; justify-content:space-between; align-items:center;"><span>⏱️ <strong>Automated Report Dispatch Scheduler:</strong> Daily/Weekly Rules</span><span style="color:#f59e0b; font-weight:700;">Configure ↗</span></a></div>
               </div>
             </div>
           </div>
@@ -731,41 +779,51 @@
           <h2>📈 Safety Analytics Dashboard</h2>
           <div class="analytics-grid">
             <div class="analytics-card">
-              <h3>Risk Score Distribution (Today)</h3>
+              <h3>Fleet Risk Distribution (12 Workers)</h3>
+              <p style="font-size:11px; color:#64748b; margin-top:-6px; margin-bottom:10px;">Unified Regulatory Bands: Safe (0–44) • Warning (45–74) • Critical (75–100)</p>
               <div class="analytics-bar-group">
-                <div class="analytics-bar-row"><span>0–25 Safe</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:75%; background:#10b981;"></div></div><span>9</span></div>
-                <div class="analytics-bar-row"><span>26–50 Low</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:16%; background:#f59e0b;"></div></div><span>2</span></div>
-                <div class="analytics-bar-row"><span>51–75 Elevated</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:8%; background:#f97316;"></div></div><span>1</span></div>
-                <div class="analytics-bar-row"><span>76–100 Critical</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:0%; background:#ef4444;"></div></div><span>0</span></div>
+                <div class="analytics-bar-row">
+                  <span>0–44 Safe</span>
+                  <div class="analytics-bar-track"><div class="analytics-bar-fill" id="distBarSafe" style="width:83%; background:#10b981;"></div></div>
+                  <span id="distCountSafe" style="font-weight:700;">10</span>
+                </div>
+                <div class="analytics-bar-row">
+                  <span>45–74 Warning</span>
+                  <div class="analytics-bar-track"><div class="analytics-bar-fill" id="distBarWarning" style="width:8%; background:#f59e0b;"></div></div>
+                  <span id="distCountWarning" style="font-weight:700;">1</span>
+                </div>
+                <div class="analytics-bar-row">
+                  <span>76–100 Critical</span>
+                  <div class="analytics-bar-track"><div class="analytics-bar-fill" id="distBarCritical" style="width:8%; background:#ef4444;"></div></div>
+                  <span id="distCountCritical" style="font-weight:700;">1</span>
+                </div>
               </div>
             </div>
             <div class="analytics-card">
-              <h3>Sensor Alert Frequency (Last 7 Days)</h3>
+              <h3>Sensor Alert Frequency (Shift Trends)</h3>
               <div class="analytics-bar-group">
                 <div class="analytics-bar-row"><span>Heart Rate</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:45%; background:#ef4444;"></div></div><span>14</span></div>
                 <div class="analytics-bar-row"><span>CO / Gas</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:30%; background:#f97316;"></div></div><span>9</span></div>
                 <div class="analytics-bar-row"><span>Temperature</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:20%; background:#f59e0b;"></div></div><span>6</span></div>
                 <div class="analytics-bar-row"><span>SpO₂</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:10%; background:#0284c7;"></div></div><span>3</span></div>
-                <div class="analytics-bar-row"><span>Fall / Motion</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:5%; background:#8b5cf6;"></div></div><span>1</span></div>
+                <div class="analytics-bar-row"><span>Fall / Stumble</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:5%; background:#8b5cf6;"></div></div><span>1</span></div>
               </div>
             </div>
             <div class="analytics-card">
-              <h3>LoRa Network Statistics</h3>
+              <h3>LoRa RF Link &amp; Network Statistics</h3>
               <div style="font-size:11.5px; line-height:1.75; color:#475569;">
-                <div><strong>Uptime:</strong> 99.97%</div>
-                <div><strong>Avg RSSI:</strong> -63 dBm</div>
-                <div><strong>Packets Delivered:</strong> 41,204 / 41,208</div>
-                <div><strong>Packet Loss:</strong> 0.01%</div>
-                <div><strong>Max Range Achieved:</strong> 4.2 km (Sector D)</div>
+                <div><strong>Uptime:</strong> 99.98%</div>
+                <div><strong>Average RSSI:</strong> -63 dBm</div>
+                <div><strong>Packets Delivered:</strong> 207,180 / 207,360 (12h • 12 Workers)</div>
+                <div><strong>Packet Loss:</strong> 0.08%</div>
+                <div><strong>Max Range Achieved:</strong> 3.2 km (Sector D - Link Budget Validated)</div>
               </div>
             </div>
             <div class="analytics-card">
-              <h3>Worker Safety Score Ranking</h3>
-              <div class="analytics-bar-group">
-                <div class="analytics-bar-row"><span>A. Sharma</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:14%; background:#10b981;"></div></div><span>14</span></div>
-                <div class="analytics-bar-row"><span>R. Kumar</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:30%; background:#10b981;"></div></div><span>30</span></div>
-                <div class="analytics-bar-row"><span>S. Patel</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:68%; background:#f97316;"></div></div><span>68</span></div>
-                <div class="analytics-bar-row"><span>M. Singh</span><div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:92%; background:#ef4444;"></div></div><span>92</span></div>
+              <h3>Worker Safety Risk Ranking</h3>
+              <p style="font-size:11px; color:#64748b; margin-top:-6px; margin-bottom:10px;">Dynamic Risk Score (0 = Optimal Safety, 100 = Maximum Danger)</p>
+              <div class="analytics-bar-group" id="rankingBarGroup">
+                <!-- Dynamically populated from fleet array -->
               </div>
             </div>
           </div>
@@ -777,19 +835,19 @@
       <!-- ============================================================= -->
       <div class="page-view" id="page-insurance">
         <div class="secondary-page-content">
-          <h2>🛡️ Insurance & Compliance Portal</h2>
+          <h2>🛡️ Insurance &amp; Underwriting Compliance Portal</h2>
           <div class="insurance-summary-grid">
             <div class="insurance-stat-card">
               <div class="stat-num" style="color:#10b981;">0</div>
-              <div class="stat-label">Loss-Time Incidents (This Month)</div>
+              <div class="stat-label">Lost-Time Injuries (This Shift)</div>
             </div>
             <div class="insurance-stat-card">
-              <div class="stat-num" style="color:#0284c7;">41,204</div>
-              <div class="stat-label">Verified Telemetry Records</div>
+              <div class="stat-num" style="color:#0284c7;">207,180</div>
+              <div class="stat-label">Verified Telemetry Records (12h)</div>
             </div>
             <div class="insurance-stat-card">
               <div class="stat-num" style="color:#10b981;">100%</div>
-              <div class="stat-label">OSHA Compliance Score</div>
+              <div class="stat-label">OSHA / NIOSH Audit Compliance</div>
             </div>
             <div class="insurance-stat-card">
               <div class="stat-num" style="color:#f59e0b;">₹2.4L</div>
@@ -797,7 +855,7 @@
             </div>
           </div>
           <div style="margin-top:14px; padding:12px 16px; background:#eff6ff; border:1px solid #dbeafe; border-radius:8px; font-size:11.5px; color:#1e40af; line-height:1.55;">
-            <strong>ISO 45001 Certification Status:</strong> Active compliance achieved. All wearable telemetry packets include AES-128 LoRa authentication and are cryptographically sealed with SHA-256 hash for underwriting verification. Digital consent verified for all 12 monitored workers.
+            <strong>ISO 45001–Aligned Architecture (Simulated Demo):</strong> Telemetry transmission follows deterministic ASCII Protocol 151 with planned HMAC-SHA256 authenticated verification (mbedTLS). Worker privacy &amp; digital consent verified for all 12 shift members. 60-second rolling ring buffer preserved upon any acute distress event for immutable underwriting verification.
           </div>
         </div>
       </div>
@@ -839,12 +897,16 @@
             <div class="setting-row"><span class="setting-label">Coding Rate</span><span class="setting-value">4/5</span></div>
           </div>
           <div class="settings-group">
-            <h3>Alert Thresholds</h3>
-            <div class="setting-row"><span class="setting-label">Heart Rate (High)</span><span class="setting-value">&gt; 120 BPM</span></div>
-            <div class="setting-row"><span class="setting-label">SpO₂ (Low)</span><span class="setting-value">&lt; 94%</span></div>
-            <div class="setting-row"><span class="setting-label">Skin Temperature (High)</span><span class="setting-value">&gt; 38.5°C</span></div>
-            <div class="setting-row"><span class="setting-label">CO Exposure (Danger)</span><span class="setting-value">&gt; 200 PPM</span></div>
-            <div class="setting-row"><span class="setting-label">Fall Detection G-Force</span><span class="setting-value">&gt; 2.5g</span></div>
+            <h3>Alert Thresholds &amp; Safety Limits</h3>
+            <div class="setting-row"><span class="setting-label">Heart Rate (Caution)</span><span class="setting-value">&gt; Personal Baseline Max (92 BPM) for &gt; 60s</span></div>
+            <div class="setting-row"><span class="setting-label">Heart Rate (Danger / Tachycardia)</span><span class="setting-value">&gt; 120 BPM</span></div>
+            <div class="setting-row"><span class="setting-label">SpO₂ Desaturation (Watch)</span><span class="setting-value">&lt; 95%</span></div>
+            <div class="setting-row"><span class="setting-label">SpO₂ Hypoxia (Critical)</span><span class="setting-value">&lt; 92%</span></div>
+            <div class="setting-row"><span class="setting-label">Skin Temperature (Thermal Strain)</span><span class="setting-value">&gt; 38.0°C</span></div>
+            <div class="setting-row"><span class="setting-label">CO Exposure (Caution - NIOSH REL)</span><span class="setting-value">&gt; 35 PPM</span></div>
+            <div class="setting-row"><span class="setting-label">CO Exposure (Danger - Ceiling)</span><span class="setting-value">&gt; 200 PPM (Immediate Evacuation)</span></div>
+            <div class="setting-row"><span class="setting-label">Fall Impact Shock</span><span class="setting-value">&gt; 2.5g Vector Magnitude</span></div>
+            <div class="setting-row"><span class="setting-label">Prolonged Fatigue Inactivity</span><span class="setting-value">|a - 9.8 m/s²| &lt; 1.1 m/s² for &gt; 15 min</span></div>
           </div>
           <div class="settings-group">
             <h3>System Preferences</h3>
@@ -893,7 +955,7 @@
           </div>
           <div>
             <span style="font-size:9px; color:#94a3b8; font-weight:700; text-transform:uppercase;">CO TWA 8h</span>
-            <div style="font-size:13px; font-weight:800; color:#0f172a;" id="modalCOExposure">169 PPM (Safe)</div>
+            <div style="font-size:13px; font-weight:800; color:#0f172a;" id="modalCOExposure">16 PPM (Safe • Below 35 PPM REL)</div>
           </div>
         </div>
         <h4 style="font-size:11px; font-weight:800; text-transform:uppercase; color:#334155;">Incident & Continuous Biometric Audit Log</h4>
@@ -904,13 +966,13 @@
             </tr>
           </thead>
           <tbody id="modalAuditTableBody">
-            <tr><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">10:20:00 PM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9; color:#ef4444; font-weight:700;">100 BPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">96 %</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">37.1 °C</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">169 PPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro pill-normal">SAFE (30)</span></td></tr>
-            <tr><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">10:19:57 PM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">99 BPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">96 %</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">37.1 °C</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">168 PPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro pill-normal">SAFE (30)</span></td></tr>
-            <tr><td style="padding:6px 8px;">10:19:55 PM</td><td style="padding:6px 8px;">98 BPM</td><td style="padding:6px 8px;">97 %</td><td style="padding:6px 8px;">37.0 °C</td><td style="padding:6px 8px;">167 PPM</td><td style="padding:6px 8px;"><span class="sys-badge-micro pill-normal">SAFE (29)</span></td></tr>
+            <tr><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">10:20:00 PM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9; color:#ef4444; font-weight:700;">100 BPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">96 %</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">37.1 °C</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">16 PPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro pill-normal">SAFE (30)</span></td></tr>
+            <tr><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">10:19:57 PM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">99 BPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">96 %</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">37.1 °C</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">16 PPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro pill-normal">SAFE (30)</span></td></tr>
+            <tr><td style="padding:6px 8px;">10:19:55 PM</td><td style="padding:6px 8px;">98 BPM</td><td style="padding:6px 8px;">97 %</td><td style="padding:6px 8px;">37.0 °C</td><td style="padding:6px 8px;">15 PPM</td><td style="padding:6px 8px;"><span class="sys-badge-micro pill-normal">SAFE (29)</span></td></tr>
           </tbody>
         </table>
         <div style="background:#f0fdf4; border-left:3px solid #10b981; padding:8px 10px; border-radius:4px; font-size:10px; color:#166534; line-height:1.4;">
-          <strong>Autonomous Field Certification:</strong> Data verified through AES-128 LoRa transmission. Conforms to OSHA Air Contaminants 1910.1000 and DGMS Worker Safety Guidelines.
+          <strong>Autonomous Field Certification:</strong> Data verified through deterministic Protocol 151 LoRa transmission. Conforms to OSHA Air Contaminants 1910.1000 (&lt; 50 PPM TWA) and NIOSH REL (&lt; 35 PPM TWA).
         </div>
       </div>
       <div class="modal-foot-row">
