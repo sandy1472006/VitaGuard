@@ -11,6 +11,7 @@
 // ──────────────────────────────────────────────────────────────────
 // Shared Risk Band Function
 // ──────────────────────────────────────────────────────────────────
+(function() {
 const band = window.band || (s => s >= 75 ? 'CRITICAL' : s >= 45 ? 'WARNING' : 'SAFE');
 const twa8 = window.twa8 || (samples => samples.reduce((a, s) => a + (s.co || s.gas || 0) * 2.5, 0) / (8 * 3600));
 
@@ -690,3 +691,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 3000);
 });
+})();
