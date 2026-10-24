@@ -7,6 +7,7 @@
 [![Compute Target](https://img.shields.io/badge/Target-ESP32--WROOM--32%20%2B%20SX1278%20LoRa-E7352C.svg?style=for-the-badge&logo=espressif)](https://www.espressif.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 [![Live Supervisor Dashboard](https://img.shields.io/badge/Live%20Demo-Supervisor%20Dashboard-brightgreen.svg?style=for-the-badge&logo=googlechrome)](https://sandy1472006.github.io/VitaGuard/)
+[![Prototype Video](https://img.shields.io/badge/Prototype%20Video-Google%20Drive-FF8800.svg?style=for-the-badge&logo=googledrive)](https://drive.google.com/drive/folders/1RO9VPznZsdl6sS9kMKoxTeTSW7GhWBj5)
 
 ### **Tagline:** *Sense • Fuse • Decide • Alert • Evacuate*
 
@@ -14,7 +15,8 @@
 **Theme:** Occupational Safety, Industrial IoT & Autonomous Emergency Response  
 **Team Name:** Team VitaGuard  
 **Core Domain:** Combined Embedded Hardware + Edge AI Sensor Fusion + LoRa Mesh Communication + Web Dashboard  
-**Live Interactive Supervisor Dashboard:** [https://sandy1472006.github.io/VitaGuard/](https://sandy1472006.github.io/VitaGuard/)
+**Live Interactive Supervisor Dashboard:** [https://sandy1472006.github.io/VitaGuard/](https://sandy1472006.github.io/VitaGuard/)  
+**Physical Prototype Video Demonstration:** [https://drive.google.com/drive/folders/1RO9VPznZsdl6sS9kMKoxTeTSW7GhWBj5](https://drive.google.com/drive/folders/1RO9VPznZsdl6sS9kMKoxTeTSW7GhWBj5)
 
 ---
 
@@ -37,7 +39,7 @@
 | Central Supervisor Operations Dashboard (Live Telemetry Monitor) |
 | :---: |
 | <img src="docs/images/dashboard-live-view.png" width="860" alt="Live Supervisor Dashboard"> |
-| *Live supervisor view monitoring Worker VG-014 (Dynamic Risk Score 30/100 SAFE, live vitals, AI sensor fusion decomposition, and predictive analytics).* |
+| *Live supervisor view monitoring Worker VG-014 (Dynamic Risk Score 30/100 SAFE, live vitals, AI sensor fusion decomposition, and predictive analytics).*<br>🎥 **[Watch Working Prototype Video Demonstration](https://drive.google.com/drive/folders/1RO9VPznZsdl6sS9kMKoxTeTSW7GhWBj5)** |
 
 </div>
 
@@ -371,7 +373,8 @@ The VitaGuard Supervisor Console provides safety engineers and shift supervisors
    * **Live LoRa Packet Terminal:** Expandable drawer displaying real incoming serial telemetry streams.
    * **Worker Safety Compliance Report:** Generates immutable shift audit summaries ready for immediate printing or PDF export.
 
-👉 **Experience the Live Web Simulator:** [https://sandy1472006.github.io/VitaGuard/](https://sandy1472006.github.io/VitaGuard/)
+👉 **Experience the Live Web Simulator:** [https://sandy1472006.github.io/VitaGuard/](https://sandy1472006.github.io/VitaGuard/)  
+🎥 **Physical Prototype Video Demonstration:** [https://drive.google.com/drive/folders/1RO9VPznZsdl6sS9kMKoxTeTSW7GhWBj5](https://drive.google.com/drive/folders/1RO9VPznZsdl6sS9kMKoxTeTSW7GhWBj5)
 
 ---
 
