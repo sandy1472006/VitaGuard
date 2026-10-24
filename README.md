@@ -11,12 +11,38 @@
 
 ### **Tagline:** *Sense • Fuse • Decide • Alert • Evacuate*
 
-**Project Name:** VitaGuard 2.0  
-**Theme:** Occupational Safety, Industrial IoT & Autonomous Emergency Response  
-**Team Name:** Team VitaGuard  
-**Core Domain:** Combined Embedded Hardware + Edge AI Sensor Fusion + LoRa Mesh Communication + Web Dashboard  
-**Live Interactive Supervisor Dashboard:** [https://sandy1472006.github.io/VitaGuard/](https://sandy1472006.github.io/VitaGuard/)  
-**Physical Prototype Video Demonstration:** [https://drive.google.com/drive/folders/1RO9VPznZsdl6sS9kMKoxTeTSW7GhWBj5](https://drive.google.com/drive/folders/1RO9VPznZsdl6sS9kMKoxTeTSW7GhWBj5)
+<br>
+
+<!-- Project Overview Specifications Cards -->
+<img src="docs/images/project-specs-header@2x.png" width="920" alt="VitaGuard 2.0 Project Overview Specifications">
+
+<br><br>
+
+<!-- Interactive Action Cards with Direct Clickable Links -->
+<p align="center">
+  <a href="https://sandy1472006.github.io/VitaGuard/" target="_blank" rel="noopener noreferrer">
+    <img src="docs/images/btn-dashboard@2x.png" width="455" alt="Open Live Supervisor Dashboard">
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://drive.google.com/drive/folders/1RO9VPznZsdl6sS9kMKoxTeTSW7GhWBj5" target="_blank" rel="noopener noreferrer">
+    <img src="docs/images/btn-prototype-video@2x.png" width="455" alt="Watch Physical Prototype Demonstration Video">
+  </a>
+</p>
+
+<details>
+<summary align="center">📋 <i>Click to expand text-based metadata & direct URLs</i></summary>
+<br>
+
+| Attribute | Details |
+| :--- | :--- |
+| **Project Name** | VitaGuard 2.0 |
+| **Theme** | Occupational Safety, Industrial IoT & Autonomous Emergency Response |
+| **Team Name** | Team VitaGuard |
+| **Core Domain** | Combined Embedded Hardware + Edge AI Sensor Fusion + LoRa Mesh Communication + Web Dashboard |
+| **Live Interactive Supervisor Dashboard** | [https://sandy1472006.github.io/VitaGuard/](https://sandy1472006.github.io/VitaGuard/) |
+| **Physical Prototype Video Demonstration** | [Google Drive Demo Folder](https://drive.google.com/drive/folders/1RO9VPznZsdl6sS9kMKoxTeTSW7GhWBj5) |
+
+</details>
 
 ---
 
