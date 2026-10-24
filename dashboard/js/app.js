@@ -1184,43 +1184,82 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Modal Triggers
+  function openWorkerModal() {
+    const w = window.WORKER_DATASETS[currentWorkerId];
+    if (!w) return;
+    if (modalWorkerName) modalWorkerName.textContent = w.name;
+    if (modalDeviceId) modalDeviceId.textContent = w.id;
+    if (modalRiskScore) {
+      modalRiskScore.textContent = `${w.drs} / 100 (${band(w.drs)})`;
+      modalRiskScore.style.color = w.drs >= 75 ? '#ef4444' : (w.drs >= 45 ? '#f59e0b' : '#059669');
+    }
+    if (modalCOExposure) modalCOExposure.textContent = `${w.vitals.gas} PPM (TWA ${w.vitals.gas < 35 ? 'Safe • Below 35 PPM REL' : 'Exceeds REL'})`;
+
+    const auditTbody = document.getElementById('modalAuditTableBody');
+    if (auditTbody) {
+      const timeStr = getShiftContext().timeStr;
+      auditTbody.innerHTML = `
+        <tr><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${timeStr}</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9; color:#ef4444; font-weight:700;">${w.vitals.hr} BPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.spo2} %</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.temp} °C</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.gas} PPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro ${w.drs >= 75 ? 'pill-critical' : (w.drs >= 45 ? 'pill-caution' : 'pill-normal')}">${band(w.drs)} (${w.drs})</span></td></tr>
+        <tr><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">10:19:57 PM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.hr - 1} BPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.spo2} %</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.temp} °C</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.gas} PPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro ${w.drs >= 75 ? 'pill-critical' : (w.drs >= 45 ? 'pill-caution' : 'pill-normal')}">${band(w.drs)} (${w.drs})</span></td></tr>
+        <tr><td style="padding:6px 8px;">10:19:55 PM</td><td style="padding:6px 8px;">${w.vitals.hr - 2} BPM</td><td style="padding:6px 8px;">${Math.min(100, w.vitals.spo2 + 1)} %</td><td style="padding:6px 8px;">${w.vitals.temp} °C</td><td style="padding:6px 8px;">${Math.max(12, w.vitals.gas - 1)} PPM</td><td style="padding:6px;"><span class="sys-badge-micro ${w.drs >= 75 ? 'pill-critical' : (w.drs >= 45 ? 'pill-caution' : 'pill-normal')}">${band(w.drs)}</span></td></tr>
+      `;
+    }
+
+    if (reportPreviewModal) {
+      reportPreviewModal.classList.add('open', 'active');
+      showToast(`Opened Worker Safety Dossier for ${w.name} (${w.id})`, 'info');
+    }
+  }
+
+  function openInsuranceModal() {
+    if (insurancePreviewModal) {
+      insurancePreviewModal.classList.add('open', 'active');
+      showToast('Opened Underwriting & Worker Compensation Incident Docket', 'info');
+    }
+  }
+
   if (btnPreviewWorkerReport) {
-    btnPreviewWorkerReport.addEventListener('click', () => {
-      const w = window.WORKER_DATASETS[currentWorkerId];
-      if (modalWorkerName) modalWorkerName.textContent = w.name;
-      if (modalDeviceId) modalDeviceId.textContent = w.id;
-      if (modalRiskScore) modalRiskScore.textContent = `${w.drs} / 100 (${band(w.drs)})`;
-      if (modalCOExposure) modalCOExposure.textContent = `${w.vitals.gas} PPM`;
-      if (reportPreviewModal) reportPreviewModal.classList.add('active');
+    btnPreviewWorkerReport.addEventListener('click', (e) => {
+      e.preventDefault();
+      openWorkerModal();
     });
   }
 
   if (btnSubmitWorkerReport) {
-    btnSubmitWorkerReport.addEventListener('click', () => {
+    btnSubmitWorkerReport.addEventListener('click', (e) => {
+      e.preventDefault();
       const w = window.WORKER_DATASETS[currentWorkerId];
       showToast(`Shift Health Report for ${w.name} (${w.id}) queued for dispatch`, 'success');
+      setTimeout(() => {
+        showToast('Transmitted to Central Health & Dispatch Record', 'success');
+      }, 700);
     });
   }
 
   if (btnDispatchReport) {
     btnDispatchReport.addEventListener('click', () => {
-      if (reportPreviewModal) reportPreviewModal.classList.remove('active');
+      if (reportPreviewModal) reportPreviewModal.classList.remove('open', 'active');
       showToast('Shift dossier transmitted to central occupational health repository', 'success');
     });
   }
 
   if (closeReportModalBtn && reportPreviewModal) {
-    closeReportModalBtn.addEventListener('click', () => reportPreviewModal.classList.remove('active'));
+    closeReportModalBtn.addEventListener('click', () => reportPreviewModal.classList.remove('open', 'active'));
+    reportPreviewModal.addEventListener('click', (e) => {
+      if (e.target === reportPreviewModal) reportPreviewModal.classList.remove('open', 'active');
+    });
   }
 
   if (btnPreviewInsurance) {
-    btnPreviewInsurance.addEventListener('click', () => {
-      if (insurancePreviewModal) insurancePreviewModal.classList.add('active');
+    btnPreviewInsurance.addEventListener('click', (e) => {
+      e.preventDefault();
+      openInsuranceModal();
     });
   }
 
   if (btnSubmitInsurance) {
-    btnSubmitInsurance.addEventListener('click', () => {
+    btnSubmitInsurance.addEventListener('click', (e) => {
+      e.preventDefault();
       showToast('Transmitting SHA-256 sealed telemetry dossier to Underwriting Portal...', 'info');
       setTimeout(() => showToast('Audit Packet Confirmed: Policy #VG-INSU-2026-X41', 'success'), 800);
     });
@@ -1228,13 +1267,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnConfirmSendInsurer) {
     btnConfirmSendInsurer.addEventListener('click', () => {
-      if (insurancePreviewModal) insurancePreviewModal.classList.remove('active');
+      if (insurancePreviewModal) insurancePreviewModal.classList.remove('open', 'active');
       showToast('Cryptographic Underwriting Dossier Dispatched', 'success');
     });
   }
 
   if (closeInsuranceModalBtn && insurancePreviewModal) {
-    closeInsuranceModalBtn.addEventListener('click', () => insurancePreviewModal.classList.remove('active'));
+    closeInsuranceModalBtn.addEventListener('click', () => insurancePreviewModal.classList.remove('open', 'active'));
+    insurancePreviewModal.addEventListener('click', (e) => {
+      if (e.target === insurancePreviewModal) insurancePreviewModal.classList.remove('open', 'active');
+    });
   }
 
   // Print buttons

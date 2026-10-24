@@ -1501,8 +1501,9 @@ html, body {
   padding: 20px;
 }
 
-.modal-overlay.open {
-  display: flex;
+.modal-overlay.open,
+.modal-overlay.active {
+  display: flex !important;
 }
 
 .modal-container-card {
