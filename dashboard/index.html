@@ -971,85 +971,54 @@
     </div><!-- /.main-viewport -->
   </div><!-- /.command-layout -->
 
-  <!-- Interactive Modal 1: Worker Safety Compliance Report -->
+    <!-- Interactive Modal 1: Worker Safety Compliance Report Document Preview -->
   <div class="modal-overlay" id="reportPreviewModal">
     <div class="modal-container-card">
       <div class="modal-head-row">
         <div>
-          <h3>Worker Safety & Shift Health Dossier</h3>
-          <span style="font-size:10px; color:#64748b;">Shift ID: VG-AUDIT-2026-X014 • Sector B Day Shift</span>
+          <h3>📄 Worker Safety Dossier (Document Preview)</h3>
+          <span style="font-size:11px; color:#64748b;">A4 Print-Ready Industrial Health &amp; Risk Compliance Docket</span>
         </div>
-        <button class="modal-close-cross" id="closeReportModalBtn">&times;</button>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <a href="worker-report.html" target="_blank" class="btn-modal-action" style="background:#0284c7; color:#ffffff; text-decoration:none; display:inline-flex; align-items:center; gap:5px; font-weight:700; padding:6px 12px; border-radius:6px; font-size:11.5px;">Open Full Page ↗</a>
+          <button type="button" class="modal-close-cross" id="closeReportModalBtn" style="font-size:24px; cursor:pointer;">&times;</button>
+        </div>
       </div>
       <div class="modal-inner-body">
-        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; background:#f8fafc; border:1px solid #e2e8f0; padding:10px; border-radius:8px;">
-          <div>
-            <span style="font-size:9px; color:#94a3b8; font-weight:700; text-transform:uppercase;">Worker</span>
-            <div style="font-size:13px; font-weight:800; color:#0f172a;" id="modalWorkerName">R. Kumar</div>
-          </div>
-          <div>
-            <span style="font-size:9px; color:#94a3b8; font-weight:700; text-transform:uppercase;">Device ID</span>
-            <div style="font-size:13px; font-weight:800; color:#0f172a;" id="modalDeviceId">VG-014</div>
-          </div>
-          <div>
-            <span style="font-size:9px; color:#94a3b8; font-weight:700; text-transform:uppercase;">Risk State</span>
-            <div style="font-size:13px; font-weight:800; color:#059669;" id="modalRiskScore">30 / 100 (Safe)</div>
-          </div>
-          <div>
-            <span style="font-size:9px; color:#94a3b8; font-weight:700; text-transform:uppercase;">CO TWA 8h</span>
-            <div style="font-size:13px; font-weight:800; color:#0f172a;" id="modalCOExposure">16 PPM (Safe • Below 35 PPM REL)</div>
-          </div>
-        </div>
-        <h4 style="font-size:11px; font-weight:800; text-transform:uppercase; color:#334155;">Incident & Continuous Biometric Audit Log</h4>
-        <table style="width:100%; border-collapse:collapse; font-size:11px; border:1px solid #e2e8f0; border-radius:6px; overflow:hidden;">
-          <thead style="background:#f1f5f9; text-align:left;">
-            <tr>
-              <th style="padding:6px 8px;">Time</th><th style="padding:6px 8px;">Heart Rate</th><th style="padding:6px 8px;">SpO₂</th><th style="padding:6px 8px;">Skin Temp</th><th style="padding:6px 8px;">Gas Reading</th><th style="padding:6px 8px;">Risk Status</th>
-            </tr>
-          </thead>
-          <tbody id="modalAuditTableBody">
-            <tr><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">10:20:00 PM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9; color:#ef4444; font-weight:700;">100 BPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">96 %</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">37.1 °C</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">16 PPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro pill-normal">SAFE (30)</span></td></tr>
-            <tr><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">10:19:57 PM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">99 BPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">96 %</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">37.1 °C</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">16 PPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro pill-normal">SAFE (30)</span></td></tr>
-            <tr><td style="padding:6px 8px;">10:19:55 PM</td><td style="padding:6px 8px;">98 BPM</td><td style="padding:6px 8px;">97 %</td><td style="padding:6px 8px;">37.0 °C</td><td style="padding:6px 8px;">15 PPM</td><td style="padding:6px 8px;"><span class="sys-badge-micro pill-normal">SAFE (29)</span></td></tr>
-          </tbody>
-        </table>
-        <div style="background:#f0fdf4; border-left:3px solid #10b981; padding:8px 10px; border-radius:4px; font-size:10px; color:#166534; line-height:1.4;">
-          <strong>Autonomous Field Certification:</strong> Data verified through deterministic Protocol 151 LoRa transmission. Conforms to OSHA Air Contaminants 1910.1000 (&lt; 50 PPM TWA) and NIOSH REL (&lt; 35 PPM TWA).
-        </div>
+        <iframe src="worker-report.html" id="workerReportIframe" class="report-document-iframe" title="Worker Safety Report Document Preview"></iframe>
       </div>
-      <div class="modal-foot-row">
-        <a href="worker-report.html" target="_blank" class="btn-modal-action" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af; text-decoration:none; display:inline-flex; align-items:center; gap:5px;">Open Full A4 Report ↗</a>
-        <button type="button" class="btn-modal-action" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155;" onclick="window.print()">Print / Save PDF</button>
-        <button type="button" class="btn-modal-action" style="background:#0284c7; border:none; color:#ffffff;" id="btnDispatchReport">Send Report to Dispatch</button>
+      <div class="modal-foot-row" style="padding:10px 20px; display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border-top:1px solid #e2e8f0;">
+        <span style="font-size:11.5px; color:#64748b;">Autonomous Field Record Sealed via LoRa Protocol 151</span>
+        <div style="display:flex; gap:8px;">
+          <button type="button" class="btn-modal-action" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155; padding:6px 14px; font-weight:700; border-radius:6px; cursor:pointer;" onclick="document.getElementById('workerReportIframe').contentWindow.print()">Print / Save PDF</button>
+          <button type="button" class="btn-modal-action" style="background:#0284c7; border:none; color:#ffffff; padding:6px 14px; font-weight:700; border-radius:6px; cursor:pointer;" id="btnDispatchReport">Send to Supervisor Queue</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Interactive Modal 2: Insurance Compensation Dossier -->
+  <!-- Interactive Modal 2: Insurance Compensation Dossier Document Preview -->
   <div class="modal-overlay" id="insurancePreviewModal">
     <div class="modal-container-card">
       <div class="modal-head-row">
         <div>
-          <h3>Worker's Compensation & Underwriting Incident Audit</h3>
-          <span style="font-size:10px; color:#64748b;">Carrier Audit Docket: INS-VG-2026-90412 • Insured Entity: Heavy Industry Plant #4</span>
+          <h3>🛡️ Underwriting Verification Statement (Document Preview)</h3>
+          <span style="font-size:11px; color:#64748b;">Carrier Audit Docket: INS-VG-2026-90412 • Heavy Industry Plant #4</span>
         </div>
-        <button class="modal-close-cross" id="closeInsuranceModalBtn">&times;</button>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <a href="insurance-report.html" target="_blank" class="btn-modal-action" style="background:#2563eb; color:#ffffff; text-decoration:none; display:inline-flex; align-items:center; gap:5px; font-weight:700; padding:6px 12px; border-radius:6px; font-size:11.5px;">Open Full Page ↗</a>
+          <button type="button" class="modal-close-cross" id="closeInsuranceModalBtn" style="font-size:24px; cursor:pointer;">&times;</button>
+        </div>
       </div>
       <div class="modal-inner-body">
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:8px; display:grid; grid-template-columns: repeat(4, 1fr); gap:10px;">
-          <div><span style="font-size:9px; color:#94a3b8; font-weight:700;">Worker Consent</span><div style="font-size:12px; font-weight:800; color:#059669;">Verified (Signed)</div></div>
-          <div><span style="font-size:9px; color:#94a3b8; font-weight:700;">Incident Status</span><div style="font-size:12px; font-weight:800; color:#0284c7;">Zero Loss-Time</div></div>
-          <div><span style="font-size:9px; color:#94a3b8; font-weight:700;">Exposure Hours</span><div style="font-size:12px; font-weight:800; color:#0f172a;">4.2h / Within Limits</div></div>
-          <div><span style="font-size:9px; color:#94a3b8; font-weight:700;">LoRa Auth Hash</span><div style="font-size:10px; font-family:var(--font-mono); color:#475569;">0x7F2A...9C14</div></div>
-        </div>
-        <div style="background:#eff6ff; border-left:3px solid #3b82f6; padding:8px 10px; border-radius:4px; font-size:10px; color:#1e40af; line-height:1.4;">
-          <strong>Consent-Based Telemetry Sharing Notice:</strong> Under ISO 45001 and Worker Compensation Board protocols, telemetry is shared exclusively for occupational risk assessment, premium underwriting credits, and incident mitigation verification.
-        </div>
+        <iframe src="insurance-report.html" id="insuranceReportIframe" class="report-document-iframe" title="Insurance Audit Document Preview"></iframe>
       </div>
-      <div class="modal-foot-row">
-        <a href="insurance-report.html" target="_blank" class="btn-modal-action" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af; text-decoration:none; display:inline-flex; align-items:center; gap:5px;">Open Full Dossier ↗</a>
-        <button type="button" class="btn-modal-action" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155;" onclick="window.print()">Print Insurance Dossier</button>
-        <button type="button" class="btn-modal-action" style="background:#2563eb; border:none; color:#ffffff;" id="btnConfirmSendInsurer">Transmit to Insurer Portal</button>
+      <div class="modal-foot-row" style="padding:10px 20px; display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border-top:1px solid #e2e8f0;">
+        <span style="font-size:11.5px; color:#64748b;">Cryptographic Audit SHA-256 Hash: 0x7F2A...9C14 (Verified)</span>
+        <div style="display:flex; gap:8px;">
+          <button type="button" class="btn-modal-action" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155; padding:6px 14px; font-weight:700; border-radius:6px; cursor:pointer;" onclick="document.getElementById('insuranceReportIframe').contentWindow.print()">Print Dossier</button>
+          <button type="button" class="btn-modal-action" style="background:#2563eb; border:none; color:#ffffff; padding:6px 14px; font-weight:700; border-radius:6px; cursor:pointer;" id="btnConfirmSendInsurer">Transmit to Insurer Portal</button>
+        </div>
       </div>
     </div>
   </div>

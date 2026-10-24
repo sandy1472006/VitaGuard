@@ -1187,34 +1187,26 @@ document.addEventListener('DOMContentLoaded', () => {
   function openWorkerModal() {
     const w = window.WORKER_DATASETS[currentWorkerId];
     if (!w) return;
-    if (modalWorkerName) modalWorkerName.textContent = w.name;
-    if (modalDeviceId) modalDeviceId.textContent = w.id;
-    if (modalRiskScore) {
-      modalRiskScore.textContent = `${w.drs} / 100 (${band(w.drs)})`;
-      modalRiskScore.style.color = w.drs >= 75 ? '#ef4444' : (w.drs >= 45 ? '#f59e0b' : '#059669');
+    const iframe = document.getElementById('workerReportIframe');
+    if (iframe) {
+      iframe.src = 'worker-report.html?id=' + encodeURIComponent(currentWorkerId) + '&t=' + Date.now();
     }
-    if (modalCOExposure) modalCOExposure.textContent = `${w.vitals.gas} PPM (TWA ${w.vitals.gas < 35 ? 'Safe • Below 35 PPM REL' : 'Exceeds REL'})`;
-
-    const auditTbody = document.getElementById('modalAuditTableBody');
-    if (auditTbody) {
-      const timeStr = getShiftContext().timeStr;
-      auditTbody.innerHTML = `
-        <tr><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${timeStr}</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9; color:#ef4444; font-weight:700;">${w.vitals.hr} BPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.spo2} %</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.temp} °C</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.gas} PPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro ${w.drs >= 75 ? 'pill-critical' : (w.drs >= 45 ? 'pill-caution' : 'pill-normal')}">${band(w.drs)} (${w.drs})</span></td></tr>
-        <tr><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">10:19:57 PM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.hr - 1} BPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.spo2} %</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.temp} °C</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;">${w.vitals.gas} PPM</td><td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><span class="sys-badge-micro ${w.drs >= 75 ? 'pill-critical' : (w.drs >= 45 ? 'pill-caution' : 'pill-normal')}">${band(w.drs)} (${w.drs})</span></td></tr>
-        <tr><td style="padding:6px 8px;">10:19:55 PM</td><td style="padding:6px 8px;">${w.vitals.hr - 2} BPM</td><td style="padding:6px 8px;">${Math.min(100, w.vitals.spo2 + 1)} %</td><td style="padding:6px 8px;">${w.vitals.temp} °C</td><td style="padding:6px 8px;">${Math.max(12, w.vitals.gas - 1)} PPM</td><td style="padding:6px;"><span class="sys-badge-micro ${w.drs >= 75 ? 'pill-critical' : (w.drs >= 45 ? 'pill-caution' : 'pill-normal')}">${band(w.drs)}</span></td></tr>
-      `;
-    }
-
     if (reportPreviewModal) {
       reportPreviewModal.classList.add('open', 'active');
-      showToast(`Opened Worker Safety Dossier for ${w.name} (${w.id})`, 'info');
+      reportPreviewModal.style.display = 'flex';
+      showToast(`Displaying A4 Safety Dossier Document for ${w.name} (${w.id})`, 'info');
     }
   }
 
   function openInsuranceModal() {
+    const iframe = document.getElementById('insuranceReportIframe');
+    if (iframe) {
+      iframe.src = 'insurance-report.html?t=' + Date.now();
+    }
     if (insurancePreviewModal) {
       insurancePreviewModal.classList.add('open', 'active');
-      showToast('Opened Underwriting & Worker Compensation Incident Docket', 'info');
+      insurancePreviewModal.style.display = 'flex';
+      showToast('Displaying Underwriting & Compensation Incident Docket Document', 'info');
     }
   }
 
@@ -1238,15 +1230,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnDispatchReport) {
     btnDispatchReport.addEventListener('click', () => {
-      if (reportPreviewModal) reportPreviewModal.classList.remove('open', 'active');
+      if (reportPreviewModal) {
+        reportPreviewModal.classList.remove('open', 'active');
+        reportPreviewModal.style.display = 'none';
+      }
       showToast('Shift dossier transmitted to central occupational health repository', 'success');
     });
   }
 
   if (closeReportModalBtn && reportPreviewModal) {
-    closeReportModalBtn.addEventListener('click', () => reportPreviewModal.classList.remove('open', 'active'));
+    closeReportModalBtn.addEventListener('click', () => {
+      reportPreviewModal.classList.remove('open', 'active');
+      reportPreviewModal.style.display = 'none';
+    });
     reportPreviewModal.addEventListener('click', (e) => {
-      if (e.target === reportPreviewModal) reportPreviewModal.classList.remove('open', 'active');
+      if (e.target === reportPreviewModal) {
+        reportPreviewModal.classList.remove('open', 'active');
+        reportPreviewModal.style.display = 'none';
+      }
     });
   }
 
@@ -1267,15 +1268,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnConfirmSendInsurer) {
     btnConfirmSendInsurer.addEventListener('click', () => {
-      if (insurancePreviewModal) insurancePreviewModal.classList.remove('open', 'active');
+      if (insurancePreviewModal) {
+        insurancePreviewModal.classList.remove('open', 'active');
+        insurancePreviewModal.style.display = 'none';
+      }
       showToast('Cryptographic Underwriting Dossier Dispatched', 'success');
     });
   }
 
   if (closeInsuranceModalBtn && insurancePreviewModal) {
-    closeInsuranceModalBtn.addEventListener('click', () => insurancePreviewModal.classList.remove('open', 'active'));
+    closeInsuranceModalBtn.addEventListener('click', () => {
+      insurancePreviewModal.classList.remove('open', 'active');
+      insurancePreviewModal.style.display = 'none';
+    });
     insurancePreviewModal.addEventListener('click', (e) => {
-      if (e.target === insurancePreviewModal) insurancePreviewModal.classList.remove('open', 'active');
+      if (e.target === insurancePreviewModal) {
+        insurancePreviewModal.classList.remove('open', 'active');
+        insurancePreviewModal.style.display = 'none';
+      }
     });
   }
 
